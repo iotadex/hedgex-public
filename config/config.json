@@ -1,0 +1,22 @@
+{
+	"http_port": 8080,
+	"ws_port":8081,
+	"ws_tick":10,
+	"kline_max_count":2000,
+	"max_trade_count":200,
+	"db": {
+		"lifetime": 30,
+		"openconns": 200,
+		"idleconns": 100,
+		"host": "127.0.0.1",
+		"port": "3306",
+		"dbname": "hedgex",
+		"usr": "root",
+		"pwd": "851012"
+	},
+	"contract":{
+		"pair":["0xB21ceaec9B2259F28e839c87F8AeE35f835F3C7D","0xB6D0FBe198bf48c7E7dad8b457994a0dBac795Ef"],
+		"http":"https://rinkeby.infura.io/v3/f253d838bc36430cb6c762cfda19ecaa",
+		"ws":"wss://rinkeby.infura.io/ws/v3/f253d838bc36430cb6c762cfda19ecaa"
+	}
+}
