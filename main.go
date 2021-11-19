@@ -1,36 +1,22 @@
 package main
 
 import (
-	"context"
-	"hedgex-server/config"
 	"hedgex-server/gl"
-	"hedgex-server/host"
 	"hedgex-server/service"
 	"io/ioutil"
 	"os"
 	"os/signal"
 	"strconv"
-	"sync/atomic"
 	"syscall"
 )
 
 func main() {
-	//start host server
-	go host.StartHttpServer()
-	go service.StartRealIndexPrice()
-	for _, add := range config.Contract.Pair {
-		gl.QuitChan[add] = make(chan int)
-		go service.StartFilterEvents(add)
-	}
+	service.Start()
+
 	waitForKill()
-	for _, add := range config.Contract.Pair {
-		gl.QuitChan[add] <- 1
-	}
-	atomic.StoreInt32(&gl.KLineServerIsRun, 0)
-	if gl.HttpServer != nil {
-		gl.HttpServer.Shutdown(context.Background())
-	}
-	gl.ServiceWaitGroup.Wait()
+
+	service.Stop()
+
 	gl.OutLogger.Close()
 }
 

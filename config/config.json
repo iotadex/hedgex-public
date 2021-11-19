@@ -1,4 +1,5 @@
 {
+	"service":0,
 	"http_port": 8080,
 	"ws_port":8081,
 	"ws_tick":10,
@@ -18,5 +19,7 @@
 		"pair":["0xB21ceaec9B2259F28e839c87F8AeE35f835F3C7D","0xB6D0FBe198bf48c7E7dad8b457994a0dBac795Ef"],
 		"http":"https://rinkeby.infura.io/v3/f253d838bc36430cb6c762cfda19ecaa",
 		"ws":"wss://rinkeby.infura.io/ws/v3/f253d838bc36430cb6c762cfda19ecaa"
-	}
+	},
+	"explosive_tick":10,
+	"wallet":"44598da06b23f88e1b47b986c157b3b5edcc93a4a80abfcdf29aeb0b78510ee93fe62050c9d3d7f22b2ad743919d25e30c8397a5da64a5a82b57f9fcfeb22dd7fcebdb4fd3b0301aa3c6cdcf8fa66eae"
 }

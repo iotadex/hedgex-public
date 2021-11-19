@@ -5,7 +5,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"sync"
 )
 
 type ErrorCode int
@@ -17,9 +16,6 @@ const (
 // OutLogger global logger
 var OutLogger *logger.Logger
 
-//
-var ServiceWaitGroup sync.WaitGroup
-var QuitChan map[string]chan int
 var HttpServer *http.Server
 
 func init() {
@@ -31,5 +27,4 @@ func init() {
 	if OutLogger, err = logger.New("logs/out.log", 1, 3, 0); err != nil {
 		log.Panic("Create Outlogger file error. " + err.Error())
 	}
-	QuitChan = make(map[string]chan int)
 }

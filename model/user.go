@@ -7,7 +7,7 @@ import (
 
 /*
 CREATE TABLE user (
-  account` varchar(45) NOT NULL COMMENT '用户地址，格式为：0x55fE59D8Ad77035154dDd0AD0388D09Dd4047A8e',
+  `account` varchar(45) NOT NULL COMMENT '用户地址，格式为：0x55fE59D8Ad77035154dDd0AD0388D09Dd4047A8e',
   `contract` varchar(45) NOT NULL COMMENT '所属合约',
   `margin` bigint NOT NULL DEFAULT '0' COMMENT '保证金数量',
   `lposition` int NOT NULL DEFAULT '0' COMMENT '多仓持仓量',
@@ -33,22 +33,31 @@ func GetLastBlock(contract string) (int64, error) {
 	return maxBlock, nil
 }
 
+type User struct {
+	Account   string
+	Margin    int64
+	Lposition uint64
+	Lprice    uint64
+	Sposition uint64
+	Sprice    uint64
+	Block     uint64
+}
+
 //GetUsers get users
-func GetUsers(contract string) (map[string]gl.User, uint64, error) {
+func GetUsers(contract string) ([]User, uint64, error) {
 	rows, err := gl.DB.Query("SELECT account,margin,lposition,lprice,sposition,sprice,block FROM user where contract=" + "'" + contract + "'")
 	if err != nil {
 		return nil, 0, err
 	}
-	data := make(map[string]gl.User)
+	data := make([]User, 0)
 	var maxBlock uint64
 	for rows.Next() {
-		var account string
-		u := gl.User{}
-		err := rows.Scan(&account, &u.Margin, &u.Lposition, &u.Lprice, &u.Sposition, &u.Sprice, &u.Block)
+		u := User{}
+		err := rows.Scan(&u.Account, &u.Margin, &u.Lposition, &u.Lprice, &u.Sposition, &u.Sprice, &u.Block)
 		if err != nil {
 			return nil, 0, err
 		}
-		data[account] = u
+		data = append(data, u)
 		if u.Block > maxBlock {
 			maxBlock = u.Block
 		}
@@ -57,9 +66,9 @@ func GetUsers(contract string) (map[string]gl.User, uint64, error) {
 }
 
 //UpdateUser update user's data
-func UpdateUser(contract string, account string, user gl.User) error {
+func UpdateUser(contract string, user User) error {
 	_, err := gl.DB.Exec("replace into user(account,contract,margin,lposition,lprice,sposition,sprice,block) values(?,?,?,?,?,?,?,?) ",
-		account, contract, user.Margin, user.Lposition, user.Lprice, user.Sposition, user.Sprice, user.Block)
+		user.Account, contract, user.Margin, user.Lposition, user.Lprice, user.Sposition, user.Sprice, user.Block)
 	return err
 }
 

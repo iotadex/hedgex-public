@@ -5,13 +5,37 @@ import (
 	"hedgex-server/gl"
 	"hedgex-server/model"
 	"log"
-	"sync/atomic"
 	"time"
 )
 
 func StartRealIndexPrice() {
-	gl.ServiceWaitGroup.Add(1)
+	ServiceWaitGroup.Add(1)
+	defer ServiceWaitGroup.Done()
+
 	// load kline data from database
+	loadHistoryKline()
+
+	// update the kline data real time from contract of blockchain network
+	ticker := time.NewTicker(time.Second * config.WsTick)
+	for {
+		select {
+		case <-ticker.C:
+			for i := range config.Contract.Pair {
+				if price, err := Contracts[config.Contract.Pair[i]].GetLatestPrice(nil); err != nil {
+					gl.OutLogger.Error("Get price from contract error. ", err)
+				} else {
+					updateKline(config.Contract.Pair[i], price.Int64())
+				}
+			}
+		case <-QuitKline:
+			ticker.Stop()
+			gl.OutLogger.Info("Kline Update Service Stoped!")
+			return
+		}
+	}
+}
+
+func loadHistoryKline() {
 	for i := range config.Contract.Pair {
 		klineTypes := []string{"m1", "m5", "m10", "m15", "m30", "h1", "h2", "h4", "h6", "h12", "d1"}
 		for _, t := range klineTypes {
@@ -25,29 +49,6 @@ func StartRealIndexPrice() {
 			}
 		}
 	}
-
-	// update the kline data real time from contract of blockchain network56918951
-	if atomic.LoadInt32(&gl.KLineServerIsRun) == 1 {
-		return
-	}
-	atomic.StoreInt32(&gl.KLineServerIsRun, 1)
-	ticker := time.NewTicker(time.Second * config.WsTick)
-	defer ticker.Stop()
-	for range ticker.C {
-		if atomic.LoadInt32(&gl.KLineServerIsRun) == 0 {
-			ticker.Stop()
-			break
-		}
-		for i := range config.Contract.Pair {
-			if price, err := gl.Contracts[config.Contract.Pair[i]].GetLatestPrice(nil); err != nil {
-				gl.OutLogger.Error("Get price from contract error. ", err)
-			} else {
-				updateKline(config.Contract.Pair[i], price.Int64())
-			}
-		}
-	}
-	gl.OutLogger.Info("Kline Update Service Stoped!")
-	gl.ServiceWaitGroup.Done()
 }
 
 // updateKline update the current kline's price
@@ -84,9 +85,4 @@ func updateKline(contract string, price int64) {
 			}
 		}
 	}
-}
-
-// GetLatestPrice unused func
-func GetLatestPrice(address string) int64 {
-	return 0
 }
