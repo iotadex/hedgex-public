@@ -30,7 +30,7 @@ var (
 
 // HedgexMetaData contains all meta data concerning the Hedgex contract.
 var HedgexMetaData = &bind.MetaData{
-	ABI: "[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_token0\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_feedPrice\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_feedPriceDecimal\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_minStartPool\",\"type\":\"uint256\"},{\"internalType\":\"uint8\",\"name\":\"_leverage\",\"type\":\"uint8\"},{\"internalType\":\"int8\",\"name\":\"_amountDecimal\",\"type\":\"int8\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"spender\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"}],\"name\":\"Approval\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"Burn\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"user\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"int8\",\"name\":\"direction\",\"type\":\"int8\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"price\",\"type\":\"uint256\"}],\"name\":\"Explosive\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"long\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"short\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"price\",\"type\":\"uint256\"}],\"name\":\"ForceClose\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"Mint\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"Recharge\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"user\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"int8\",\"name\":\"direction\",\"type\":\"int8\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"price\",\"type\":\"uint256\"}],\"name\":\"TakeInterest\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"int8\",\"name\":\"direction\",\"type\":\"int8\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"price\",\"type\":\"uint256\"}],\"name\":\"Trade\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"}],\"name\":\"Transfer\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"Withdraw\",\"type\":\"event\"},{\"inputs\":[],\"name\":\"DOMAIN_SEPARATOR\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"PERMIT_TYPEHASH\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"}],\"name\":\"addLiquidity\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"name\":\"allowance\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"amountDecimal\",\"outputs\":[{\"internalType\":\"int8\",\"name\":\"\",\"type\":\"int8\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"spender\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"}],\"name\":\"approve\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"name\":\"balanceOf\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"priceExp\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"deadline\",\"type\":\"uint256\"}],\"name\":\"closeLong\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"priceExp\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"deadline\",\"type\":\"uint256\"}],\"name\":\"closeShort\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"dailyInterestRateBase\",\"outputs\":[{\"internalType\":\"uint16\",\"name\":\"\",\"type\":\"uint16\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"decimals\",\"outputs\":[{\"internalType\":\"uint8\",\"name\":\"\",\"type\":\"uint8\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"detectSlide\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"divConst\",\"outputs\":[{\"internalType\":\"uint24\",\"name\":\"\",\"type\":\"uint24\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"explosive\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"explosivePool\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"feeDivide\",\"outputs\":[{\"internalType\":\"uint24\",\"name\":\"\",\"type\":\"uint24\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"feeOn\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"feeRate\",\"outputs\":[{\"internalType\":\"uint16\",\"name\":\"\",\"type\":\"uint16\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"feedPrice\",\"outputs\":[{\"internalType\":\"contractAggregatorV3Interface\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"feedPriceDecimal\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"foceCloseRewardGas\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"forceCloseAccount\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"gasUsdPriceFeed\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getGasUsdPrice\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getLatestPrice\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getPoolNet\",\"outputs\":[{\"internalType\":\"int256\",\"name\":\"\",\"type\":\"int256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_token0\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_feedPrice\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_feedPriceDecimal\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_minStartPool\",\"type\":\"uint256\"},{\"internalType\":\"uint8\",\"name\":\"_leverage\",\"type\":\"uint8\"},{\"internalType\":\"int8\",\"name\":\"_amountDecimal\",\"type\":\"int8\"}],\"name\":\"initialize\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"interestRewardRate\",\"outputs\":[{\"internalType\":\"uint24\",\"name\":\"\",\"type\":\"uint24\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"isStart\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"leverage\",\"outputs\":[{\"internalType\":\"uint8\",\"name\":\"\",\"type\":\"uint8\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"minPool\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"name\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"name\":\"nonces\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"priceExp\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"deadline\",\"type\":\"uint256\"}],\"name\":\"openLong\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"priceExp\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"deadline\",\"type\":\"uint256\"}],\"name\":\"openShort\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"spender\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"deadline\",\"type\":\"uint256\"},{\"internalType\":\"uint8\",\"name\":\"v\",\"type\":\"uint8\"},{\"internalType\":\"bytes32\",\"name\":\"r\",\"type\":\"bytes32\"},{\"internalType\":\"bytes32\",\"name\":\"s\",\"type\":\"bytes32\"}],\"name\":\"permit\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"poolExplosivePrice\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"poolLeftAmountRate\",\"outputs\":[{\"internalType\":\"uint24\",\"name\":\"\",\"type\":\"uint24\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"poolLongAmount\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"poolLongPrice\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"poolNetAmountRateLimitOpen\",\"outputs\":[{\"internalType\":\"int24\",\"name\":\"\",\"type\":\"int24\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"poolNetAmountRateLimitPrice\",\"outputs\":[{\"internalType\":\"int24\",\"name\":\"\",\"type\":\"int24\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"poolShortAmount\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"poolShortPrice\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"poolState\",\"outputs\":[{\"internalType\":\"uint8\",\"name\":\"\",\"type\":\"uint8\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"rechargeMargin\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"liquidity\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"}],\"name\":\"removeLiquidity\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"singleCloseLimitRate\",\"outputs\":[{\"internalType\":\"uint24\",\"name\":\"\",\"type\":\"uint24\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"singleOpenLimitRate\",\"outputs\":[{\"internalType\":\"uint16\",\"name\":\"\",\"type\":\"uint16\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"slideP\",\"outputs\":[{\"internalType\":\"uint8\",\"name\":\"\",\"type\":\"uint8\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"sumFee\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"symbol\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"token0\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"token0Decimal\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"totalPool\",\"outputs\":[{\"internalType\":\"int256\",\"name\":\"\",\"type\":\"int256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"totalSupply\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"name\":\"traders\",\"outputs\":[{\"internalType\":\"int256\",\"name\":\"margin\",\"type\":\"int256\"},{\"internalType\":\"uint256\",\"name\":\"longAmount\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"longPrice\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"shortAmount\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"shortPrice\",\"type\":\"uint256\"},{\"internalType\":\"uint32\",\"name\":\"interestDay\",\"type\":\"uint32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"}],\"name\":\"transfer\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"}],\"name\":\"transferFrom\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"withdrawMargin\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]",
+	ABI: "[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_token0\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_feedPrice\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_feedPriceDecimal\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_minStartPool\",\"type\":\"uint256\"},{\"internalType\":\"uint8\",\"name\":\"_leverage\",\"type\":\"uint8\"},{\"internalType\":\"int8\",\"name\":\"_amountDecimal\",\"type\":\"int8\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"spender\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"}],\"name\":\"Approval\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"Burn\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"user\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"int8\",\"name\":\"direction\",\"type\":\"int8\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"price\",\"type\":\"uint256\"}],\"name\":\"Explosive\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"long\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"short\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"price\",\"type\":\"uint256\"}],\"name\":\"ForceClose\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"Mint\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"Recharge\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"user\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"int8\",\"name\":\"direction\",\"type\":\"int8\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"price\",\"type\":\"uint256\"}],\"name\":\"TakeInterest\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"int8\",\"name\":\"direction\",\"type\":\"int8\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"price\",\"type\":\"uint256\"}],\"name\":\"Trade\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"}],\"name\":\"Transfer\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"Withdraw\",\"type\":\"event\"},{\"inputs\":[],\"name\":\"DOMAIN_SEPARATOR\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"PERMIT_TYPEHASH\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"acceptFeeToSetter\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"}],\"name\":\"addLiquidity\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"name\":\"allowance\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"amountDecimal\",\"outputs\":[{\"internalType\":\"int8\",\"name\":\"\",\"type\":\"int8\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"spender\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"}],\"name\":\"approve\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"name\":\"balanceOf\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"priceExp\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"deadline\",\"type\":\"uint256\"}],\"name\":\"closeLong\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"priceExp\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"deadline\",\"type\":\"uint256\"}],\"name\":\"closeShort\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"dailyInterestRateBase\",\"outputs\":[{\"internalType\":\"uint16\",\"name\":\"\",\"type\":\"uint16\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"decimals\",\"outputs\":[{\"internalType\":\"uint8\",\"name\":\"\",\"type\":\"uint8\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"}],\"name\":\"detectSlide\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"divConst\",\"outputs\":[{\"internalType\":\"uint24\",\"name\":\"\",\"type\":\"uint24\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"}],\"name\":\"explosive\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"explosivePool\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"feeDivide\",\"outputs\":[{\"internalType\":\"uint24\",\"name\":\"\",\"type\":\"uint24\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"feeOn\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"feeRate\",\"outputs\":[{\"internalType\":\"uint16\",\"name\":\"\",\"type\":\"uint16\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"feeTo\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"feeToSetter\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"feedPrice\",\"outputs\":[{\"internalType\":\"contractAggregatorV3Interface\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"feedPriceDecimal\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"foceCloseRewardGas\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"}],\"name\":\"forceCloseAccount\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"gasUsdPriceFeed\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getGasUsdPrice\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getLatestPrice\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getPoolNet\",\"outputs\":[{\"internalType\":\"int256\",\"name\":\"\",\"type\":\"int256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_token0\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_feedPrice\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_feedPriceDecimal\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_minStartPool\",\"type\":\"uint256\"},{\"internalType\":\"uint8\",\"name\":\"_leverage\",\"type\":\"uint8\"},{\"internalType\":\"int8\",\"name\":\"_amountDecimal\",\"type\":\"int8\"}],\"name\":\"initialize\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"interestRewardRate\",\"outputs\":[{\"internalType\":\"uint24\",\"name\":\"\",\"type\":\"uint24\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"isStart\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"leverage\",\"outputs\":[{\"internalType\":\"uint8\",\"name\":\"\",\"type\":\"uint8\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"minPool\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"name\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"name\":\"nonces\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"priceExp\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"deadline\",\"type\":\"uint256\"}],\"name\":\"openLong\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"priceExp\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"deadline\",\"type\":\"uint256\"}],\"name\":\"openShort\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"spender\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"deadline\",\"type\":\"uint256\"},{\"internalType\":\"uint8\",\"name\":\"v\",\"type\":\"uint8\"},{\"internalType\":\"bytes32\",\"name\":\"r\",\"type\":\"bytes32\"},{\"internalType\":\"bytes32\",\"name\":\"s\",\"type\":\"bytes32\"}],\"name\":\"permit\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"poolExplosivePrice\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"poolLeftAmountRate\",\"outputs\":[{\"internalType\":\"uint24\",\"name\":\"\",\"type\":\"uint24\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"poolLongAmount\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"poolLongPrice\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"poolNetAmountRateLimitOpen\",\"outputs\":[{\"internalType\":\"int24\",\"name\":\"\",\"type\":\"int24\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"poolNetAmountRateLimitPrice\",\"outputs\":[{\"internalType\":\"int24\",\"name\":\"\",\"type\":\"int24\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"poolShortAmount\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"poolShortPrice\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"poolState\",\"outputs\":[{\"internalType\":\"uint8\",\"name\":\"\",\"type\":\"uint8\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"rechargeMargin\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"liquidity\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"}],\"name\":\"removeLiquidity\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bool\",\"name\":\"b\",\"type\":\"bool\"}],\"name\":\"setFeeOn\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_feeTo\",\"type\":\"address\"}],\"name\":\"setFeeTo\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"singleCloseLimitRate\",\"outputs\":[{\"internalType\":\"uint24\",\"name\":\"\",\"type\":\"uint24\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"singleOpenLimitRate\",\"outputs\":[{\"internalType\":\"uint16\",\"name\":\"\",\"type\":\"uint16\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"slideP\",\"outputs\":[{\"internalType\":\"uint8\",\"name\":\"\",\"type\":\"uint8\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"sumFee\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"symbol\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"token0\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"token0Decimal\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"totalPool\",\"outputs\":[{\"internalType\":\"int256\",\"name\":\"\",\"type\":\"int256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"totalSupply\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"name\":\"traders\",\"outputs\":[{\"internalType\":\"int256\",\"name\":\"margin\",\"type\":\"int256\"},{\"internalType\":\"uint256\",\"name\":\"longAmount\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"longPrice\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"shortAmount\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"shortPrice\",\"type\":\"uint256\"},{\"internalType\":\"uint32\",\"name\":\"interestDay\",\"type\":\"uint32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"}],\"name\":\"transfer\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_feeToSetter\",\"type\":\"address\"}],\"name\":\"transferFeeToSetter\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"}],\"name\":\"transferFrom\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"withdrawFee\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"withdrawMargin\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]",
 }
 
 // HedgexABI is the input ABI used to generate the binding from.
@@ -518,6 +518,68 @@ func (_Hedgex *HedgexSession) FeeRate() (uint16, error) {
 // Solidity: function feeRate() view returns(uint16)
 func (_Hedgex *HedgexCallerSession) FeeRate() (uint16, error) {
 	return _Hedgex.Contract.FeeRate(&_Hedgex.CallOpts)
+}
+
+// FeeTo is a free data retrieval call binding the contract method 0x017e7e58.
+//
+// Solidity: function feeTo() view returns(address)
+func (_Hedgex *HedgexCaller) FeeTo(opts *bind.CallOpts) (common.Address, error) {
+	var out []interface{}
+	err := _Hedgex.contract.Call(opts, &out, "feeTo")
+
+	if err != nil {
+		return *new(common.Address), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new(common.Address)).(*common.Address)
+
+	return out0, err
+
+}
+
+// FeeTo is a free data retrieval call binding the contract method 0x017e7e58.
+//
+// Solidity: function feeTo() view returns(address)
+func (_Hedgex *HedgexSession) FeeTo() (common.Address, error) {
+	return _Hedgex.Contract.FeeTo(&_Hedgex.CallOpts)
+}
+
+// FeeTo is a free data retrieval call binding the contract method 0x017e7e58.
+//
+// Solidity: function feeTo() view returns(address)
+func (_Hedgex *HedgexCallerSession) FeeTo() (common.Address, error) {
+	return _Hedgex.Contract.FeeTo(&_Hedgex.CallOpts)
+}
+
+// FeeToSetter is a free data retrieval call binding the contract method 0x094b7415.
+//
+// Solidity: function feeToSetter() view returns(address)
+func (_Hedgex *HedgexCaller) FeeToSetter(opts *bind.CallOpts) (common.Address, error) {
+	var out []interface{}
+	err := _Hedgex.contract.Call(opts, &out, "feeToSetter")
+
+	if err != nil {
+		return *new(common.Address), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new(common.Address)).(*common.Address)
+
+	return out0, err
+
+}
+
+// FeeToSetter is a free data retrieval call binding the contract method 0x094b7415.
+//
+// Solidity: function feeToSetter() view returns(address)
+func (_Hedgex *HedgexSession) FeeToSetter() (common.Address, error) {
+	return _Hedgex.Contract.FeeToSetter(&_Hedgex.CallOpts)
+}
+
+// FeeToSetter is a free data retrieval call binding the contract method 0x094b7415.
+//
+// Solidity: function feeToSetter() view returns(address)
+func (_Hedgex *HedgexCallerSession) FeeToSetter() (common.Address, error) {
+	return _Hedgex.Contract.FeeToSetter(&_Hedgex.CallOpts)
 }
 
 // FeedPrice is a free data retrieval call binding the contract method 0xa04eecae.
@@ -1546,6 +1608,27 @@ func (_Hedgex *HedgexCallerSession) Traders(arg0 common.Address) (struct {
 	return _Hedgex.Contract.Traders(&_Hedgex.CallOpts, arg0)
 }
 
+// AcceptFeeToSetter is a paid mutator transaction binding the contract method 0x2dd072a0.
+//
+// Solidity: function acceptFeeToSetter() returns()
+func (_Hedgex *HedgexTransactor) AcceptFeeToSetter(opts *bind.TransactOpts) (*types.Transaction, error) {
+	return _Hedgex.contract.Transact(opts, "acceptFeeToSetter")
+}
+
+// AcceptFeeToSetter is a paid mutator transaction binding the contract method 0x2dd072a0.
+//
+// Solidity: function acceptFeeToSetter() returns()
+func (_Hedgex *HedgexSession) AcceptFeeToSetter() (*types.Transaction, error) {
+	return _Hedgex.Contract.AcceptFeeToSetter(&_Hedgex.TransactOpts)
+}
+
+// AcceptFeeToSetter is a paid mutator transaction binding the contract method 0x2dd072a0.
+//
+// Solidity: function acceptFeeToSetter() returns()
+func (_Hedgex *HedgexTransactorSession) AcceptFeeToSetter() (*types.Transaction, error) {
+	return _Hedgex.Contract.AcceptFeeToSetter(&_Hedgex.TransactOpts)
+}
+
 // AddLiquidity is a paid mutator transaction binding the contract method 0xc95f9d0e.
 //
 // Solidity: function addLiquidity(uint256 amount, address to) returns()
@@ -1630,46 +1713,46 @@ func (_Hedgex *HedgexTransactorSession) CloseShort(priceExp *big.Int, amount *bi
 	return _Hedgex.Contract.CloseShort(&_Hedgex.TransactOpts, priceExp, amount, deadline)
 }
 
-// DetectSlide is a paid mutator transaction binding the contract method 0x3d07bfb7.
+// DetectSlide is a paid mutator transaction binding the contract method 0xddcb04c2.
 //
-// Solidity: function detectSlide(address account) returns()
-func (_Hedgex *HedgexTransactor) DetectSlide(opts *bind.TransactOpts, account common.Address) (*types.Transaction, error) {
-	return _Hedgex.contract.Transact(opts, "detectSlide", account)
+// Solidity: function detectSlide(address account, address to) returns()
+func (_Hedgex *HedgexTransactor) DetectSlide(opts *bind.TransactOpts, account common.Address, to common.Address) (*types.Transaction, error) {
+	return _Hedgex.contract.Transact(opts, "detectSlide", account, to)
 }
 
-// DetectSlide is a paid mutator transaction binding the contract method 0x3d07bfb7.
+// DetectSlide is a paid mutator transaction binding the contract method 0xddcb04c2.
 //
-// Solidity: function detectSlide(address account) returns()
-func (_Hedgex *HedgexSession) DetectSlide(account common.Address) (*types.Transaction, error) {
-	return _Hedgex.Contract.DetectSlide(&_Hedgex.TransactOpts, account)
+// Solidity: function detectSlide(address account, address to) returns()
+func (_Hedgex *HedgexSession) DetectSlide(account common.Address, to common.Address) (*types.Transaction, error) {
+	return _Hedgex.Contract.DetectSlide(&_Hedgex.TransactOpts, account, to)
 }
 
-// DetectSlide is a paid mutator transaction binding the contract method 0x3d07bfb7.
+// DetectSlide is a paid mutator transaction binding the contract method 0xddcb04c2.
 //
-// Solidity: function detectSlide(address account) returns()
-func (_Hedgex *HedgexTransactorSession) DetectSlide(account common.Address) (*types.Transaction, error) {
-	return _Hedgex.Contract.DetectSlide(&_Hedgex.TransactOpts, account)
+// Solidity: function detectSlide(address account, address to) returns()
+func (_Hedgex *HedgexTransactorSession) DetectSlide(account common.Address, to common.Address) (*types.Transaction, error) {
+	return _Hedgex.Contract.DetectSlide(&_Hedgex.TransactOpts, account, to)
 }
 
-// Explosive is a paid mutator transaction binding the contract method 0xfc1e2c45.
+// Explosive is a paid mutator transaction binding the contract method 0x89d408ff.
 //
-// Solidity: function explosive(address account) returns()
-func (_Hedgex *HedgexTransactor) Explosive(opts *bind.TransactOpts, account common.Address) (*types.Transaction, error) {
-	return _Hedgex.contract.Transact(opts, "explosive", account)
+// Solidity: function explosive(address account, address to) returns()
+func (_Hedgex *HedgexTransactor) Explosive(opts *bind.TransactOpts, account common.Address, to common.Address) (*types.Transaction, error) {
+	return _Hedgex.contract.Transact(opts, "explosive", account, to)
 }
 
-// Explosive is a paid mutator transaction binding the contract method 0xfc1e2c45.
+// Explosive is a paid mutator transaction binding the contract method 0x89d408ff.
 //
-// Solidity: function explosive(address account) returns()
-func (_Hedgex *HedgexSession) Explosive(account common.Address) (*types.Transaction, error) {
-	return _Hedgex.Contract.Explosive(&_Hedgex.TransactOpts, account)
+// Solidity: function explosive(address account, address to) returns()
+func (_Hedgex *HedgexSession) Explosive(account common.Address, to common.Address) (*types.Transaction, error) {
+	return _Hedgex.Contract.Explosive(&_Hedgex.TransactOpts, account, to)
 }
 
-// Explosive is a paid mutator transaction binding the contract method 0xfc1e2c45.
+// Explosive is a paid mutator transaction binding the contract method 0x89d408ff.
 //
-// Solidity: function explosive(address account) returns()
-func (_Hedgex *HedgexTransactorSession) Explosive(account common.Address) (*types.Transaction, error) {
-	return _Hedgex.Contract.Explosive(&_Hedgex.TransactOpts, account)
+// Solidity: function explosive(address account, address to) returns()
+func (_Hedgex *HedgexTransactorSession) Explosive(account common.Address, to common.Address) (*types.Transaction, error) {
+	return _Hedgex.Contract.Explosive(&_Hedgex.TransactOpts, account, to)
 }
 
 // ExplosivePool is a paid mutator transaction binding the contract method 0x3e31fb45.
@@ -1693,25 +1776,25 @@ func (_Hedgex *HedgexTransactorSession) ExplosivePool() (*types.Transaction, err
 	return _Hedgex.Contract.ExplosivePool(&_Hedgex.TransactOpts)
 }
 
-// ForceCloseAccount is a paid mutator transaction binding the contract method 0x93f8d812.
+// ForceCloseAccount is a paid mutator transaction binding the contract method 0x6422e08f.
 //
-// Solidity: function forceCloseAccount(address account) returns()
-func (_Hedgex *HedgexTransactor) ForceCloseAccount(opts *bind.TransactOpts, account common.Address) (*types.Transaction, error) {
-	return _Hedgex.contract.Transact(opts, "forceCloseAccount", account)
+// Solidity: function forceCloseAccount(address account, address to) returns()
+func (_Hedgex *HedgexTransactor) ForceCloseAccount(opts *bind.TransactOpts, account common.Address, to common.Address) (*types.Transaction, error) {
+	return _Hedgex.contract.Transact(opts, "forceCloseAccount", account, to)
 }
 
-// ForceCloseAccount is a paid mutator transaction binding the contract method 0x93f8d812.
+// ForceCloseAccount is a paid mutator transaction binding the contract method 0x6422e08f.
 //
-// Solidity: function forceCloseAccount(address account) returns()
-func (_Hedgex *HedgexSession) ForceCloseAccount(account common.Address) (*types.Transaction, error) {
-	return _Hedgex.Contract.ForceCloseAccount(&_Hedgex.TransactOpts, account)
+// Solidity: function forceCloseAccount(address account, address to) returns()
+func (_Hedgex *HedgexSession) ForceCloseAccount(account common.Address, to common.Address) (*types.Transaction, error) {
+	return _Hedgex.Contract.ForceCloseAccount(&_Hedgex.TransactOpts, account, to)
 }
 
-// ForceCloseAccount is a paid mutator transaction binding the contract method 0x93f8d812.
+// ForceCloseAccount is a paid mutator transaction binding the contract method 0x6422e08f.
 //
-// Solidity: function forceCloseAccount(address account) returns()
-func (_Hedgex *HedgexTransactorSession) ForceCloseAccount(account common.Address) (*types.Transaction, error) {
-	return _Hedgex.Contract.ForceCloseAccount(&_Hedgex.TransactOpts, account)
+// Solidity: function forceCloseAccount(address account, address to) returns()
+func (_Hedgex *HedgexTransactorSession) ForceCloseAccount(account common.Address, to common.Address) (*types.Transaction, error) {
+	return _Hedgex.Contract.ForceCloseAccount(&_Hedgex.TransactOpts, account, to)
 }
 
 // Initialize is a paid mutator transaction binding the contract method 0x251c073a.
@@ -1840,6 +1923,48 @@ func (_Hedgex *HedgexTransactorSession) RemoveLiquidity(liquidity *big.Int, to c
 	return _Hedgex.Contract.RemoveLiquidity(&_Hedgex.TransactOpts, liquidity, to)
 }
 
+// SetFeeOn is a paid mutator transaction binding the contract method 0xfc4064b3.
+//
+// Solidity: function setFeeOn(bool b) returns()
+func (_Hedgex *HedgexTransactor) SetFeeOn(opts *bind.TransactOpts, b bool) (*types.Transaction, error) {
+	return _Hedgex.contract.Transact(opts, "setFeeOn", b)
+}
+
+// SetFeeOn is a paid mutator transaction binding the contract method 0xfc4064b3.
+//
+// Solidity: function setFeeOn(bool b) returns()
+func (_Hedgex *HedgexSession) SetFeeOn(b bool) (*types.Transaction, error) {
+	return _Hedgex.Contract.SetFeeOn(&_Hedgex.TransactOpts, b)
+}
+
+// SetFeeOn is a paid mutator transaction binding the contract method 0xfc4064b3.
+//
+// Solidity: function setFeeOn(bool b) returns()
+func (_Hedgex *HedgexTransactorSession) SetFeeOn(b bool) (*types.Transaction, error) {
+	return _Hedgex.Contract.SetFeeOn(&_Hedgex.TransactOpts, b)
+}
+
+// SetFeeTo is a paid mutator transaction binding the contract method 0xf46901ed.
+//
+// Solidity: function setFeeTo(address _feeTo) returns()
+func (_Hedgex *HedgexTransactor) SetFeeTo(opts *bind.TransactOpts, _feeTo common.Address) (*types.Transaction, error) {
+	return _Hedgex.contract.Transact(opts, "setFeeTo", _feeTo)
+}
+
+// SetFeeTo is a paid mutator transaction binding the contract method 0xf46901ed.
+//
+// Solidity: function setFeeTo(address _feeTo) returns()
+func (_Hedgex *HedgexSession) SetFeeTo(_feeTo common.Address) (*types.Transaction, error) {
+	return _Hedgex.Contract.SetFeeTo(&_Hedgex.TransactOpts, _feeTo)
+}
+
+// SetFeeTo is a paid mutator transaction binding the contract method 0xf46901ed.
+//
+// Solidity: function setFeeTo(address _feeTo) returns()
+func (_Hedgex *HedgexTransactorSession) SetFeeTo(_feeTo common.Address) (*types.Transaction, error) {
+	return _Hedgex.Contract.SetFeeTo(&_Hedgex.TransactOpts, _feeTo)
+}
+
 // Transfer is a paid mutator transaction binding the contract method 0xa9059cbb.
 //
 // Solidity: function transfer(address to, uint256 value) returns(bool)
@@ -1861,6 +1986,27 @@ func (_Hedgex *HedgexTransactorSession) Transfer(to common.Address, value *big.I
 	return _Hedgex.Contract.Transfer(&_Hedgex.TransactOpts, to, value)
 }
 
+// TransferFeeToSetter is a paid mutator transaction binding the contract method 0xc250332f.
+//
+// Solidity: function transferFeeToSetter(address _feeToSetter) returns()
+func (_Hedgex *HedgexTransactor) TransferFeeToSetter(opts *bind.TransactOpts, _feeToSetter common.Address) (*types.Transaction, error) {
+	return _Hedgex.contract.Transact(opts, "transferFeeToSetter", _feeToSetter)
+}
+
+// TransferFeeToSetter is a paid mutator transaction binding the contract method 0xc250332f.
+//
+// Solidity: function transferFeeToSetter(address _feeToSetter) returns()
+func (_Hedgex *HedgexSession) TransferFeeToSetter(_feeToSetter common.Address) (*types.Transaction, error) {
+	return _Hedgex.Contract.TransferFeeToSetter(&_Hedgex.TransactOpts, _feeToSetter)
+}
+
+// TransferFeeToSetter is a paid mutator transaction binding the contract method 0xc250332f.
+//
+// Solidity: function transferFeeToSetter(address _feeToSetter) returns()
+func (_Hedgex *HedgexTransactorSession) TransferFeeToSetter(_feeToSetter common.Address) (*types.Transaction, error) {
+	return _Hedgex.Contract.TransferFeeToSetter(&_Hedgex.TransactOpts, _feeToSetter)
+}
+
 // TransferFrom is a paid mutator transaction binding the contract method 0x23b872dd.
 //
 // Solidity: function transferFrom(address from, address to, uint256 value) returns(bool)
@@ -1880,6 +2026,27 @@ func (_Hedgex *HedgexSession) TransferFrom(from common.Address, to common.Addres
 // Solidity: function transferFrom(address from, address to, uint256 value) returns(bool)
 func (_Hedgex *HedgexTransactorSession) TransferFrom(from common.Address, to common.Address, value *big.Int) (*types.Transaction, error) {
 	return _Hedgex.Contract.TransferFrom(&_Hedgex.TransactOpts, from, to, value)
+}
+
+// WithdrawFee is a paid mutator transaction binding the contract method 0xe941fa78.
+//
+// Solidity: function withdrawFee() returns()
+func (_Hedgex *HedgexTransactor) WithdrawFee(opts *bind.TransactOpts) (*types.Transaction, error) {
+	return _Hedgex.contract.Transact(opts, "withdrawFee")
+}
+
+// WithdrawFee is a paid mutator transaction binding the contract method 0xe941fa78.
+//
+// Solidity: function withdrawFee() returns()
+func (_Hedgex *HedgexSession) WithdrawFee() (*types.Transaction, error) {
+	return _Hedgex.Contract.WithdrawFee(&_Hedgex.TransactOpts)
+}
+
+// WithdrawFee is a paid mutator transaction binding the contract method 0xe941fa78.
+//
+// Solidity: function withdrawFee() returns()
+func (_Hedgex *HedgexTransactorSession) WithdrawFee() (*types.Transaction, error) {
+	return _Hedgex.Contract.WithdrawFee(&_Hedgex.TransactOpts)
 }
 
 // WithdrawMargin is a paid mutator transaction binding the contract method 0x0cea7534.

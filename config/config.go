@@ -23,7 +23,7 @@ type db struct {
 type hedgex struct {
 	Address    string `json:"address"`
 	MarginCoin string `json:"margin_coin"`
-	TradeCoin  string `jons:"trade_coin"`
+	TradeCoin  string `json:"trade_coin"`
 }
 
 type chainNode struct {
@@ -45,6 +45,7 @@ var (
 	WsPort              int
 	WsTick              time.Duration
 	ExplosiveTick       time.Duration
+	ExplosiveTo         string
 	MaxKlineCount       int
 	MaxTradeRecordCount int
 	ChainNode           chainNode
@@ -66,6 +67,7 @@ func init() {
 		WsPort              int           `json:"ws_port"`
 		WsTick              time.Duration `json:"ws_tick"`
 		ExplosiveTick       time.Duration `json:"explosive_tick"`
+		ExplosiveTo         string        `json:"explosive_to_address"`
 		KlineMaxCount       int           `json:"kline_max_count"`
 		MaxTradeRecordCount int           `json:"max_trade_count"`
 		Db                  db            `json:"db"`
@@ -84,6 +86,9 @@ func init() {
 	WsPort = all.WsPort
 	WsTick = all.WsTick
 	MaxKlineCount = all.KlineMaxCount
+	ExplosiveTick = all.ExplosiveTick
+	ExplosiveTo = all.ExplosiveTo
+	ChainNode = all.ChainNode
 	Contract = all.Contract
 	PrivateKey = all.PrivateKey
 	TestCoin = all.TestCoin

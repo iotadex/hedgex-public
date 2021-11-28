@@ -15,6 +15,7 @@ func StartHttpServer() {
 	mux.HandleFunc("/api/contract/trade_pairs", GetPairs)
 
 	mux.HandleFunc("/api/account/trade", GetTradeRecords)
+	mux.HandleFunc("/api/account/gettestcoin", SendTestCoins)
 
 	mux.HandleFunc("/wss/kline", klineSender) // this is for websocket
 

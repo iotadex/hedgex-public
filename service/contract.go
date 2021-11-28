@@ -3,7 +3,6 @@ package service
 import (
 	"context"
 	"crypto/ecdsa"
-	"fmt"
 	"hedgex-server/config"
 	"hedgex-server/contract/hedgex"
 	"hedgex-server/gl"
@@ -53,7 +52,7 @@ func init() {
 
 	EthHttpsClient, err = ethclient.Dial(config.ChainNode.Https)
 	if err != nil {
-		log.Panic(err)
+		log.Panic("ChainNode : ", config.ChainNode.Https, err)
 	}
 
 	Contracts = make(map[string]*hedgex.Hedgex)
@@ -97,6 +96,17 @@ func init() {
 	if err != nil {
 		log.Panic(err)
 	}
+
+	privateKey, err = crypto.HexToECDSA(config.PrivateKey)
+	if err != nil {
+		log.Panic(err)
+	}
+	publicKey := privateKey.Public()
+	publicKeyECDSA, ok := publicKey.(*ecdsa.PublicKey)
+	if !ok {
+		log.Panic("error casting public key to ECDSA")
+	}
+	publicAddress = crypto.PubkeyToAddress(*publicKeyECDSA)
 }
 
 func getAccountAuth() (*bind.TransactOpts, error) {
@@ -158,7 +168,6 @@ func sendTransaction(to common.Address, value *big.Int, data []byte) error {
 		return err
 	}
 	gasLimit := uint64(3000000)
-	fmt.Println(nonce)
 	tx := types.NewTransaction(nonce, to, value, gasLimit, gasPrice, data)
 	signedTx, err := types.SignTx(tx, types.NewEIP155Signer(chainID), privateKey)
 	if err != nil {

@@ -36,10 +36,11 @@
 		}
 	],
 	"explosive_tick":10,
+	"explosive_to_address":"0x5717B3DadA9AA2E6bC2f402f74391ad5A95A2D86",
 	"wallet":"44598da06b23f88e1b47b986c157b3b5edcc93a4a80abfcdf29aeb0b78510ee93fe62050c9d3d7f22b2ad743919d25e30c8397a5da64a5a82b57f9fcfeb22dd7fcebdb4fd3b0301aa3c6cdcf8fa66eae",
 	"testcoin":{
 		"count":3,
-		"coin_amount":"10000000000000000",
+		"coin_amount":"100000000000000000",
 		"token":"0x1660854c03b461E6BC07f94567D1D6E6bF99a1A9",
 		"token_amount":"10000000000"
 	}

@@ -36,7 +36,7 @@ func GetTradeRecords(w http.ResponseWriter, r *http.Request) {
 
 func SendTestCoins(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("content-type", "application/json")
-	account := r.URL.Query().Get("account")
+	account := r.URL.Query().Get("user")
 	if err := model.UpdateTestCoin(account); err != nil {
 		str, _ := json.Marshal(map[string]interface{}{
 			"result":   false,

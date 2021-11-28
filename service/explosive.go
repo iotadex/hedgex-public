@@ -71,7 +71,7 @@ func explosive(auth *bind.TransactOpts, contract string, node *UserNode, price i
 		return nil
 	}
 	auth.Nonce = big.NewInt(int64(nonce))
-	if _, err := Contracts[contract].Explosive(auth, common.HexToAddress(node.Account)); err != nil {
+	if _, err := Contracts[contract].Explosive(auth, common.HexToAddress(node.Account), common.HexToAddress(config.ExplosiveTo)); err != nil {
 		gl.OutLogger.Error("Transaction with explosive error. %v", err)
 		return nil
 	}

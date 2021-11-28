@@ -13,7 +13,6 @@ none
     "data":[
 		{
             "contract":"contract address",
-            "margin_address":"margin erc20 address",
             "margin_coin":"margin coin name",
             "trade_coin":"trade coin name",
             "open_price":1234,
