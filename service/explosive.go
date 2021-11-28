@@ -18,8 +18,8 @@ var explosivedAccounts map[string]*ExplosiveReCheck //have been explosived accou
 
 func init() {
 	expUserList = make(map[string]*ExplosiveList)
-	for i := range config.Contract.Pair {
-		expUserList[config.Contract.Pair[i]] = NewExplosiveList()
+	for i := range config.Contract {
+		expUserList[config.Contract[i].Address] = NewExplosiveList()
 	}
 	explosivedAccounts = make(map[string]*ExplosiveReCheck)
 }
@@ -37,21 +37,21 @@ func StartExplosiveDetectServer() {
 				gl.OutLogger.Error("Get auth error. %v", err)
 				continue
 			}
-			for _, contract := range config.Contract.Pair {
+			for _, contract := range config.Contract {
 				//get the current price of contract
-				price, err := Contracts[contract].GetLatestPrice(nil)
+				price, err := Contracts[contract.Address].GetLatestPrice(nil)
 				if err != nil {
 					gl.OutLogger.Error("Get price from contract error. ", err)
 					continue
 				}
 
-				node := expUserList[contract].LHead.Next
+				node := expUserList[contract.Address].LHead.Next
 				for node != nil {
-					node = explosive(auth, contract, node, price.Int64(), 1)
+					node = explosive(auth, contract.Address, node, price.Int64(), 1)
 				}
-				node = expUserList[contract].SHead.Next
+				node = expUserList[contract.Address].SHead.Next
 				for node != nil {
-					node = explosive(auth, contract, node, price.Int64(), -1)
+					node = explosive(auth, contract.Address, node, price.Int64(), -1)
 				}
 				time.Sleep(time.Second)
 			}
@@ -80,21 +80,6 @@ func explosive(auth *bind.TransactOpts, contract string, node *UserNode, price i
 	return node.Next
 }
 
-func getAccountAuth() (*bind.TransactOpts, error) {
-	gasPrice, err := EthHttpsClient.SuggestGasPrice(context.Background())
-	if err != nil {
-		return nil, err
-	}
-	auth, err := bind.NewKeyedTransactorWithChainID(privateKey, big.NewInt(1)) // bind.NewKeyedTransactor(privateKey)
-	if err != nil {
-		return nil, err
-	}
-	auth.Value = big.NewInt(0)     // in wei
-	auth.GasLimit = uint64(300000) // in units
-	auth.GasPrice = gasPrice
-	return auth, nil
-}
-
 func StartExplosiveReCheck() {
 	ServiceWaitGroup.Add(1)
 	defer ServiceWaitGroup.Done()
@@ -103,8 +88,8 @@ func StartExplosiveReCheck() {
 		select {
 		case <-timer.C:
 			go func() {
-				for _, contract := range config.Contract.Pair {
-					explosivedAccounts[contract].check(contract)
+				for _, contract := range config.Contract {
+					explosivedAccounts[contract.Address].check(contract.Address)
 				}
 			}()
 		case <-QuitExplosiveReCheck:

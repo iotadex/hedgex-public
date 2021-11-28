@@ -37,20 +37,20 @@ var (
 func init() {
 	var err error
 
-	EthHttpsClient, err = ethclient.Dial(config.Contract.Https)
+	EthHttpsClient, err = ethclient.Dial(config.ChainNode.Https)
 	if err != nil {
 		log.Panic(err)
 	}
 
 	Contracts = make(map[string]*hedgex.Hedgex)
-	for i := range config.Contract.Pair {
-		Contracts[config.Contract.Pair[i]], err = hedgex.NewHedgex(common.HexToAddress(config.Contract.Pair[i]), EthHttpsClient)
+	for i := range config.Contract {
+		Contracts[config.Contract[i].Address], err = hedgex.NewHedgex(common.HexToAddress(config.Contract[i].Address), EthHttpsClient)
 		if err != nil {
 			log.Panic(err)
 		}
 	}
 
-	EthWssClient, err = ethclient.Dial(config.Contract.Wss)
+	EthWssClient, err = ethclient.Dial(config.ChainNode.Wss)
 	if err != nil {
 		log.Panic(err)
 	}

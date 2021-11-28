@@ -64,11 +64,10 @@ func (skd *SafeKlineData) Append(klineType string, currentData [5]int64) {
 func init() {
 	KlineTypes = []string{"m1", "m5", "m10", "m15", "m30", "h1", "h2", "h4", "h6", "h12", "d1"}
 	CurrentKlineDatas = make(map[string]*SafeKlineData)
-	for _, contract := range config.Contract.Pair {
-		klineSafeData := &SafeKlineData{
+	for _, contract := range config.Contract {
+		CurrentKlineDatas[contract.Address] = &SafeKlineData{
 			Data: make(map[string][][5]int64),
 		}
-		CurrentKlineDatas[contract] = klineSafeData
 	}
 	KlineTimeCount = make(map[string]int64)
 	KlineTimeCount["m1"] = 60

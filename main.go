@@ -1,7 +1,10 @@
 package main
 
 import (
+	"context"
+	"hedgex-server/config"
 	"hedgex-server/gl"
+	"hedgex-server/host"
 	"hedgex-server/service"
 	"io/ioutil"
 	"os"
@@ -13,7 +16,16 @@ import (
 func main() {
 	service.Start()
 
+	if config.Service == 0 {
+		//start host server
+		go host.StartHttpServer()
+	}
+
 	waitForKill()
+
+	if gl.HttpServer != nil {
+		gl.HttpServer.Shutdown(context.Background())
+	}
 
 	service.Stop()
 

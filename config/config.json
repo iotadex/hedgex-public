@@ -15,11 +15,32 @@
 		"usr": "root",
 		"pwd": "851012"
 	},
-	"contract":{
-		"pair":["0xB21ceaec9B2259F28e839c87F8AeE35f835F3C7D","0xB6D0FBe198bf48c7E7dad8b457994a0dBac795Ef"],
+	"chain_node":{
 		"http":"https://rinkeby.infura.io/v3/f253d838bc36430cb6c762cfda19ecaa",
 		"ws":"wss://rinkeby.infura.io/ws/v3/f253d838bc36430cb6c762cfda19ecaa"
 	},
+	"contract":[{
+			"address":"0xB6A649b6F640Ccf129ecc76288c73cEF3023C0eE",
+			"margin_coin":"usdt",
+			"trade_coin":"eth"
+		},
+		{
+			"address":"0xb605eEebBcE1B602f88cdba8147883186CccedC1",
+			"margin_coin":"usdt",
+			"trade_coin":"bnb"
+		},
+		{
+			"address":"0x7a42eA6d606aa0f52A873F6CD5383De73C1bB1c4",
+			"margin_coin":"usdt",
+			"trade_coin":"bnb25"
+		}
+	],
 	"explosive_tick":10,
-	"wallet":"44598da06b23f88e1b47b986c157b3b5edcc93a4a80abfcdf29aeb0b78510ee93fe62050c9d3d7f22b2ad743919d25e30c8397a5da64a5a82b57f9fcfeb22dd7fcebdb4fd3b0301aa3c6cdcf8fa66eae"
+	"wallet":"44598da06b23f88e1b47b986c157b3b5edcc93a4a80abfcdf29aeb0b78510ee93fe62050c9d3d7f22b2ad743919d25e30c8397a5da64a5a82b57f9fcfeb22dd7fcebdb4fd3b0301aa3c6cdcf8fa66eae",
+	"testcoin":{
+		"count":3,
+		"coin_amount":"10000000000000000",
+		"token":"0x1660854c03b461E6BC07f94567D1D6E6bF99a1A9",
+		"token_amount":"10000000000"
+	}
 }

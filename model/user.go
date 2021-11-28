@@ -2,6 +2,7 @@ package model
 
 import (
 	"database/sql"
+	"errors"
 	"hedgex-server/gl"
 )
 
@@ -124,5 +125,24 @@ func InsertExplosive(tx string, contract string, account string, direction int8,
 // InsertTrade insert a trade record
 func InsertInterest(tx string, contract string, account string, direction int8, amount uint64, price uint64, block uint64) error {
 	_, err := gl.DB.Exec("insert into interest(tx,contract,account,amount,price,block) values(?,?,?,?,?,?,?)", tx, contract, account, direction, amount, price, block)
+	return err
+}
+
+func UpdateTestCoin(account string) error {
+	row, err := gl.DB.Query("select count from testcoin where account=?", account)
+	if err != nil {
+		return err
+	}
+	var count int
+	if row.Next() {
+		if err = row.Scan(&count); err != nil {
+			return err
+		}
+	}
+	if count >= 3 {
+		return errors.New("over the number for getting test coins")
+	}
+	count++
+	_, err = gl.DB.Exec("replace into testcoin(account,count) values(?,?)", account, count)
 	return err
 }

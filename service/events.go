@@ -42,7 +42,7 @@ StartFilter:
 			gl.OutLogger.Error("Evnet wss sub error. %v", err)
 			gl.OutLogger.Warn("The EthWssClient will be redialed...")
 			time.Sleep(time.Second * 10)
-			EthWssClient, err = ethclient.Dial(config.Contract.Wss)
+			EthWssClient, err = ethclient.Dial(config.ChainNode.Wss)
 			if err != nil {
 				gl.OutLogger.Warn("The EthWssClient redial error. %v", err)
 				continue
@@ -111,7 +111,7 @@ func dealEventLog(contract string, vLog *types.Log) {
 			direction := data[0].(int8)
 			amount := data[1].(*big.Int).Uint64()
 			price := data[2].(*big.Int).Uint64()
-			err = model.InsertTrade(tx, contract, account, direction, amount, price, block)
+			err = model.InsertExplosive(tx, contract, account, direction, amount, price, block)
 			updateUser(contract, account, block)
 		case TakeInterestEvent:
 			direction := data[0].(int8)
@@ -144,6 +144,9 @@ func updateUser(contract string, account string, block uint64) {
 	if err := model.UpdateUser(contract, user); err != nil {
 		gl.OutLogger.Error("Update account's data in database error. %s", err.Error())
 	}
-	//update the explosive list
-	expUserList[contract].Update(&user)
+
+	if config.Service == 1 {
+		//update the explosive list
+		expUserList[contract].Update(&user)
+	}
 }

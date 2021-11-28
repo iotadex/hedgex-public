@@ -30,7 +30,7 @@ var (
 
 // HedgexMetaData contains all meta data concerning the Hedgex contract.
 var HedgexMetaData = &bind.MetaData{
-	ABI: "[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_token0\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_feedPrice\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_feedPriceDecimal\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_minStartPool\",\"type\":\"uint256\"},{\"internalType\":\"uint8\",\"name\":\"_leverage\",\"type\":\"uint8\"},{\"internalType\":\"int8\",\"name\":\"_amountDecimal\",\"type\":\"int8\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"spender\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"}],\"name\":\"Approval\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"Burn\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"user\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"int8\",\"name\":\"direction\",\"type\":\"int8\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"price\",\"type\":\"uint256\"}],\"name\":\"Explosive\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"Mint\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"Recharge\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"user\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"int8\",\"name\":\"direction\",\"type\":\"int8\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"price\",\"type\":\"uint256\"}],\"name\":\"TakeInterest\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"int8\",\"name\":\"direction\",\"type\":\"int8\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"price\",\"type\":\"uint256\"}],\"name\":\"Trade\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"}],\"name\":\"Transfer\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"Withdraw\",\"type\":\"event\"},{\"inputs\":[],\"name\":\"DOMAIN_SEPARATOR\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"PERMIT_TYPEHASH\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"}],\"name\":\"addLiquidity\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"name\":\"allowance\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"amountDecimal\",\"outputs\":[{\"internalType\":\"int8\",\"name\":\"\",\"type\":\"int8\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"spender\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"}],\"name\":\"approve\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"name\":\"balanceOf\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"priceExp\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"closeLong\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"priceExp\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"closeShort\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"dailyInterestRateBase\",\"outputs\":[{\"internalType\":\"uint16\",\"name\":\"\",\"type\":\"uint16\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"decimals\",\"outputs\":[{\"internalType\":\"uint8\",\"name\":\"\",\"type\":\"uint8\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"detectSlide\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"divConst\",\"outputs\":[{\"internalType\":\"uint24\",\"name\":\"\",\"type\":\"uint24\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"explosive\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"feeDivide\",\"outputs\":[{\"internalType\":\"uint24\",\"name\":\"\",\"type\":\"uint24\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"feeOn\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"feeRate\",\"outputs\":[{\"internalType\":\"uint16\",\"name\":\"\",\"type\":\"uint16\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"feedPrice\",\"outputs\":[{\"internalType\":\"contractAggregatorV3Interface\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"feedPriceDecimal\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getLatestPrice\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getPoolNet\",\"outputs\":[{\"internalType\":\"int256\",\"name\":\"\",\"type\":\"int256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_token0\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_feedPrice\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_feedPriceDecimal\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_minStartPool\",\"type\":\"uint256\"},{\"internalType\":\"uint8\",\"name\":\"_leverage\",\"type\":\"uint8\"},{\"internalType\":\"int8\",\"name\":\"_amountDecimal\",\"type\":\"int8\"}],\"name\":\"initialize\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"interestRewardRate\",\"outputs\":[{\"internalType\":\"uint24\",\"name\":\"\",\"type\":\"uint24\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"isStart\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"leverage\",\"outputs\":[{\"internalType\":\"uint8\",\"name\":\"\",\"type\":\"uint8\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"minPool\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"name\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"name\":\"nonces\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"priceExp\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"rechargeAmount\",\"type\":\"uint256\"}],\"name\":\"openLong\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"priceExp\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"rechargeAmount\",\"type\":\"uint256\"}],\"name\":\"openShort\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"spender\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"deadline\",\"type\":\"uint256\"},{\"internalType\":\"uint8\",\"name\":\"v\",\"type\":\"uint8\"},{\"internalType\":\"bytes32\",\"name\":\"r\",\"type\":\"bytes32\"},{\"internalType\":\"bytes32\",\"name\":\"s\",\"type\":\"bytes32\"}],\"name\":\"permit\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"poolLongAmount\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"poolLongPrice\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"poolShortAmount\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"poolShortPrice\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"rechargeMargin\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"liquidity\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"}],\"name\":\"removeLiquidity\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"singleTradeLimitRate\",\"outputs\":[{\"internalType\":\"uint16\",\"name\":\"\",\"type\":\"uint16\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"slideP\",\"outputs\":[{\"internalType\":\"uint8\",\"name\":\"\",\"type\":\"uint8\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"sumFee\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"symbol\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"token0\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"token0Decimal\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"totalPool\",\"outputs\":[{\"internalType\":\"int256\",\"name\":\"\",\"type\":\"int256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"totalSupply\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"name\":\"traders\",\"outputs\":[{\"internalType\":\"int256\",\"name\":\"margin\",\"type\":\"int256\"},{\"internalType\":\"uint256\",\"name\":\"longAmount\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"longPrice\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"shortAmount\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"shortPrice\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"}],\"name\":\"transfer\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"}],\"name\":\"transferFrom\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"withdrawMargin\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]",
+	ABI: "[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_token0\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_feedPrice\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_feedPriceDecimal\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_minStartPool\",\"type\":\"uint256\"},{\"internalType\":\"uint8\",\"name\":\"_leverage\",\"type\":\"uint8\"},{\"internalType\":\"int8\",\"name\":\"_amountDecimal\",\"type\":\"int8\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"spender\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"}],\"name\":\"Approval\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"Burn\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"user\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"int8\",\"name\":\"direction\",\"type\":\"int8\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"price\",\"type\":\"uint256\"}],\"name\":\"Explosive\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"long\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"short\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"price\",\"type\":\"uint256\"}],\"name\":\"ForceClose\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"Mint\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"Recharge\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"user\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"int8\",\"name\":\"direction\",\"type\":\"int8\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"price\",\"type\":\"uint256\"}],\"name\":\"TakeInterest\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"int8\",\"name\":\"direction\",\"type\":\"int8\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"price\",\"type\":\"uint256\"}],\"name\":\"Trade\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"}],\"name\":\"Transfer\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"sender\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"Withdraw\",\"type\":\"event\"},{\"inputs\":[],\"name\":\"DOMAIN_SEPARATOR\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"PERMIT_TYPEHASH\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"}],\"name\":\"addLiquidity\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"name\":\"allowance\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"amountDecimal\",\"outputs\":[{\"internalType\":\"int8\",\"name\":\"\",\"type\":\"int8\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"spender\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"}],\"name\":\"approve\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"name\":\"balanceOf\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"priceExp\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"deadline\",\"type\":\"uint256\"}],\"name\":\"closeLong\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"priceExp\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"deadline\",\"type\":\"uint256\"}],\"name\":\"closeShort\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"dailyInterestRateBase\",\"outputs\":[{\"internalType\":\"uint16\",\"name\":\"\",\"type\":\"uint16\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"decimals\",\"outputs\":[{\"internalType\":\"uint8\",\"name\":\"\",\"type\":\"uint8\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"detectSlide\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"divConst\",\"outputs\":[{\"internalType\":\"uint24\",\"name\":\"\",\"type\":\"uint24\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"explosive\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"explosivePool\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"feeDivide\",\"outputs\":[{\"internalType\":\"uint24\",\"name\":\"\",\"type\":\"uint24\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"feeOn\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"feeRate\",\"outputs\":[{\"internalType\":\"uint16\",\"name\":\"\",\"type\":\"uint16\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"feedPrice\",\"outputs\":[{\"internalType\":\"contractAggregatorV3Interface\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"feedPriceDecimal\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"foceCloseRewardGas\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"account\",\"type\":\"address\"}],\"name\":\"forceCloseAccount\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"gasUsdPriceFeed\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getGasUsdPrice\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getLatestPrice\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getPoolNet\",\"outputs\":[{\"internalType\":\"int256\",\"name\":\"\",\"type\":\"int256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_token0\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_feedPrice\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_feedPriceDecimal\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_minStartPool\",\"type\":\"uint256\"},{\"internalType\":\"uint8\",\"name\":\"_leverage\",\"type\":\"uint8\"},{\"internalType\":\"int8\",\"name\":\"_amountDecimal\",\"type\":\"int8\"}],\"name\":\"initialize\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"interestRewardRate\",\"outputs\":[{\"internalType\":\"uint24\",\"name\":\"\",\"type\":\"uint24\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"isStart\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"leverage\",\"outputs\":[{\"internalType\":\"uint8\",\"name\":\"\",\"type\":\"uint8\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"minPool\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"name\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"name\":\"nonces\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"priceExp\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"deadline\",\"type\":\"uint256\"}],\"name\":\"openLong\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"priceExp\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"deadline\",\"type\":\"uint256\"}],\"name\":\"openShort\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"spender\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"deadline\",\"type\":\"uint256\"},{\"internalType\":\"uint8\",\"name\":\"v\",\"type\":\"uint8\"},{\"internalType\":\"bytes32\",\"name\":\"r\",\"type\":\"bytes32\"},{\"internalType\":\"bytes32\",\"name\":\"s\",\"type\":\"bytes32\"}],\"name\":\"permit\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"poolExplosivePrice\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"poolLeftAmountRate\",\"outputs\":[{\"internalType\":\"uint24\",\"name\":\"\",\"type\":\"uint24\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"poolLongAmount\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"poolLongPrice\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"poolNetAmountRateLimitOpen\",\"outputs\":[{\"internalType\":\"int24\",\"name\":\"\",\"type\":\"int24\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"poolNetAmountRateLimitPrice\",\"outputs\":[{\"internalType\":\"int24\",\"name\":\"\",\"type\":\"int24\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"poolShortAmount\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"poolShortPrice\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"poolState\",\"outputs\":[{\"internalType\":\"uint8\",\"name\":\"\",\"type\":\"uint8\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"rechargeMargin\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"liquidity\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"}],\"name\":\"removeLiquidity\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"singleCloseLimitRate\",\"outputs\":[{\"internalType\":\"uint24\",\"name\":\"\",\"type\":\"uint24\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"singleOpenLimitRate\",\"outputs\":[{\"internalType\":\"uint16\",\"name\":\"\",\"type\":\"uint16\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"slideP\",\"outputs\":[{\"internalType\":\"uint8\",\"name\":\"\",\"type\":\"uint8\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"sumFee\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"symbol\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"token0\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"token0Decimal\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"totalPool\",\"outputs\":[{\"internalType\":\"int256\",\"name\":\"\",\"type\":\"int256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"totalSupply\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"name\":\"traders\",\"outputs\":[{\"internalType\":\"int256\",\"name\":\"margin\",\"type\":\"int256\"},{\"internalType\":\"uint256\",\"name\":\"longAmount\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"longPrice\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"shortAmount\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"shortPrice\",\"type\":\"uint256\"},{\"internalType\":\"uint32\",\"name\":\"interestDay\",\"type\":\"uint32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"}],\"name\":\"transfer\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"value\",\"type\":\"uint256\"}],\"name\":\"transferFrom\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"withdrawMargin\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}]",
 }
 
 // HedgexABI is the input ABI used to generate the binding from.
@@ -582,6 +582,99 @@ func (_Hedgex *HedgexCallerSession) FeedPriceDecimal() (*big.Int, error) {
 	return _Hedgex.Contract.FeedPriceDecimal(&_Hedgex.CallOpts)
 }
 
+// FoceCloseRewardGas is a free data retrieval call binding the contract method 0x3d5f8e7a.
+//
+// Solidity: function foceCloseRewardGas() view returns(uint256)
+func (_Hedgex *HedgexCaller) FoceCloseRewardGas(opts *bind.CallOpts) (*big.Int, error) {
+	var out []interface{}
+	err := _Hedgex.contract.Call(opts, &out, "foceCloseRewardGas")
+
+	if err != nil {
+		return *new(*big.Int), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new(*big.Int)).(**big.Int)
+
+	return out0, err
+
+}
+
+// FoceCloseRewardGas is a free data retrieval call binding the contract method 0x3d5f8e7a.
+//
+// Solidity: function foceCloseRewardGas() view returns(uint256)
+func (_Hedgex *HedgexSession) FoceCloseRewardGas() (*big.Int, error) {
+	return _Hedgex.Contract.FoceCloseRewardGas(&_Hedgex.CallOpts)
+}
+
+// FoceCloseRewardGas is a free data retrieval call binding the contract method 0x3d5f8e7a.
+//
+// Solidity: function foceCloseRewardGas() view returns(uint256)
+func (_Hedgex *HedgexCallerSession) FoceCloseRewardGas() (*big.Int, error) {
+	return _Hedgex.Contract.FoceCloseRewardGas(&_Hedgex.CallOpts)
+}
+
+// GasUsdPriceFeed is a free data retrieval call binding the contract method 0x6afb3760.
+//
+// Solidity: function gasUsdPriceFeed() view returns(address)
+func (_Hedgex *HedgexCaller) GasUsdPriceFeed(opts *bind.CallOpts) (common.Address, error) {
+	var out []interface{}
+	err := _Hedgex.contract.Call(opts, &out, "gasUsdPriceFeed")
+
+	if err != nil {
+		return *new(common.Address), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new(common.Address)).(*common.Address)
+
+	return out0, err
+
+}
+
+// GasUsdPriceFeed is a free data retrieval call binding the contract method 0x6afb3760.
+//
+// Solidity: function gasUsdPriceFeed() view returns(address)
+func (_Hedgex *HedgexSession) GasUsdPriceFeed() (common.Address, error) {
+	return _Hedgex.Contract.GasUsdPriceFeed(&_Hedgex.CallOpts)
+}
+
+// GasUsdPriceFeed is a free data retrieval call binding the contract method 0x6afb3760.
+//
+// Solidity: function gasUsdPriceFeed() view returns(address)
+func (_Hedgex *HedgexCallerSession) GasUsdPriceFeed() (common.Address, error) {
+	return _Hedgex.Contract.GasUsdPriceFeed(&_Hedgex.CallOpts)
+}
+
+// GetGasUsdPrice is a free data retrieval call binding the contract method 0x8ed3896c.
+//
+// Solidity: function getGasUsdPrice() view returns(uint256)
+func (_Hedgex *HedgexCaller) GetGasUsdPrice(opts *bind.CallOpts) (*big.Int, error) {
+	var out []interface{}
+	err := _Hedgex.contract.Call(opts, &out, "getGasUsdPrice")
+
+	if err != nil {
+		return *new(*big.Int), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new(*big.Int)).(**big.Int)
+
+	return out0, err
+
+}
+
+// GetGasUsdPrice is a free data retrieval call binding the contract method 0x8ed3896c.
+//
+// Solidity: function getGasUsdPrice() view returns(uint256)
+func (_Hedgex *HedgexSession) GetGasUsdPrice() (*big.Int, error) {
+	return _Hedgex.Contract.GetGasUsdPrice(&_Hedgex.CallOpts)
+}
+
+// GetGasUsdPrice is a free data retrieval call binding the contract method 0x8ed3896c.
+//
+// Solidity: function getGasUsdPrice() view returns(uint256)
+func (_Hedgex *HedgexCallerSession) GetGasUsdPrice() (*big.Int, error) {
+	return _Hedgex.Contract.GetGasUsdPrice(&_Hedgex.CallOpts)
+}
+
 // GetLatestPrice is a free data retrieval call binding the contract method 0x8e15f473.
 //
 // Solidity: function getLatestPrice() view returns(uint256)
@@ -830,6 +923,68 @@ func (_Hedgex *HedgexCallerSession) Nonces(arg0 common.Address) (*big.Int, error
 	return _Hedgex.Contract.Nonces(&_Hedgex.CallOpts, arg0)
 }
 
+// PoolExplosivePrice is a free data retrieval call binding the contract method 0x33d6f1f7.
+//
+// Solidity: function poolExplosivePrice() view returns(uint256)
+func (_Hedgex *HedgexCaller) PoolExplosivePrice(opts *bind.CallOpts) (*big.Int, error) {
+	var out []interface{}
+	err := _Hedgex.contract.Call(opts, &out, "poolExplosivePrice")
+
+	if err != nil {
+		return *new(*big.Int), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new(*big.Int)).(**big.Int)
+
+	return out0, err
+
+}
+
+// PoolExplosivePrice is a free data retrieval call binding the contract method 0x33d6f1f7.
+//
+// Solidity: function poolExplosivePrice() view returns(uint256)
+func (_Hedgex *HedgexSession) PoolExplosivePrice() (*big.Int, error) {
+	return _Hedgex.Contract.PoolExplosivePrice(&_Hedgex.CallOpts)
+}
+
+// PoolExplosivePrice is a free data retrieval call binding the contract method 0x33d6f1f7.
+//
+// Solidity: function poolExplosivePrice() view returns(uint256)
+func (_Hedgex *HedgexCallerSession) PoolExplosivePrice() (*big.Int, error) {
+	return _Hedgex.Contract.PoolExplosivePrice(&_Hedgex.CallOpts)
+}
+
+// PoolLeftAmountRate is a free data retrieval call binding the contract method 0xce8ad1d2.
+//
+// Solidity: function poolLeftAmountRate() view returns(uint24)
+func (_Hedgex *HedgexCaller) PoolLeftAmountRate(opts *bind.CallOpts) (*big.Int, error) {
+	var out []interface{}
+	err := _Hedgex.contract.Call(opts, &out, "poolLeftAmountRate")
+
+	if err != nil {
+		return *new(*big.Int), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new(*big.Int)).(**big.Int)
+
+	return out0, err
+
+}
+
+// PoolLeftAmountRate is a free data retrieval call binding the contract method 0xce8ad1d2.
+//
+// Solidity: function poolLeftAmountRate() view returns(uint24)
+func (_Hedgex *HedgexSession) PoolLeftAmountRate() (*big.Int, error) {
+	return _Hedgex.Contract.PoolLeftAmountRate(&_Hedgex.CallOpts)
+}
+
+// PoolLeftAmountRate is a free data retrieval call binding the contract method 0xce8ad1d2.
+//
+// Solidity: function poolLeftAmountRate() view returns(uint24)
+func (_Hedgex *HedgexCallerSession) PoolLeftAmountRate() (*big.Int, error) {
+	return _Hedgex.Contract.PoolLeftAmountRate(&_Hedgex.CallOpts)
+}
+
 // PoolLongAmount is a free data retrieval call binding the contract method 0xe5984319.
 //
 // Solidity: function poolLongAmount() view returns(uint256)
@@ -890,6 +1045,68 @@ func (_Hedgex *HedgexSession) PoolLongPrice() (*big.Int, error) {
 // Solidity: function poolLongPrice() view returns(uint256)
 func (_Hedgex *HedgexCallerSession) PoolLongPrice() (*big.Int, error) {
 	return _Hedgex.Contract.PoolLongPrice(&_Hedgex.CallOpts)
+}
+
+// PoolNetAmountRateLimitOpen is a free data retrieval call binding the contract method 0xcd8bb6cd.
+//
+// Solidity: function poolNetAmountRateLimitOpen() view returns(int24)
+func (_Hedgex *HedgexCaller) PoolNetAmountRateLimitOpen(opts *bind.CallOpts) (*big.Int, error) {
+	var out []interface{}
+	err := _Hedgex.contract.Call(opts, &out, "poolNetAmountRateLimitOpen")
+
+	if err != nil {
+		return *new(*big.Int), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new(*big.Int)).(**big.Int)
+
+	return out0, err
+
+}
+
+// PoolNetAmountRateLimitOpen is a free data retrieval call binding the contract method 0xcd8bb6cd.
+//
+// Solidity: function poolNetAmountRateLimitOpen() view returns(int24)
+func (_Hedgex *HedgexSession) PoolNetAmountRateLimitOpen() (*big.Int, error) {
+	return _Hedgex.Contract.PoolNetAmountRateLimitOpen(&_Hedgex.CallOpts)
+}
+
+// PoolNetAmountRateLimitOpen is a free data retrieval call binding the contract method 0xcd8bb6cd.
+//
+// Solidity: function poolNetAmountRateLimitOpen() view returns(int24)
+func (_Hedgex *HedgexCallerSession) PoolNetAmountRateLimitOpen() (*big.Int, error) {
+	return _Hedgex.Contract.PoolNetAmountRateLimitOpen(&_Hedgex.CallOpts)
+}
+
+// PoolNetAmountRateLimitPrice is a free data retrieval call binding the contract method 0x1cce9103.
+//
+// Solidity: function poolNetAmountRateLimitPrice() view returns(int24)
+func (_Hedgex *HedgexCaller) PoolNetAmountRateLimitPrice(opts *bind.CallOpts) (*big.Int, error) {
+	var out []interface{}
+	err := _Hedgex.contract.Call(opts, &out, "poolNetAmountRateLimitPrice")
+
+	if err != nil {
+		return *new(*big.Int), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new(*big.Int)).(**big.Int)
+
+	return out0, err
+
+}
+
+// PoolNetAmountRateLimitPrice is a free data retrieval call binding the contract method 0x1cce9103.
+//
+// Solidity: function poolNetAmountRateLimitPrice() view returns(int24)
+func (_Hedgex *HedgexSession) PoolNetAmountRateLimitPrice() (*big.Int, error) {
+	return _Hedgex.Contract.PoolNetAmountRateLimitPrice(&_Hedgex.CallOpts)
+}
+
+// PoolNetAmountRateLimitPrice is a free data retrieval call binding the contract method 0x1cce9103.
+//
+// Solidity: function poolNetAmountRateLimitPrice() view returns(int24)
+func (_Hedgex *HedgexCallerSession) PoolNetAmountRateLimitPrice() (*big.Int, error) {
+	return _Hedgex.Contract.PoolNetAmountRateLimitPrice(&_Hedgex.CallOpts)
 }
 
 // PoolShortAmount is a free data retrieval call binding the contract method 0x8e406892.
@@ -954,12 +1171,74 @@ func (_Hedgex *HedgexCallerSession) PoolShortPrice() (*big.Int, error) {
 	return _Hedgex.Contract.PoolShortPrice(&_Hedgex.CallOpts)
 }
 
-// SingleTradeLimitRate is a free data retrieval call binding the contract method 0x1865071d.
+// PoolState is a free data retrieval call binding the contract method 0x641ad8a9.
 //
-// Solidity: function singleTradeLimitRate() view returns(uint16)
-func (_Hedgex *HedgexCaller) SingleTradeLimitRate(opts *bind.CallOpts) (uint16, error) {
+// Solidity: function poolState() view returns(uint8)
+func (_Hedgex *HedgexCaller) PoolState(opts *bind.CallOpts) (uint8, error) {
 	var out []interface{}
-	err := _Hedgex.contract.Call(opts, &out, "singleTradeLimitRate")
+	err := _Hedgex.contract.Call(opts, &out, "poolState")
+
+	if err != nil {
+		return *new(uint8), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new(uint8)).(*uint8)
+
+	return out0, err
+
+}
+
+// PoolState is a free data retrieval call binding the contract method 0x641ad8a9.
+//
+// Solidity: function poolState() view returns(uint8)
+func (_Hedgex *HedgexSession) PoolState() (uint8, error) {
+	return _Hedgex.Contract.PoolState(&_Hedgex.CallOpts)
+}
+
+// PoolState is a free data retrieval call binding the contract method 0x641ad8a9.
+//
+// Solidity: function poolState() view returns(uint8)
+func (_Hedgex *HedgexCallerSession) PoolState() (uint8, error) {
+	return _Hedgex.Contract.PoolState(&_Hedgex.CallOpts)
+}
+
+// SingleCloseLimitRate is a free data retrieval call binding the contract method 0x7aaae950.
+//
+// Solidity: function singleCloseLimitRate() view returns(uint24)
+func (_Hedgex *HedgexCaller) SingleCloseLimitRate(opts *bind.CallOpts) (*big.Int, error) {
+	var out []interface{}
+	err := _Hedgex.contract.Call(opts, &out, "singleCloseLimitRate")
+
+	if err != nil {
+		return *new(*big.Int), err
+	}
+
+	out0 := *abi.ConvertType(out[0], new(*big.Int)).(**big.Int)
+
+	return out0, err
+
+}
+
+// SingleCloseLimitRate is a free data retrieval call binding the contract method 0x7aaae950.
+//
+// Solidity: function singleCloseLimitRate() view returns(uint24)
+func (_Hedgex *HedgexSession) SingleCloseLimitRate() (*big.Int, error) {
+	return _Hedgex.Contract.SingleCloseLimitRate(&_Hedgex.CallOpts)
+}
+
+// SingleCloseLimitRate is a free data retrieval call binding the contract method 0x7aaae950.
+//
+// Solidity: function singleCloseLimitRate() view returns(uint24)
+func (_Hedgex *HedgexCallerSession) SingleCloseLimitRate() (*big.Int, error) {
+	return _Hedgex.Contract.SingleCloseLimitRate(&_Hedgex.CallOpts)
+}
+
+// SingleOpenLimitRate is a free data retrieval call binding the contract method 0x5d0291ac.
+//
+// Solidity: function singleOpenLimitRate() view returns(uint16)
+func (_Hedgex *HedgexCaller) SingleOpenLimitRate(opts *bind.CallOpts) (uint16, error) {
+	var out []interface{}
+	err := _Hedgex.contract.Call(opts, &out, "singleOpenLimitRate")
 
 	if err != nil {
 		return *new(uint16), err
@@ -971,18 +1250,18 @@ func (_Hedgex *HedgexCaller) SingleTradeLimitRate(opts *bind.CallOpts) (uint16, 
 
 }
 
-// SingleTradeLimitRate is a free data retrieval call binding the contract method 0x1865071d.
+// SingleOpenLimitRate is a free data retrieval call binding the contract method 0x5d0291ac.
 //
-// Solidity: function singleTradeLimitRate() view returns(uint16)
-func (_Hedgex *HedgexSession) SingleTradeLimitRate() (uint16, error) {
-	return _Hedgex.Contract.SingleTradeLimitRate(&_Hedgex.CallOpts)
+// Solidity: function singleOpenLimitRate() view returns(uint16)
+func (_Hedgex *HedgexSession) SingleOpenLimitRate() (uint16, error) {
+	return _Hedgex.Contract.SingleOpenLimitRate(&_Hedgex.CallOpts)
 }
 
-// SingleTradeLimitRate is a free data retrieval call binding the contract method 0x1865071d.
+// SingleOpenLimitRate is a free data retrieval call binding the contract method 0x5d0291ac.
 //
-// Solidity: function singleTradeLimitRate() view returns(uint16)
-func (_Hedgex *HedgexCallerSession) SingleTradeLimitRate() (uint16, error) {
-	return _Hedgex.Contract.SingleTradeLimitRate(&_Hedgex.CallOpts)
+// Solidity: function singleOpenLimitRate() view returns(uint16)
+func (_Hedgex *HedgexCallerSession) SingleOpenLimitRate() (uint16, error) {
+	return _Hedgex.Contract.SingleOpenLimitRate(&_Hedgex.CallOpts)
 }
 
 // SlideP is a free data retrieval call binding the contract method 0x2c204fa8.
@@ -1204,13 +1483,14 @@ func (_Hedgex *HedgexCallerSession) TotalSupply() (*big.Int, error) {
 
 // Traders is a free data retrieval call binding the contract method 0x92a88fa2.
 //
-// Solidity: function traders(address ) view returns(int256 margin, uint256 longAmount, uint256 longPrice, uint256 shortAmount, uint256 shortPrice)
+// Solidity: function traders(address ) view returns(int256 margin, uint256 longAmount, uint256 longPrice, uint256 shortAmount, uint256 shortPrice, uint32 interestDay)
 func (_Hedgex *HedgexCaller) Traders(opts *bind.CallOpts, arg0 common.Address) (struct {
 	Margin      *big.Int
 	LongAmount  *big.Int
 	LongPrice   *big.Int
 	ShortAmount *big.Int
 	ShortPrice  *big.Int
+	InterestDay uint32
 }, error) {
 	var out []interface{}
 	err := _Hedgex.contract.Call(opts, &out, "traders", arg0)
@@ -1221,6 +1501,7 @@ func (_Hedgex *HedgexCaller) Traders(opts *bind.CallOpts, arg0 common.Address) (
 		LongPrice   *big.Int
 		ShortAmount *big.Int
 		ShortPrice  *big.Int
+		InterestDay uint32
 	})
 	if err != nil {
 		return *outstruct, err
@@ -1231,6 +1512,7 @@ func (_Hedgex *HedgexCaller) Traders(opts *bind.CallOpts, arg0 common.Address) (
 	outstruct.LongPrice = *abi.ConvertType(out[2], new(*big.Int)).(**big.Int)
 	outstruct.ShortAmount = *abi.ConvertType(out[3], new(*big.Int)).(**big.Int)
 	outstruct.ShortPrice = *abi.ConvertType(out[4], new(*big.Int)).(**big.Int)
+	outstruct.InterestDay = *abi.ConvertType(out[5], new(uint32)).(*uint32)
 
 	return *outstruct, err
 
@@ -1238,26 +1520,28 @@ func (_Hedgex *HedgexCaller) Traders(opts *bind.CallOpts, arg0 common.Address) (
 
 // Traders is a free data retrieval call binding the contract method 0x92a88fa2.
 //
-// Solidity: function traders(address ) view returns(int256 margin, uint256 longAmount, uint256 longPrice, uint256 shortAmount, uint256 shortPrice)
+// Solidity: function traders(address ) view returns(int256 margin, uint256 longAmount, uint256 longPrice, uint256 shortAmount, uint256 shortPrice, uint32 interestDay)
 func (_Hedgex *HedgexSession) Traders(arg0 common.Address) (struct {
 	Margin      *big.Int
 	LongAmount  *big.Int
 	LongPrice   *big.Int
 	ShortAmount *big.Int
 	ShortPrice  *big.Int
+	InterestDay uint32
 }, error) {
 	return _Hedgex.Contract.Traders(&_Hedgex.CallOpts, arg0)
 }
 
 // Traders is a free data retrieval call binding the contract method 0x92a88fa2.
 //
-// Solidity: function traders(address ) view returns(int256 margin, uint256 longAmount, uint256 longPrice, uint256 shortAmount, uint256 shortPrice)
+// Solidity: function traders(address ) view returns(int256 margin, uint256 longAmount, uint256 longPrice, uint256 shortAmount, uint256 shortPrice, uint32 interestDay)
 func (_Hedgex *HedgexCallerSession) Traders(arg0 common.Address) (struct {
 	Margin      *big.Int
 	LongAmount  *big.Int
 	LongPrice   *big.Int
 	ShortAmount *big.Int
 	ShortPrice  *big.Int
+	InterestDay uint32
 }, error) {
 	return _Hedgex.Contract.Traders(&_Hedgex.CallOpts, arg0)
 }
@@ -1304,46 +1588,46 @@ func (_Hedgex *HedgexTransactorSession) Approve(spender common.Address, value *b
 	return _Hedgex.Contract.Approve(&_Hedgex.TransactOpts, spender, value)
 }
 
-// CloseLong is a paid mutator transaction binding the contract method 0x416c5690.
+// CloseLong is a paid mutator transaction binding the contract method 0x90edbeb0.
 //
-// Solidity: function closeLong(uint256 priceExp, uint256 amount) returns()
-func (_Hedgex *HedgexTransactor) CloseLong(opts *bind.TransactOpts, priceExp *big.Int, amount *big.Int) (*types.Transaction, error) {
-	return _Hedgex.contract.Transact(opts, "closeLong", priceExp, amount)
+// Solidity: function closeLong(uint256 priceExp, uint256 amount, uint256 deadline) returns()
+func (_Hedgex *HedgexTransactor) CloseLong(opts *bind.TransactOpts, priceExp *big.Int, amount *big.Int, deadline *big.Int) (*types.Transaction, error) {
+	return _Hedgex.contract.Transact(opts, "closeLong", priceExp, amount, deadline)
 }
 
-// CloseLong is a paid mutator transaction binding the contract method 0x416c5690.
+// CloseLong is a paid mutator transaction binding the contract method 0x90edbeb0.
 //
-// Solidity: function closeLong(uint256 priceExp, uint256 amount) returns()
-func (_Hedgex *HedgexSession) CloseLong(priceExp *big.Int, amount *big.Int) (*types.Transaction, error) {
-	return _Hedgex.Contract.CloseLong(&_Hedgex.TransactOpts, priceExp, amount)
+// Solidity: function closeLong(uint256 priceExp, uint256 amount, uint256 deadline) returns()
+func (_Hedgex *HedgexSession) CloseLong(priceExp *big.Int, amount *big.Int, deadline *big.Int) (*types.Transaction, error) {
+	return _Hedgex.Contract.CloseLong(&_Hedgex.TransactOpts, priceExp, amount, deadline)
 }
 
-// CloseLong is a paid mutator transaction binding the contract method 0x416c5690.
+// CloseLong is a paid mutator transaction binding the contract method 0x90edbeb0.
 //
-// Solidity: function closeLong(uint256 priceExp, uint256 amount) returns()
-func (_Hedgex *HedgexTransactorSession) CloseLong(priceExp *big.Int, amount *big.Int) (*types.Transaction, error) {
-	return _Hedgex.Contract.CloseLong(&_Hedgex.TransactOpts, priceExp, amount)
+// Solidity: function closeLong(uint256 priceExp, uint256 amount, uint256 deadline) returns()
+func (_Hedgex *HedgexTransactorSession) CloseLong(priceExp *big.Int, amount *big.Int, deadline *big.Int) (*types.Transaction, error) {
+	return _Hedgex.Contract.CloseLong(&_Hedgex.TransactOpts, priceExp, amount, deadline)
 }
 
-// CloseShort is a paid mutator transaction binding the contract method 0xf69d91ae.
+// CloseShort is a paid mutator transaction binding the contract method 0x807ca353.
 //
-// Solidity: function closeShort(uint256 priceExp, uint256 amount) returns()
-func (_Hedgex *HedgexTransactor) CloseShort(opts *bind.TransactOpts, priceExp *big.Int, amount *big.Int) (*types.Transaction, error) {
-	return _Hedgex.contract.Transact(opts, "closeShort", priceExp, amount)
+// Solidity: function closeShort(uint256 priceExp, uint256 amount, uint256 deadline) returns()
+func (_Hedgex *HedgexTransactor) CloseShort(opts *bind.TransactOpts, priceExp *big.Int, amount *big.Int, deadline *big.Int) (*types.Transaction, error) {
+	return _Hedgex.contract.Transact(opts, "closeShort", priceExp, amount, deadline)
 }
 
-// CloseShort is a paid mutator transaction binding the contract method 0xf69d91ae.
+// CloseShort is a paid mutator transaction binding the contract method 0x807ca353.
 //
-// Solidity: function closeShort(uint256 priceExp, uint256 amount) returns()
-func (_Hedgex *HedgexSession) CloseShort(priceExp *big.Int, amount *big.Int) (*types.Transaction, error) {
-	return _Hedgex.Contract.CloseShort(&_Hedgex.TransactOpts, priceExp, amount)
+// Solidity: function closeShort(uint256 priceExp, uint256 amount, uint256 deadline) returns()
+func (_Hedgex *HedgexSession) CloseShort(priceExp *big.Int, amount *big.Int, deadline *big.Int) (*types.Transaction, error) {
+	return _Hedgex.Contract.CloseShort(&_Hedgex.TransactOpts, priceExp, amount, deadline)
 }
 
-// CloseShort is a paid mutator transaction binding the contract method 0xf69d91ae.
+// CloseShort is a paid mutator transaction binding the contract method 0x807ca353.
 //
-// Solidity: function closeShort(uint256 priceExp, uint256 amount) returns()
-func (_Hedgex *HedgexTransactorSession) CloseShort(priceExp *big.Int, amount *big.Int) (*types.Transaction, error) {
-	return _Hedgex.Contract.CloseShort(&_Hedgex.TransactOpts, priceExp, amount)
+// Solidity: function closeShort(uint256 priceExp, uint256 amount, uint256 deadline) returns()
+func (_Hedgex *HedgexTransactorSession) CloseShort(priceExp *big.Int, amount *big.Int, deadline *big.Int) (*types.Transaction, error) {
+	return _Hedgex.Contract.CloseShort(&_Hedgex.TransactOpts, priceExp, amount, deadline)
 }
 
 // DetectSlide is a paid mutator transaction binding the contract method 0x3d07bfb7.
@@ -1388,6 +1672,48 @@ func (_Hedgex *HedgexTransactorSession) Explosive(account common.Address) (*type
 	return _Hedgex.Contract.Explosive(&_Hedgex.TransactOpts, account)
 }
 
+// ExplosivePool is a paid mutator transaction binding the contract method 0x3e31fb45.
+//
+// Solidity: function explosivePool() returns()
+func (_Hedgex *HedgexTransactor) ExplosivePool(opts *bind.TransactOpts) (*types.Transaction, error) {
+	return _Hedgex.contract.Transact(opts, "explosivePool")
+}
+
+// ExplosivePool is a paid mutator transaction binding the contract method 0x3e31fb45.
+//
+// Solidity: function explosivePool() returns()
+func (_Hedgex *HedgexSession) ExplosivePool() (*types.Transaction, error) {
+	return _Hedgex.Contract.ExplosivePool(&_Hedgex.TransactOpts)
+}
+
+// ExplosivePool is a paid mutator transaction binding the contract method 0x3e31fb45.
+//
+// Solidity: function explosivePool() returns()
+func (_Hedgex *HedgexTransactorSession) ExplosivePool() (*types.Transaction, error) {
+	return _Hedgex.Contract.ExplosivePool(&_Hedgex.TransactOpts)
+}
+
+// ForceCloseAccount is a paid mutator transaction binding the contract method 0x93f8d812.
+//
+// Solidity: function forceCloseAccount(address account) returns()
+func (_Hedgex *HedgexTransactor) ForceCloseAccount(opts *bind.TransactOpts, account common.Address) (*types.Transaction, error) {
+	return _Hedgex.contract.Transact(opts, "forceCloseAccount", account)
+}
+
+// ForceCloseAccount is a paid mutator transaction binding the contract method 0x93f8d812.
+//
+// Solidity: function forceCloseAccount(address account) returns()
+func (_Hedgex *HedgexSession) ForceCloseAccount(account common.Address) (*types.Transaction, error) {
+	return _Hedgex.Contract.ForceCloseAccount(&_Hedgex.TransactOpts, account)
+}
+
+// ForceCloseAccount is a paid mutator transaction binding the contract method 0x93f8d812.
+//
+// Solidity: function forceCloseAccount(address account) returns()
+func (_Hedgex *HedgexTransactorSession) ForceCloseAccount(account common.Address) (*types.Transaction, error) {
+	return _Hedgex.Contract.ForceCloseAccount(&_Hedgex.TransactOpts, account)
+}
+
 // Initialize is a paid mutator transaction binding the contract method 0x251c073a.
 //
 // Solidity: function initialize(address _token0, address _feedPrice, uint256 _feedPriceDecimal, uint256 _minStartPool, uint8 _leverage, int8 _amountDecimal) returns()
@@ -1411,44 +1737,44 @@ func (_Hedgex *HedgexTransactorSession) Initialize(_token0 common.Address, _feed
 
 // OpenLong is a paid mutator transaction binding the contract method 0x6c2ee359.
 //
-// Solidity: function openLong(uint256 priceExp, uint256 amount, uint256 rechargeAmount) returns()
-func (_Hedgex *HedgexTransactor) OpenLong(opts *bind.TransactOpts, priceExp *big.Int, amount *big.Int, rechargeAmount *big.Int) (*types.Transaction, error) {
-	return _Hedgex.contract.Transact(opts, "openLong", priceExp, amount, rechargeAmount)
+// Solidity: function openLong(uint256 priceExp, uint256 amount, uint256 deadline) returns()
+func (_Hedgex *HedgexTransactor) OpenLong(opts *bind.TransactOpts, priceExp *big.Int, amount *big.Int, deadline *big.Int) (*types.Transaction, error) {
+	return _Hedgex.contract.Transact(opts, "openLong", priceExp, amount, deadline)
 }
 
 // OpenLong is a paid mutator transaction binding the contract method 0x6c2ee359.
 //
-// Solidity: function openLong(uint256 priceExp, uint256 amount, uint256 rechargeAmount) returns()
-func (_Hedgex *HedgexSession) OpenLong(priceExp *big.Int, amount *big.Int, rechargeAmount *big.Int) (*types.Transaction, error) {
-	return _Hedgex.Contract.OpenLong(&_Hedgex.TransactOpts, priceExp, amount, rechargeAmount)
+// Solidity: function openLong(uint256 priceExp, uint256 amount, uint256 deadline) returns()
+func (_Hedgex *HedgexSession) OpenLong(priceExp *big.Int, amount *big.Int, deadline *big.Int) (*types.Transaction, error) {
+	return _Hedgex.Contract.OpenLong(&_Hedgex.TransactOpts, priceExp, amount, deadline)
 }
 
 // OpenLong is a paid mutator transaction binding the contract method 0x6c2ee359.
 //
-// Solidity: function openLong(uint256 priceExp, uint256 amount, uint256 rechargeAmount) returns()
-func (_Hedgex *HedgexTransactorSession) OpenLong(priceExp *big.Int, amount *big.Int, rechargeAmount *big.Int) (*types.Transaction, error) {
-	return _Hedgex.Contract.OpenLong(&_Hedgex.TransactOpts, priceExp, amount, rechargeAmount)
+// Solidity: function openLong(uint256 priceExp, uint256 amount, uint256 deadline) returns()
+func (_Hedgex *HedgexTransactorSession) OpenLong(priceExp *big.Int, amount *big.Int, deadline *big.Int) (*types.Transaction, error) {
+	return _Hedgex.Contract.OpenLong(&_Hedgex.TransactOpts, priceExp, amount, deadline)
 }
 
 // OpenShort is a paid mutator transaction binding the contract method 0x71b31707.
 //
-// Solidity: function openShort(uint256 priceExp, uint256 amount, uint256 rechargeAmount) returns()
-func (_Hedgex *HedgexTransactor) OpenShort(opts *bind.TransactOpts, priceExp *big.Int, amount *big.Int, rechargeAmount *big.Int) (*types.Transaction, error) {
-	return _Hedgex.contract.Transact(opts, "openShort", priceExp, amount, rechargeAmount)
+// Solidity: function openShort(uint256 priceExp, uint256 amount, uint256 deadline) returns()
+func (_Hedgex *HedgexTransactor) OpenShort(opts *bind.TransactOpts, priceExp *big.Int, amount *big.Int, deadline *big.Int) (*types.Transaction, error) {
+	return _Hedgex.contract.Transact(opts, "openShort", priceExp, amount, deadline)
 }
 
 // OpenShort is a paid mutator transaction binding the contract method 0x71b31707.
 //
-// Solidity: function openShort(uint256 priceExp, uint256 amount, uint256 rechargeAmount) returns()
-func (_Hedgex *HedgexSession) OpenShort(priceExp *big.Int, amount *big.Int, rechargeAmount *big.Int) (*types.Transaction, error) {
-	return _Hedgex.Contract.OpenShort(&_Hedgex.TransactOpts, priceExp, amount, rechargeAmount)
+// Solidity: function openShort(uint256 priceExp, uint256 amount, uint256 deadline) returns()
+func (_Hedgex *HedgexSession) OpenShort(priceExp *big.Int, amount *big.Int, deadline *big.Int) (*types.Transaction, error) {
+	return _Hedgex.Contract.OpenShort(&_Hedgex.TransactOpts, priceExp, amount, deadline)
 }
 
 // OpenShort is a paid mutator transaction binding the contract method 0x71b31707.
 //
-// Solidity: function openShort(uint256 priceExp, uint256 amount, uint256 rechargeAmount) returns()
-func (_Hedgex *HedgexTransactorSession) OpenShort(priceExp *big.Int, amount *big.Int, rechargeAmount *big.Int) (*types.Transaction, error) {
-	return _Hedgex.Contract.OpenShort(&_Hedgex.TransactOpts, priceExp, amount, rechargeAmount)
+// Solidity: function openShort(uint256 priceExp, uint256 amount, uint256 deadline) returns()
+func (_Hedgex *HedgexTransactorSession) OpenShort(priceExp *big.Int, amount *big.Int, deadline *big.Int) (*types.Transaction, error) {
+	return _Hedgex.Contract.OpenShort(&_Hedgex.TransactOpts, priceExp, amount, deadline)
 }
 
 // Permit is a paid mutator transaction binding the contract method 0xd505accf.
@@ -2017,6 +2343,153 @@ func (_Hedgex *HedgexFilterer) WatchExplosive(opts *bind.WatchOpts, sink chan<- 
 func (_Hedgex *HedgexFilterer) ParseExplosive(log types.Log) (*HedgexExplosive, error) {
 	event := new(HedgexExplosive)
 	if err := _Hedgex.contract.UnpackLog(event, "Explosive", log); err != nil {
+		return nil, err
+	}
+	event.Raw = log
+	return event, nil
+}
+
+// HedgexForceCloseIterator is returned from FilterForceClose and is used to iterate over the raw logs and unpacked data for ForceClose events raised by the Hedgex contract.
+type HedgexForceCloseIterator struct {
+	Event *HedgexForceClose // Event containing the contract specifics and raw log
+
+	contract *bind.BoundContract // Generic contract to use for unpacking event data
+	event    string              // Event name to use for unpacking event data
+
+	logs chan types.Log        // Log channel receiving the found contract events
+	sub  ethereum.Subscription // Subscription for errors, completion and termination
+	done bool                  // Whether the subscription completed delivering logs
+	fail error                 // Occurred error to stop iteration
+}
+
+// Next advances the iterator to the subsequent event, returning whether there
+// are any more events found. In case of a retrieval or parsing error, false is
+// returned and Error() can be queried for the exact failure.
+func (it *HedgexForceCloseIterator) Next() bool {
+	// If the iterator failed, stop iterating
+	if it.fail != nil {
+		return false
+	}
+	// If the iterator completed, deliver directly whatever's available
+	if it.done {
+		select {
+		case log := <-it.logs:
+			it.Event = new(HedgexForceClose)
+			if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+				it.fail = err
+				return false
+			}
+			it.Event.Raw = log
+			return true
+
+		default:
+			return false
+		}
+	}
+	// Iterator still in progress, wait for either a data or an error event
+	select {
+	case log := <-it.logs:
+		it.Event = new(HedgexForceClose)
+		if err := it.contract.UnpackLog(it.Event, it.event, log); err != nil {
+			it.fail = err
+			return false
+		}
+		it.Event.Raw = log
+		return true
+
+	case err := <-it.sub.Err():
+		it.done = true
+		it.fail = err
+		return it.Next()
+	}
+}
+
+// Error returns any retrieval or parsing error occurred during filtering.
+func (it *HedgexForceCloseIterator) Error() error {
+	return it.fail
+}
+
+// Close terminates the iteration process, releasing any pending underlying
+// resources.
+func (it *HedgexForceCloseIterator) Close() error {
+	it.sub.Unsubscribe()
+	return nil
+}
+
+// HedgexForceClose represents a ForceClose event raised by the Hedgex contract.
+type HedgexForceClose struct {
+	Account common.Address
+	Long    *big.Int
+	Short   *big.Int
+	Price   *big.Int
+	Raw     types.Log // Blockchain specific contextual infos
+}
+
+// FilterForceClose is a free log retrieval operation binding the contract event 0xfca559ae7a3bea5c41671f27049d90b84fbf98be965e6d7f0259ee6e5caa980b.
+//
+// Solidity: event ForceClose(address indexed account, uint256 long, uint256 short, uint256 price)
+func (_Hedgex *HedgexFilterer) FilterForceClose(opts *bind.FilterOpts, account []common.Address) (*HedgexForceCloseIterator, error) {
+
+	var accountRule []interface{}
+	for _, accountItem := range account {
+		accountRule = append(accountRule, accountItem)
+	}
+
+	logs, sub, err := _Hedgex.contract.FilterLogs(opts, "ForceClose", accountRule)
+	if err != nil {
+		return nil, err
+	}
+	return &HedgexForceCloseIterator{contract: _Hedgex.contract, event: "ForceClose", logs: logs, sub: sub}, nil
+}
+
+// WatchForceClose is a free log subscription operation binding the contract event 0xfca559ae7a3bea5c41671f27049d90b84fbf98be965e6d7f0259ee6e5caa980b.
+//
+// Solidity: event ForceClose(address indexed account, uint256 long, uint256 short, uint256 price)
+func (_Hedgex *HedgexFilterer) WatchForceClose(opts *bind.WatchOpts, sink chan<- *HedgexForceClose, account []common.Address) (event.Subscription, error) {
+
+	var accountRule []interface{}
+	for _, accountItem := range account {
+		accountRule = append(accountRule, accountItem)
+	}
+
+	logs, sub, err := _Hedgex.contract.WatchLogs(opts, "ForceClose", accountRule)
+	if err != nil {
+		return nil, err
+	}
+	return event.NewSubscription(func(quit <-chan struct{}) error {
+		defer sub.Unsubscribe()
+		for {
+			select {
+			case log := <-logs:
+				// New log arrived, parse the event and forward to the user
+				event := new(HedgexForceClose)
+				if err := _Hedgex.contract.UnpackLog(event, "ForceClose", log); err != nil {
+					return err
+				}
+				event.Raw = log
+
+				select {
+				case sink <- event:
+				case err := <-sub.Err():
+					return err
+				case <-quit:
+					return nil
+				}
+			case err := <-sub.Err():
+				return err
+			case <-quit:
+				return nil
+			}
+		}
+	}), nil
+}
+
+// ParseForceClose is a log parse operation binding the contract event 0xfca559ae7a3bea5c41671f27049d90b84fbf98be965e6d7f0259ee6e5caa980b.
+//
+// Solidity: event ForceClose(address indexed account, uint256 long, uint256 short, uint256 price)
+func (_Hedgex *HedgexFilterer) ParseForceClose(log types.Log) (*HedgexForceClose, error) {
+	event := new(HedgexForceClose)
+	if err := _Hedgex.contract.UnpackLog(event, "ForceClose", log); err != nil {
 		return nil, err
 	}
 	event.Raw = log

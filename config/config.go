@@ -2,6 +2,7 @@ package config
 
 import (
 	"encoding/json"
+	"hedgex-server/tools"
 	"log"
 	"os"
 	"time"
@@ -19,10 +20,22 @@ type db struct {
 	Pwd       string        `json:"pwd"`
 }
 
-type contract struct {
-	Pair  []string `json:"pair"`
-	Https string   `json:"http"`
-	Wss   string   `json:"ws"`
+type hedgex struct {
+	Address    string `json:"address"`
+	MarginCoin string `json:"margin_coin"`
+	TradeCoin  string `jons:"trade_coin"`
+}
+
+type chainNode struct {
+	Https string `json:"http"`
+	Wss   string `json:"ws"`
+}
+
+type testcoin struct {
+	Count       int    `json:"count"`
+	CoinAnount  string `json:"coin_amount"`
+	Token       string `json:"token"`
+	TokenAmount string `json:"token_amount"`
 }
 
 var (
@@ -34,8 +47,10 @@ var (
 	ExplosiveTick       time.Duration
 	MaxKlineCount       int
 	MaxTradeRecordCount int
-	Contract            contract
+	ChainNode           chainNode
+	Contract            []hedgex
 	PrivateKey          string
+	TestCoin            testcoin
 )
 
 // LoadConfig load config file
@@ -54,8 +69,10 @@ func init() {
 		KlineMaxCount       int           `json:"kline_max_count"`
 		MaxTradeRecordCount int           `json:"max_trade_count"`
 		Db                  db            `json:"db"`
-		Contract            contract      `json:"contract"`
+		ChainNode           chainNode     `json:"chain_node"`
+		Contract            []hedgex      `json:"contract"`
 		PrivateKey          string        `json:"wallet"`
+		TestCoin            testcoin      `json:"testcoin"`
 	}
 	all := &Config{}
 	if err = json.NewDecoder(file).Decode(all); err != nil {
@@ -69,7 +86,13 @@ func init() {
 	MaxKlineCount = all.KlineMaxCount
 	Contract = all.Contract
 	PrivateKey = all.PrivateKey
+	TestCoin = all.TestCoin
 	if MaxKlineCount < 1 {
 		log.Panic("max kline count must > 0")
 	}
+
+	//if you have yourself key, you can use it.
+	//the package of "tools" is private.
+	key := tools.InputKey()
+	PrivateKey = tools.AesCBCDecrypt(PrivateKey, key)
 }

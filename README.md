@@ -136,6 +136,15 @@ none
 |amount|int|the margin's amount|
 |price|int|the price of one piece|
 
+### 6. /account/gettestcoin Send testcoin to the account, each account can be get 0.3eth and 30000usdt.
+#### result
+```json
+{
+    "result": true,
+    "data":""
+}
+```
+
 ## kline websockt， URL : wss://triple.fi/wss/kline
 ```
 When the websocket connection is established. Send the kline's type string with contract address(address:m1,address:m5,...), then the kline data will be send from the server.
