@@ -141,12 +141,14 @@ func updateUser(contract string, account string, block uint64) {
 		Sprice:    trader.ShortPrice.Uint64(),
 		Block:     block,
 	}
-	if err := model.UpdateUser(contract, user); err != nil {
+	if err := model.UpdateUser(contract, &user); err != nil {
 		gl.OutLogger.Error("Update account's data in database error. %s", err.Error())
 	}
 
 	if config.Service == 1 {
 		//update the explosive list
 		expUserList[contract].Update(&user)
+		//update the takeinterest list
+		interestUserList[contract].update(&user)
 	}
 }

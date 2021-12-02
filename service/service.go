@@ -10,6 +10,7 @@ var QuitKline chan int
 var QuitEvent map[string]chan int
 var QuitExplosiveDetect chan int
 var QuitExplosiveReCheck chan int
+var QuitInterestDetect chan int
 
 func init() {
 	QuitKline = make(chan int)

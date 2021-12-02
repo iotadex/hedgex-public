@@ -35,18 +35,19 @@ func GetLastBlock(contract string) (int64, error) {
 }
 
 type User struct {
-	Account   string
-	Margin    int64
-	Lposition uint64
-	Lprice    uint64
-	Sposition uint64
-	Sprice    uint64
-	Block     uint64
+	Account     string
+	Margin      int64
+	Lposition   uint64
+	Lprice      uint64
+	Sposition   uint64
+	Sprice      uint64
+	InterestDay uint
+	Block       uint64
 }
 
 //GetUsers get users
 func GetUsers(contract string) ([]User, uint64, error) {
-	rows, err := gl.DB.Query("SELECT account,margin,lposition,lprice,sposition,sprice,block FROM user where contract=" + "'" + contract + "'")
+	rows, err := gl.DB.Query("SELECT account,margin,lposition,lprice,sposition,sprice,interest_day,block FROM user where contract=" + "'" + contract + "'")
 	if err != nil {
 		return nil, 0, err
 	}
@@ -54,7 +55,7 @@ func GetUsers(contract string) ([]User, uint64, error) {
 	var maxBlock uint64
 	for rows.Next() {
 		u := User{}
-		err := rows.Scan(&u.Account, &u.Margin, &u.Lposition, &u.Lprice, &u.Sposition, &u.Sprice, &u.Block)
+		err := rows.Scan(&u.Account, &u.Margin, &u.Lposition, &u.Lprice, &u.Sposition, &u.Sprice, &u.InterestDay, &u.Block)
 		if err != nil {
 			return nil, 0, err
 		}
@@ -67,9 +68,9 @@ func GetUsers(contract string) ([]User, uint64, error) {
 }
 
 //UpdateUser update user's data
-func UpdateUser(contract string, user User) error {
-	_, err := gl.DB.Exec("replace into user(account,contract,margin,lposition,lprice,sposition,sprice,block) values(?,?,?,?,?,?,?,?) ",
-		user.Account, contract, user.Margin, user.Lposition, user.Lprice, user.Sposition, user.Sprice, user.Block)
+func UpdateUser(contract string, u *User) error {
+	_, err := gl.DB.Exec("replace into user(account,contract,margin,lposition,lprice,sposition,sprice,interest_day,block) values(?,?,?,?,?,?,?,?) ",
+		u.Account, contract, u.Margin, u.Lposition, u.Lprice, u.Sposition, u.Sprice, u.InterestDay, u.Block)
 	return err
 }
 

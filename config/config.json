@@ -20,22 +20,28 @@
 		"ws":"wss://rinkeby.infura.io/ws/v3/f253d838bc36430cb6c762cfda19ecaa"
 	},
 	"contract":[{
-			"address":"0xB6A649b6F640Ccf129ecc76288c73cEF3023C0eE",
+			"address":"0x9612cF1Aa37D645e846BC6Ce6fa0A7e04e1f0dcb",
 			"margin_coin":"usdt",
 			"trade_coin":"eth"
 		},
 		{
-			"address":"0xb605eEebBcE1B602f88cdba8147883186CccedC1",
+			"address":"0x3E1d117e7bDAC16eB21c7c8e30e7FDa8e02b1e83",
 			"margin_coin":"usdt",
 			"trade_coin":"bnb"
 		},
 		{
-			"address":"0x7a42eA6d606aa0f52A873F6CD5383De73C1bB1c4",
+			"address":"0x764953c5268c0125Ed6090801623932bfA4eEe0A",
 			"margin_coin":"usdt",
 			"trade_coin":"bnb25"
+		},
+		{
+			"address":"0xdFd2Be2885C7579EceBf3722D7eFF76D0123105C",
+			"margin_coin":"usdt",
+			"trade_coin":"bnb0"
 		}
 	],
 	"explosive_tick":10,
+	"interest_tick":10,
 	"explosive_to_address":"0x5717B3DadA9AA2E6bC2f402f74391ad5A95A2D86",
 	"wallet":"44598da06b23f88e1b47b986c157b3b5edcc93a4a80abfcdf29aeb0b78510ee93fe62050c9d3d7f22b2ad743919d25e30c8397a5da64a5a82b57f9fcfeb22dd7fcebdb4fd3b0301aa3c6cdcf8fa66eae",
 	"testcoin":{

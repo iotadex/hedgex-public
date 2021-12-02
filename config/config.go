@@ -45,6 +45,7 @@ var (
 	WsPort              int
 	WsTick              time.Duration
 	ExplosiveTick       time.Duration
+	InterestTick        time.Duration
 	ExplosiveTo         string
 	MaxKlineCount       int
 	MaxTradeRecordCount int
@@ -67,6 +68,7 @@ func init() {
 		WsPort              int           `json:"ws_port"`
 		WsTick              time.Duration `json:"ws_tick"`
 		ExplosiveTick       time.Duration `json:"explosive_tick"`
+		InterestTick        time.Duration `json:"interest_tick"`
 		ExplosiveTo         string        `json:"explosive_to_address"`
 		KlineMaxCount       int           `json:"kline_max_count"`
 		MaxTradeRecordCount int           `json:"max_trade_count"`
@@ -87,6 +89,7 @@ func init() {
 	WsTick = all.WsTick
 	MaxKlineCount = all.KlineMaxCount
 	ExplosiveTick = all.ExplosiveTick
+	InterestTick = all.InterestTick
 	ExplosiveTo = all.ExplosiveTo
 	ChainNode = all.ChainNode
 	Contract = all.Contract
