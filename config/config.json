@@ -40,14 +40,21 @@
 			"trade_coin":"bnb0"
 		}
 	],
-	"explosive_tick":10,
-	"interest_tick":10,
-	"explosive_to_address":"0x5717B3DadA9AA2E6bC2f402f74391ad5A95A2D86",
-	"wallet":"44598da06b23f88e1b47b986c157b3b5edcc93a4a80abfcdf29aeb0b78510ee93fe62050c9d3d7f22b2ad743919d25e30c8397a5da64a5a82b57f9fcfeb22dd7fcebdb4fd3b0301aa3c6cdcf8fa66eae",
+	"explosive":{
+		"tick":10,
+		"to_address":"0x5717B3DadA9AA2E6bC2f402f74391ad5A95A2D86"
+	},
+	"interest":{
+		"tick":10,
+		"begin":0,
+		"end":300,
+		"to_address":"0x5717B3DadA9AA2E6bC2f402f74391ad5A95A2D86"
+	},
+	"wallet":"76be1480f014ace5af03a7faff32e76b986e3d7e83048f4d1c539f6219d960cb67bac651b68795814fd846eb5b42cceb75eede5a4c1244d3a13a85085559fa6408f8a09dbe936816d3e2c0e284dddcf3",
 	"testcoin":{
 		"count":3,
 		"coin_amount":"100000000000000000",
-		"token":"0x1660854c03b461E6BC07f94567D1D6E6bF99a1A9",
+		"token":"0x02c03B55A087a0211E7dc0dEacef1584193df70B",
 		"token_amount":"10000000000"
 	}
 }

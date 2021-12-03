@@ -1,11 +1,17 @@
 package service
 
 import (
+	"context"
 	"hedgex-server/config"
+	"hedgex-server/contract/hedgex"
 	"hedgex-server/gl"
 	"hedgex-server/model"
+	"math/big"
 	"sync"
 	"time"
+
+	"github.com/ethereum/go-ethereum/accounts/abi/bind"
+	"github.com/ethereum/go-ethereum/common"
 )
 
 var interestUserList map[string]*TakeInterestList //current accounts waiting for be detected to explosive
@@ -21,52 +27,81 @@ func init() {
 
 //StartExplosiveDetectServer, no blocking function
 func StartTakeInterestServer() {
-	ServiceWaitGroup.Add(1)
-	defer ServiceWaitGroup.Done()
-	timer := time.NewTicker(config.InterestTick * time.Second)
 	for {
-		select {
-		case <-timer.C:
-			ts := time.Now().Unix()
-			if (ts - ts/86400*86400) > 300 {
-				continue
+		ts := time.Now().Unix()
+		dayCount := ts / 86400
+		offset := ts - dayCount*86400
+		if offset <= config.Interest.Begin || offset > config.Interest.End {
+			left := 86400 - offset
+			sleepTime := left / 2
+			if sleepTime < int64(config.Interest.Tick) {
+				sleepTime = int64(config.Interest.Tick)
 			}
-			auth, err := getAccountAuth()
-			if err != nil {
-				gl.OutLogger.Error("Get auth error. %v", err)
-				continue
-			}
-			for _, contract := range config.Contract {
-				//get the current price of contract
-				price, err := Contracts[contract.Address].GetLatestPrice(nil)
-				if err != nil {
-					gl.OutLogger.Error("Get price from contract error. ", err)
-					continue
-				}
-
-				node := expUserList[contract.Address].LHead.Next
-				for node != nil {
-					node = explosive(auth, contract.Address, node, price.Int64(), 1)
-				}
-				node = expUserList[contract.Address].SHead.Next
-				for node != nil {
-					node = explosive(auth, contract.Address, node, price.Int64(), -1)
-				}
-				time.Sleep(time.Second)
-			}
-		case <-QuitInterestDetect:
-			return
+			time.Sleep(time.Duration(sleepTime) * time.Second)
+			continue
 		}
+		auth, err := getAccountAuth()
+		if err != nil {
+			gl.OutLogger.Error("Get auth error. %v", err)
+			continue
+		}
+
+		ServiceWaitGroup.Add(1)
+		for _, contract := range config.Contract {
+			//get the pool's position
+			_lp, _, _sp, _, err := Contracts[contract.Address].GetPoolPosition(nil)
+			if err != nil {
+				gl.OutLogger.Error("Get account's position data from blockchain error. %s", err.Error())
+				continue
+			}
+			til := interestUserList[contract.Address]
+			var d int8 = 1
+			if _lp.Uint64() < _sp.Uint64() {
+				d = -1
+			}
+			l := til.getList(d)
+			for k, v := range l {
+				if v < uint(dayCount) {
+					if detectSlide(auth, Contracts[contract.Address], k) {
+						til.flag(d, k, uint(dayCount))
+					}
+				}
+			}
+		}
+		ServiceWaitGroup.Done()
 	}
 }
 
-func detectSlide() {
+func detectSlide(auth *bind.TransactOpts, contract *hedgex.Hedgex, account string) bool {
+	nonce, err := EthHttpsClient.PendingNonceAt(context.Background(), publicAddress)
+	if err != nil {
+		gl.OutLogger.Error("Take interest : Get nonce error address(%s). %v", publicAddress, err)
+		return false
+	}
+	auth.Nonce = big.NewInt(int64(nonce))
+	if _, err := contract.DetectSlide(auth, common.HexToAddress(account), common.HexToAddress(config.Interest.ToAddress)); err != nil {
+		gl.OutLogger.Error("Transaction with detect slide error. %v", err)
+		return false
+	}
+	return true
 }
 
 type TakeInterestList struct {
 	luser map[string]uint // long position user
 	suser map[string]uint // short position user
 	mu    sync.Mutex      //user's locker
+}
+
+func (til *TakeInterestList) flag(d int8, account string, day uint) {
+	til.mu.Lock()
+	m := til.luser
+	if d < 0 {
+		m = til.suser
+	}
+	if _, exist := m[account]; exist {
+		m[account] = day
+	}
+	til.mu.Unlock()
 }
 
 func (til *TakeInterestList) update(u *model.User) {
@@ -82,4 +117,18 @@ func (til *TakeInterestList) update(u *model.User) {
 		delete(til.suser, u.Account)
 	}
 	til.mu.Unlock()
+}
+
+func (til *TakeInterestList) getList(d int8) map[string]uint {
+	l := make(map[string]uint)
+	til.mu.Lock()
+	m := til.luser
+	if d < 0 {
+		m = til.suser
+	}
+	for k, v := range m {
+		l[k] = v
+	}
+	til.mu.Unlock()
+	return l
 }

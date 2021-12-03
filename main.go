@@ -24,5 +24,4 @@ func main() {
 		gl.HttpServer.Shutdown(context.Background())
 	}
 	service.Stop()
-	gl.OutLogger.Close()
 }

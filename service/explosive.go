@@ -28,7 +28,7 @@ func init() {
 func StartExplosiveDetectServer() {
 	ServiceWaitGroup.Add(1)
 	defer ServiceWaitGroup.Done()
-	timer := time.NewTicker(config.ExplosiveTick * time.Second)
+	timer := time.NewTicker(config.Explosive.Tick * time.Second)
 	for {
 		select {
 		case <-timer.C:
@@ -71,7 +71,7 @@ func explosive(auth *bind.TransactOpts, contract string, node *UserNode, price i
 		return nil
 	}
 	auth.Nonce = big.NewInt(int64(nonce))
-	if _, err := Contracts[contract].Explosive(auth, common.HexToAddress(node.Account), common.HexToAddress(config.ExplosiveTo)); err != nil {
+	if _, err := Contracts[contract].Explosive(auth, common.HexToAddress(node.Account), common.HexToAddress(config.Explosive.ToAddress)); err != nil {
 		gl.OutLogger.Error("Transaction with explosive error. %v", err)
 		return nil
 	}
@@ -83,7 +83,7 @@ func explosive(auth *bind.TransactOpts, contract string, node *UserNode, price i
 func StartExplosiveReCheck() {
 	ServiceWaitGroup.Add(1)
 	defer ServiceWaitGroup.Done()
-	timer := time.NewTicker(config.ExplosiveTick * time.Second * 5)
+	timer := time.NewTicker(config.Explosive.Tick * time.Second * 5)
 	for {
 		select {
 		case <-timer.C:

@@ -31,6 +31,18 @@ type chainNode struct {
 	Wss   string `json:"ws"`
 }
 
+type explosive struct {
+	Tick      time.Duration `json:"tick"`
+	ToAddress string        `json:"to_address"`
+}
+
+type interest struct {
+	Tick      time.Duration `json:"tick"`
+	Begin     int64         `json:"begin"`
+	End       int64         `json:"end"`
+	ToAddress string        `json:"to_address"`
+}
+
 type testcoin struct {
 	Count       int    `json:"count"`
 	CoinAnount  string `json:"coin_amount"`
@@ -44,9 +56,8 @@ var (
 	HttpPort            int
 	WsPort              int
 	WsTick              time.Duration
-	ExplosiveTick       time.Duration
-	InterestTick        time.Duration
-	ExplosiveTo         string
+	Explosive           explosive
+	Interest            interest
 	MaxKlineCount       int
 	MaxTradeRecordCount int
 	ChainNode           chainNode
@@ -67,8 +78,8 @@ func init() {
 		HttpPort            int           `json:"http_port"`
 		WsPort              int           `json:"ws_port"`
 		WsTick              time.Duration `json:"ws_tick"`
-		ExplosiveTick       time.Duration `json:"explosive_tick"`
-		InterestTick        time.Duration `json:"interest_tick"`
+		Explosive           explosive     `json:"explosive"`
+		Interest            interest      `json:"interest"`
 		ExplosiveTo         string        `json:"explosive_to_address"`
 		KlineMaxCount       int           `json:"kline_max_count"`
 		MaxTradeRecordCount int           `json:"max_trade_count"`
@@ -88,9 +99,8 @@ func init() {
 	WsPort = all.WsPort
 	WsTick = all.WsTick
 	MaxKlineCount = all.KlineMaxCount
-	ExplosiveTick = all.ExplosiveTick
-	InterestTick = all.InterestTick
-	ExplosiveTo = all.ExplosiveTo
+	Explosive = all.Explosive
+	Interest = all.Interest
 	ChainNode = all.ChainNode
 	Contract = all.Contract
 	PrivateKey = all.PrivateKey
