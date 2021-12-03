@@ -18,7 +18,7 @@ var OutLogger *logger.Logger
 
 var HttpServer *http.Server
 
-func init() {
+func CreateLogFiles() {
 	var err error
 	// 初始化全局日志文件
 	if err = os.MkdirAll("./logs", os.ModePerm); err != nil {

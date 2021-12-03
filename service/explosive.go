@@ -32,14 +32,14 @@ func StartExplosiveDetectServer() {
 	for {
 		select {
 		case <-timer.C:
-			auth, err := getAccountAuth()
+			auth, err := gl.GetAccountAuth()
 			if err != nil {
 				gl.OutLogger.Error("Get auth error. %v", err)
 				continue
 			}
 			for _, contract := range config.Contract {
 				//get the current price of contract
-				price, err := Contracts[contract.Address].GetLatestPrice(nil)
+				price, err := gl.Contracts[contract.Address].GetLatestPrice(nil)
 				if err != nil {
 					gl.OutLogger.Error("Get price from contract error. ", err)
 					continue
@@ -65,13 +65,13 @@ func explosive(auth *bind.TransactOpts, contract string, node *UserNode, price i
 	if (node.ExPrice-price)*d > 0 {
 		return nil
 	}
-	nonce, err := EthHttpsClient.PendingNonceAt(context.Background(), publicAddress)
+	nonce, err := gl.EthHttpsClient.PendingNonceAt(context.Background(), gl.PublicAddress)
 	if err != nil {
-		gl.OutLogger.Error("get nonce error address(%s). %v", publicAddress, err)
+		gl.OutLogger.Error("get nonce error address(%s). %v", gl.PublicAddress, err)
 		return nil
 	}
 	auth.Nonce = big.NewInt(int64(nonce))
-	if _, err := Contracts[contract].Explosive(auth, common.HexToAddress(node.Account), common.HexToAddress(config.Explosive.ToAddress)); err != nil {
+	if _, err := gl.Contracts[contract].Explosive(auth, common.HexToAddress(node.Account), common.HexToAddress(config.Explosive.ToAddress)); err != nil {
 		gl.OutLogger.Error("Transaction with explosive error. %v", err)
 		return nil
 	}
@@ -194,7 +194,7 @@ func (erc *ExplosiveReCheck) check(contract string) {
 	for erc.head != nil {
 		erc.mu.Lock()
 		node := erc.head
-		if trader, err := Contracts[contract].Traders(nil, common.HexToAddress(node.Account)); err != nil {
+		if trader, err := gl.Contracts[contract].Traders(nil, common.HexToAddress(node.Account)); err != nil {
 			gl.OutLogger.Error("Get account's position data from blockchain error. %s", err.Error())
 		} else {
 			user := model.User{

@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"hedgex-server/gl"
 	"hedgex-server/model"
-	"hedgex-server/service"
 	"net/http"
 	"strconv"
 )
@@ -48,7 +47,7 @@ func SendTestCoins(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	go service.SendTestCoins(account)
+	go gl.SendTestCoins(account)
 
 	str, _ := json.Marshal(map[string]interface{}{
 		"result": true,

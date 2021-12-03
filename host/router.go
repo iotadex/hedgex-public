@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"hedgex-server/config"
 	"hedgex-server/gl"
+	"log"
 	"net/http"
 	"strconv"
 )
@@ -25,7 +26,7 @@ func StartHttpServer() {
 	}
 	err := gl.HttpServer.ListenAndServe()
 	if err != nil {
-		gl.OutLogger.Error(err.Error())
+		log.Panic(err.Error())
 	}
 }
 

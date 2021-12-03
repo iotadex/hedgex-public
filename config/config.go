@@ -2,7 +2,6 @@ package config
 
 import (
 	"encoding/json"
-	"hedgex-server/tools"
 	"log"
 	"os"
 	"time"
@@ -51,6 +50,10 @@ type testcoin struct {
 }
 
 var (
+	//Service, its'value indicate running different service.
+	//1 is only run the public service that not need privatekey of wallet;
+	//2 only run explosive and interest service that need privatekey of wallet;
+	//3 run both 1 and 2;
 	Service             int
 	Db                  db
 	HttpPort            int
@@ -66,8 +69,8 @@ var (
 	TestCoin            testcoin
 )
 
-// LoadConfig load config file
-func init() {
+//Load load config file
+func Load() {
 	file, err := os.Open("config/config.json")
 	if err != nil {
 		log.Panic(err)
@@ -108,9 +111,4 @@ func init() {
 	if MaxKlineCount < 1 {
 		log.Panic("max kline count must > 0")
 	}
-
-	//if you have yourself key, you can use it.
-	//the package of "tools" is private.
-	key := tools.InputKey()
-	PrivateKey = tools.AesCBCDecrypt(PrivateKey, key)
 }

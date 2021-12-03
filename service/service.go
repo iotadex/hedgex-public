@@ -2,6 +2,8 @@ package service
 
 import (
 	"hedgex-server/config"
+	"hedgex-server/gl"
+	"hedgex-server/tools"
 	"sync"
 )
 
@@ -20,14 +22,15 @@ func init() {
 }
 
 func Start() {
-	if config.Service == 0 {
-		//start geting index price for general kline data by real
-		go StartRealIndexPrice()
-	} else {
-		//start detecting the explosive account
-		go StartExplosiveDetectServer()
+	if config.Service&0x1 > 0 {
+		StartPublicService()
+	}
 
-		go StartExplosiveReCheck()
+	if config.Service&0x2 > 0 {
+		key := tools.InputKey()
+		pk := tools.AesCBCDecrypt(config.PrivateKey, key)
+		gl.SetPrivateKey(pk)
+		StartPrivateService()
 	}
 
 	//start listening the event of contracts
@@ -36,13 +39,29 @@ func Start() {
 	}
 }
 
+func StartPublicService() {
+	go StartRealIndexPrice()
+}
+
+func StartPrivateService() {
+	go StartExplosiveDetectServer()
+
+	go StartExplosiveReCheck()
+
+	go StartTakeInterestServer()
+}
+
 func Stop() {
+	//stop the event listening service
 	for _, contract := range config.Contract {
 		QuitEvent[contract.Address] <- 1
 	}
-	if config.Service == 0 {
+
+	if config.Service&0x1 > 0 {
 		QuitKline <- 1
-	} else {
+	}
+
+	if config.Service&0x2 > 0 {
 		QuitExplosiveDetect <- 1
 		QuitExplosiveReCheck <- 1
 	}

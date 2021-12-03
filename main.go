@@ -6,22 +6,41 @@ import (
 	"hedgex-server/daemon"
 	"hedgex-server/gl"
 	"hedgex-server/host"
+	"hedgex-server/model"
 	"hedgex-server/service"
 )
 
 func main() {
 	daemon.Background("./out.log", true)
 
+	//load the config file "./config/config.json"
+	config.Load()
+
+	//create out and err logs in logs dir
+	gl.CreateLogFiles()
+
+	//connect to mysql database
+	model.ConnectToMysql()
+
+	//init the contracts
+	gl.InitContract()
+
+	//start contract service
 	service.Start()
-	if config.Service == 0 {
-		//start host server
+
+	//start http service
+	if config.Service&0x1 > 0 {
 		go host.StartHttpServer()
 	}
 
+	//wait to exit single
 	daemon.WaitForKill()
 
+	//shutdown the http service
 	if gl.HttpServer != nil {
 		gl.HttpServer.Shutdown(context.Background())
 	}
+
+	//stop the contract service
 	service.Stop()
 }

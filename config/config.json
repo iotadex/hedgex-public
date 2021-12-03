@@ -1,5 +1,5 @@
 {
-	"service":0,
+	"service":3,
 	"http_port": 8080,
 	"ws_port":8081,
 	"ws_tick":10,
@@ -50,7 +50,7 @@
 		"end":300,
 		"to_address":"0x5717B3DadA9AA2E6bC2f402f74391ad5A95A2D86"
 	},
-	"wallet":"76be1480f014ace5af03a7faff32e76b986e3d7e83048f4d1c539f6219d960cb67bac651b68795814fd846eb5b42cceb75eede5a4c1244d3a13a85085559fa6408f8a09dbe936816d3e2c0e284dddcf3",
+	"wallet":"02e08499f491b4695d7173800f59931cddf8bba2026a9639ce34c6609a18a9373c2fc6543a886d8fbde13262684e50bd2942ac90a6c0bb302d01f8272187db2b13f2c8f5a3fa9abde60cd4a2a6ee16f3",
 	"testcoin":{
 		"count":3,
 		"coin_amount":"100000000000000000",

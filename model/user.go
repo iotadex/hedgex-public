@@ -3,7 +3,6 @@ package model
 import (
 	"database/sql"
 	"errors"
-	"hedgex-server/gl"
 )
 
 /*
@@ -23,7 +22,7 @@ CREATE TABLE user (
 
 //GetLastBlock get the last block from use table
 func GetLastBlock(contract string) (int64, error) {
-	row := gl.DB.QueryRow("select block from user order by block desc limit 1")
+	row := db.QueryRow("select block from user order by block desc limit 1")
 	var maxBlock int64
 	err := row.Scan(&maxBlock)
 	if err == sql.ErrNoRows {
@@ -47,7 +46,7 @@ type User struct {
 
 //GetUsers get users
 func GetUsers(contract string) ([]User, uint64, error) {
-	rows, err := gl.DB.Query("SELECT account,margin,lposition,lprice,sposition,sprice,interest_day,block FROM user where contract=" + "'" + contract + "'")
+	rows, err := db.Query("SELECT account,margin,lposition,lprice,sposition,sprice,interest_day,block FROM user where contract=" + "'" + contract + "'")
 	if err != nil {
 		return nil, 0, err
 	}
@@ -69,26 +68,26 @@ func GetUsers(contract string) ([]User, uint64, error) {
 
 //UpdateUser update user's data
 func UpdateUser(contract string, u *User) error {
-	_, err := gl.DB.Exec("replace into user(account,contract,margin,lposition,lprice,sposition,sprice,interest_day,block) values(?,?,?,?,?,?,?,?) ",
+	_, err := db.Exec("replace into user(account,contract,margin,lposition,lprice,sposition,sprice,interest_day,block) values(?,?,?,?,?,?,?,?,?) ",
 		u.Account, contract, u.Margin, u.Lposition, u.Lprice, u.Sposition, u.Sprice, u.InterestDay, u.Block)
 	return err
 }
 
 //InsertRecharge insert a recharge record
 func InsertRecharge(tx string, contract string, account string, amount uint64, block uint64) error {
-	_, err := gl.DB.Exec("insert into recharge(tx,contract,account,amount,block) values(?,?,?,?,?)", tx, contract, account, amount, block)
+	_, err := db.Exec("insert into recharge(tx,contract,account,amount,block) values(?,?,?,?,?)", tx, contract, account, amount, block)
 	return err
 }
 
 //InsertWithdraw insert a withdraw record
 func InsertWithdraw(tx string, contract string, account string, amount uint64, block uint64) error {
-	_, err := gl.DB.Exec("insert into withdraw(tx,contract,account,amount,block) values(?,?,?,?,?)", tx, contract, account, amount, block)
+	_, err := db.Exec("insert into withdraw(tx,contract,account,amount,block) values(?,?,?,?,?)", tx, contract, account, amount, block)
 	return err
 }
 
 // InsertTrade insert a trade record
 func InsertTrade(tx string, contract string, account string, direction int8, amount uint64, price uint64, block uint64) error {
-	_, err := gl.DB.Exec("insert into trade(tx,contract,account,direction,amount,price,block) values(?,?,?,?,?,?,?)", tx, contract, account, direction, amount, price, block)
+	_, err := db.Exec("insert into trade(tx,contract,account,direction,amount,price,block) values(?,?,?,?,?,?,?)", tx, contract, account, direction, amount, price, block)
 	return err
 }
 
@@ -104,7 +103,7 @@ type Trade struct {
 
 // GetTradeRecords account's trade records
 func GetTradeRecords(contract string, account string, count int) ([]Trade, error) {
-	rows, err := gl.DB.Query("select tx,direction,amount,price from trade where contract=? and account=? order by block desc limit ?", contract, account, count)
+	rows, err := db.Query("select tx,direction,amount,price from trade where contract=? and account=? order by block desc limit ?", contract, account, count)
 	if err != nil {
 		return nil, err
 	}
@@ -119,18 +118,18 @@ func GetTradeRecords(contract string, account string, count int) ([]Trade, error
 
 // InsertTrade insert a trade record
 func InsertExplosive(tx string, contract string, account string, direction int8, amount uint64, price uint64, block uint64) error {
-	_, err := gl.DB.Exec("insert into explosive(tx,contract,account,direction,amount,price,block) values(?,?,?,?,?,?,?)", tx, contract, account, direction, amount, price, block)
+	_, err := db.Exec("insert into explosive(tx,contract,account,direction,amount,price,block) values(?,?,?,?,?,?,?)", tx, contract, account, direction, amount, price, block)
 	return err
 }
 
 // InsertTrade insert a trade record
 func InsertInterest(tx string, contract string, account string, direction int8, amount uint64, price uint64, block uint64) error {
-	_, err := gl.DB.Exec("insert into interest(tx,contract,account,amount,price,block) values(?,?,?,?,?,?,?)", tx, contract, account, direction, amount, price, block)
+	_, err := db.Exec("insert into interest(tx,contract,account,direction,amount,price,block) values(?,?,?,?,?,?,?)", tx, contract, account, direction, amount, price, block)
 	return err
 }
 
 func UpdateTestCoin(account string) error {
-	row, err := gl.DB.Query("select count from testcoin where account=?", account)
+	row, err := db.Query("select count from testcoin where account=?", account)
 	if err != nil {
 		return err
 	}
@@ -144,6 +143,6 @@ func UpdateTestCoin(account string) error {
 		return errors.New("over the number for getting test coins")
 	}
 	count++
-	_, err = gl.DB.Exec("replace into testcoin(account,count) values(?,?)", account, count)
+	_, err = db.Exec("replace into testcoin(account,count) values(?,?)", account, count)
 	return err
 }

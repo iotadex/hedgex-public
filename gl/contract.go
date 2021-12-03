@@ -1,11 +1,10 @@
-package service
+package gl
 
 import (
 	"context"
 	"crypto/ecdsa"
 	"hedgex-server/config"
 	"hedgex-server/contract/hedgex"
-	"hedgex-server/gl"
 	"log"
 	"math/big"
 	"strings"
@@ -41,15 +40,14 @@ var (
 
 	//
 	privateKey    *ecdsa.PrivateKey
-	publicAddress common.Address
+	PublicAddress common.Address
 
 	erc20TransferID []byte
 	chainID         *big.Int
 )
 
-func init() {
+func InitContract() {
 	var err error
-
 	EthHttpsClient, err = ethclient.Dial(config.ChainNode.Https)
 	if err != nil {
 		log.Panic("ChainNode : ", config.ChainNode.Https, err)
@@ -96,20 +94,22 @@ func init() {
 	if err != nil {
 		log.Panic(err)
 	}
+}
 
-	privateKey, err = crypto.HexToECDSA(config.PrivateKey)
+func SetPrivateKey(pk string) {
+	privateKey, err := crypto.HexToECDSA(pk)
 	if err != nil {
-		log.Panic(err)
+		log.Panic("Get privatekey error.", err)
 	}
 	publicKey := privateKey.Public()
 	publicKeyECDSA, ok := publicKey.(*ecdsa.PublicKey)
 	if !ok {
 		log.Panic("error casting public key to ECDSA")
 	}
-	publicAddress = crypto.PubkeyToAddress(*publicKeyECDSA)
+	PublicAddress = crypto.PubkeyToAddress(*publicKeyECDSA)
 }
 
-func getAccountAuth() (*bind.TransactOpts, error) {
+func GetAccountAuth() (*bind.TransactOpts, error) {
 	gasPrice, err := EthHttpsClient.SuggestGasPrice(context.Background())
 	if err != nil {
 		return nil, err
@@ -143,7 +143,7 @@ func sendEth(to string) error {
 	return sendTransaction(common.HexToAddress(to), value, nil)
 }
 
-func sendERC20(to string) error { // in wei (0 eth)
+func sendERC20(to string) error {
 	paddedAddress := common.LeftPadBytes(common.HexToAddress(to).Bytes(), 32) // 0x0000000000000000000000004592d8f8d7b001e72cb26a73e4fa1806a51ac79d
 	amount, _ := new(big.Int).SetString(config.TestCoin.TokenAmount, 10)      // amount
 	paddedAmount := common.LeftPadBytes(amount.Bytes(), 32)                   // 0x00000000000000000000000000000000000000000000003635c9adc5dea00000
@@ -152,32 +152,32 @@ func sendERC20(to string) error { // in wei (0 eth)
 	data = append(data, erc20TransferID...)
 	data = append(data, paddedAddress...)
 	data = append(data, paddedAmount...)
-	value := big.NewInt(0)
+	value := big.NewInt(0) // in wei (0 eth)
 	return sendTransaction(common.HexToAddress(config.TestCoin.Token), value, data)
 }
 
 func sendTransaction(to common.Address, value *big.Int, data []byte) error {
 	gasPrice, err := EthHttpsClient.SuggestGasPrice(context.Background())
 	if err != nil {
-		gl.OutLogger.Error("get gas price error. %v", err)
+		OutLogger.Error("get gas price error. %v", err)
 		return err
 	}
-	nonce, err := EthHttpsClient.PendingNonceAt(context.Background(), publicAddress)
+	nonce, err := EthHttpsClient.PendingNonceAt(context.Background(), PublicAddress)
 	if err != nil {
-		gl.OutLogger.Error("get nonce error address(%s). %v", publicAddress, err)
+		OutLogger.Error("get nonce error address(%s). %v", PublicAddress, err)
 		return err
 	}
 	gasLimit := uint64(3000000)
 	tx := types.NewTransaction(nonce, to, value, gasLimit, gasPrice, data)
 	signedTx, err := types.SignTx(tx, types.NewEIP155Signer(chainID), privateKey)
 	if err != nil {
-		gl.OutLogger.Error("create signedTx error. %v", err)
+		OutLogger.Error("create signedTx error. %v", err)
 		return err
 	}
 
 	err = EthHttpsClient.SendTransaction(context.Background(), signedTx)
 	if err != nil {
-		gl.OutLogger.Error("send signedTx error. %v", err)
+		OutLogger.Error("send signedTx error. %v", err)
 		return err
 	}
 	return nil

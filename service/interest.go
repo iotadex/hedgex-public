@@ -40,7 +40,7 @@ func StartTakeInterestServer() {
 			time.Sleep(time.Duration(sleepTime) * time.Second)
 			continue
 		}
-		auth, err := getAccountAuth()
+		auth, err := gl.GetAccountAuth()
 		if err != nil {
 			gl.OutLogger.Error("Get auth error. %v", err)
 			continue
@@ -49,7 +49,7 @@ func StartTakeInterestServer() {
 		ServiceWaitGroup.Add(1)
 		for _, contract := range config.Contract {
 			//get the pool's position
-			_lp, _, _sp, _, err := Contracts[contract.Address].GetPoolPosition(nil)
+			_lp, _, _sp, _, err := gl.Contracts[contract.Address].GetPoolPosition(nil)
 			if err != nil {
 				gl.OutLogger.Error("Get account's position data from blockchain error. %s", err.Error())
 				continue
@@ -62,7 +62,7 @@ func StartTakeInterestServer() {
 			l := til.getList(d)
 			for k, v := range l {
 				if v < uint(dayCount) {
-					if detectSlide(auth, Contracts[contract.Address], k) {
+					if detectSlide(auth, gl.Contracts[contract.Address], k) {
 						til.flag(d, k, uint(dayCount))
 					}
 				}
@@ -73,9 +73,9 @@ func StartTakeInterestServer() {
 }
 
 func detectSlide(auth *bind.TransactOpts, contract *hedgex.Hedgex, account string) bool {
-	nonce, err := EthHttpsClient.PendingNonceAt(context.Background(), publicAddress)
+	nonce, err := gl.EthHttpsClient.PendingNonceAt(context.Background(), gl.PublicAddress)
 	if err != nil {
-		gl.OutLogger.Error("Take interest : Get nonce error address(%s). %v", publicAddress, err)
+		gl.OutLogger.Error("Take interest : Get nonce error address(%s). %v", gl.PublicAddress, err)
 		return false
 	}
 	auth.Nonce = big.NewInt(int64(nonce))

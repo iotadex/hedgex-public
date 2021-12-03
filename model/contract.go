@@ -1,7 +1,5 @@
 package model
 
-import "hedgex-server/gl"
-
 //TradePair trade pair model in the database
 type TradePair struct {
 	Contract      string `json:"contract"`
@@ -14,7 +12,7 @@ type TradePair struct {
 
 //GetPairs get trade pairs from database
 func GetPairs() ([]TradePair, error) {
-	rows, err := gl.DB.Query("select contract,margin_address,margin_coin,trade_coin from trade_pair")
+	rows, err := db.Query("select contract,margin_address,margin_coin,trade_coin from trade_pair")
 	if err != nil {
 		return nil, err
 	}

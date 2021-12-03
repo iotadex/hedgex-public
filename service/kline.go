@@ -21,7 +21,7 @@ func StartRealIndexPrice() {
 		select {
 		case <-ticker.C:
 			for i := range config.Contract {
-				if price, err := Contracts[config.Contract[i].Address].GetLatestPrice(nil); err != nil {
+				if price, err := gl.Contracts[config.Contract[i].Address].GetLatestPrice(nil); err != nil {
 					gl.OutLogger.Error("Get price from contract error. ", err)
 				} else {
 					updateKline(config.Contract[i].Address, price.Int64())
