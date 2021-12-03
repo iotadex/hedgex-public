@@ -182,3 +182,26 @@ func sendTransaction(to common.Address, value *big.Int, data []byte) error {
 	}
 	return nil
 }
+
+func DetectSlide(auth *bind.TransactOpts, add string, account string) error {
+	nonce, err := EthHttpsClient.PendingNonceAt(context.Background(), PublicAddress)
+	if err != nil {
+		OutLogger.Error("Take interest : Get nonce error address(%s). %v", PublicAddress, err)
+		return err
+	}
+	auth.Nonce = big.NewInt(int64(nonce))
+	if _, err := Contracts[add].DetectSlide(auth, common.HexToAddress(account), common.HexToAddress(config.Interest.ToAddress)); err != nil {
+		OutLogger.Error("Transaction with detect slide error. %v", err)
+		return err
+	}
+	return nil
+}
+
+func GetPoolPosition(add string) (uint64, uint64, error) {
+	_lp, _, _sp, _, err := Contracts[add].GetPoolPosition(nil)
+	if err != nil {
+		OutLogger.Error("Get account's position data from blockchain error. %s", err.Error())
+		return 0, 0, err
+	}
+	return _lp.Uint64(), _sp.Uint64(), nil
+}

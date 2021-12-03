@@ -26,6 +26,19 @@ func init() {
 
 //StartExplosiveDetectServer, no blocking function
 func StartExplosiveDetectServer() {
+	//load user's data from database
+	for _, contract := range config.Contract {
+		users, _, err := model.GetUsers(contract.Address)
+		if err != nil {
+			gl.OutLogger.Error("Get users from db error. %v", err)
+			return
+		}
+		l := len(users)
+		for i := 0; i < l; i++ {
+			expUserList[contract.Address].Insert(&users[i])
+		}
+	}
+
 	ServiceWaitGroup.Add(1)
 	defer ServiceWaitGroup.Done()
 	timer := time.NewTicker(config.Explosive.Tick * time.Second)

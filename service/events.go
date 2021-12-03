@@ -150,7 +150,7 @@ func updateUser(contract string, account string, block uint64) {
 		gl.OutLogger.Error("Update account's data in database error. %s", err.Error())
 	}
 
-	if config.Service == 1 {
+	if config.Service&0x2 > 0 {
 		//update the explosive list
 		expUserList[contract].Update(&user)
 		//update the takeinterest list
