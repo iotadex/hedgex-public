@@ -1,5 +1,10 @@
-process stop. 15 : 240511 
-process stop. 15 : 244468 
-process stop. 15 : 244635 
-process stop. 15 : 241364 
-process stop. 15 : 244819 
+2021/12/03 21:04:36 sql: unknown driver "mysql" (forgotten import?)
+panic: sql: unknown driver "mysql" (forgotten import?)
+
+goroutine 1 [running]:
+log.Panic({0xc0000c3ea8, 0x5, 0xc00002ab40})
+	/usr/local/go/src/log/log.go:354 +0x65
+hedgex-server/model.ConnectToMysql()
+	/home/wy/gowork/hedgex_public/model/mysql.go:17 +0x1ad
+main.main()
+	/home/wy/gowork/hedgex_public/main.go:23 +0x3d

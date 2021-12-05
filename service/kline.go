@@ -12,6 +12,8 @@ func StartRealIndexPrice() {
 	ServiceWaitGroup.Add(1)
 	defer ServiceWaitGroup.Done()
 
+	gl.InitKlineData()
+
 	// load kline data from database
 	loadHistoryKline()
 

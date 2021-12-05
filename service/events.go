@@ -27,10 +27,10 @@ func StartFilterEvents(contractAddress string) {
 		Addresses: []common.Address{common.HexToAddress(contractAddress)},
 	}
 StartFilter:
-	logs := make(chan types.Log)
-	sub, err := gl.EthWssClient.SubscribeFilterLogs(context.Background(), query, logs)
+	eventLogChan := make(chan types.Log)
+	sub, err := gl.EthWssClient.SubscribeFilterLogs(context.Background(), query, eventLogChan)
 	if err != nil {
-		log.Panic("Get event logs from eth wss client error. ", err)
+		log.Panic("Get event logs from eth wss client error. ", contractAddress, err)
 	}
 	for {
 		select {
@@ -48,7 +48,7 @@ StartFilter:
 				continue
 			}
 			goto StartFilter
-		case vLog := <-logs:
+		case vLog := <-eventLogChan:
 			dealEventLog(contractAddress, &vLog)
 		}
 	}
@@ -82,16 +82,19 @@ func dealEventLog(contract string, vLog *types.Log) {
 		block := vLog.BlockNumber
 		var err error
 		var data []interface{}
-		if len(vLog.Data) > 0 {
-			data, err = gl.ContractAbi.Unpack(gl.EventNames[vLog.Topics[0].Hex()], vLog.Data)
-			if err != nil {
-				gl.OutLogger.Error("Unpack the event log error. tx(%s) : %s : %s", tx, gl.EventNames[vLog.Topics[0].Hex()], err.Error())
-				return
+		topic0 := vLog.Topics[0].Hex()
+		event, exist := gl.EventNames[topic0]
+		if exist {
+			if len(vLog.Data) > 0 {
+				data, err = gl.ContractAbi.Unpack(event, vLog.Data)
+				if err != nil {
+					gl.OutLogger.Error("Unpack the event log error. tx(%s) : %s : %s : %s", tx, event, gl.EventNames[topic0], err.Error())
+					return
+				}
 			}
 		}
-
 		account := common.HexToAddress(vLog.Topics[1].Hex()).Hex()
-		switch vLog.Topics[0].Hex() {
+		switch topic0 {
 		case gl.MintEvent:
 			amount := data[0].(*big.Int).Uint64()
 			err = model.InsertMint(tx, contract, account, amount, block)
@@ -124,6 +127,10 @@ func dealEventLog(contract string, vLog *types.Log) {
 			price := data[2].(*big.Int).Uint64()
 			err = model.InsertInterest(tx, contract, account, direction, amount, price, block)
 			updateUser(contract, account, block)
+		case gl.TransferEvent:
+			gl.OutLogger.Info("Transfer from %s to %s : %v", account, vLog.Topics[2].Hex(), data[0])
+		default:
+			gl.OutLogger.Info("Topics : %v   ;   data  :  %v", vLog.Topics, vLog.Data)
 		}
 		if err != nil {
 			gl.OutLogger.Error("insert into database error. %s : %s", gl.EventNames[vLog.Topics[0].Hex()], err.Error())
@@ -134,8 +141,13 @@ func dealEventLog(contract string, vLog *types.Log) {
 func updateUser(contract string, account string, block uint64) {
 	trader, err := gl.Contracts[contract].Traders(nil, common.HexToAddress(account))
 	if err != nil {
-		gl.OutLogger.Error("Get account's position data from blockchain error. %s", err.Error())
+		gl.OutLogger.Error("Get account's position data from blockchain error. %v", err)
 		return
+	}
+	if h, err := gl.GetCurrentBlockNumber(); err != nil {
+		gl.OutLogger.Error("Get block number error. %v", err)
+	} else {
+		block = h
 	}
 	user := model.User{
 		Account:   account,

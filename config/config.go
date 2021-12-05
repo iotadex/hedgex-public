@@ -70,7 +70,7 @@ var (
 )
 
 //Load load config file
-func Load() {
+func init() {
 	file, err := os.Open("config/config.json")
 	if err != nil {
 		log.Panic(err)

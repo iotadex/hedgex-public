@@ -18,14 +18,16 @@ var explosivedAccounts map[string]*ExplosiveReCheck //have been explosived accou
 
 func init() {
 	expUserList = make(map[string]*ExplosiveList)
+	explosivedAccounts = make(map[string]*ExplosiveReCheck)
 	for i := range config.Contract {
 		expUserList[config.Contract[i].Address] = NewExplosiveList()
+		explosivedAccounts[config.Contract[i].Address] = &ExplosiveReCheck{}
 	}
-	explosivedAccounts = make(map[string]*ExplosiveReCheck)
 }
 
 //StartExplosiveDetectServer, no blocking function
 func StartExplosiveDetectServer() {
+
 	//load user's data from database
 	for _, contract := range config.Contract {
 		users, _, err := model.GetUsers(contract.Address)
@@ -66,7 +68,7 @@ func StartExplosiveDetectServer() {
 				for node != nil {
 					node = explosive(auth, contract.Address, node, price.Int64(), -1)
 				}
-				time.Sleep(time.Second)
+				//time.Sleep(time.Second)
 			}
 		case <-QuitExplosiveDetect:
 			return
@@ -85,9 +87,10 @@ func explosive(auth *bind.TransactOpts, contract string, node *UserNode, price i
 	}
 	auth.Nonce = big.NewInt(int64(nonce))
 	if _, err := gl.Contracts[contract].Explosive(auth, common.HexToAddress(node.Account), common.HexToAddress(config.Explosive.ToAddress)); err != nil {
-		gl.OutLogger.Error("Transaction with explosive error. %v", err)
+		gl.OutLogger.Error("Transaction with explosive error. %s : %s : %d : %d.  %v", contract, node.Account, node.ExPrice, price, err)
 		return nil
 	}
+	gl.OutLogger.Info("send explosive over. %s : %s : %d : %d", contract, node.Account, node.ExPrice, price)
 	expUserList[contract].Delete(node.Account)
 	explosivedAccounts[contract].insert(node)
 	return node.Next
@@ -153,7 +156,7 @@ func (el *ExplosiveList) Insert(u *model.User) {
 		// find the first node that ExPrice < ePrice
 		currNode = el.LHead
 		for {
-			if (currNode.Next.ExPrice < ePrice) || (currNode.Next == nil) {
+			if (currNode.Next == nil) || (currNode.Next.ExPrice < ePrice) {
 				break
 			}
 			currNode = currNode.Next
@@ -162,7 +165,7 @@ func (el *ExplosiveList) Insert(u *model.User) {
 	} else {
 		currNode = el.SHead
 		for {
-			if (currNode.Next.ExPrice > ePrice) || (currNode.Next == nil) {
+			if (currNode.Next == nil) || (currNode.Next.ExPrice > ePrice) {
 				break
 			}
 			currNode = currNode.Next
@@ -184,8 +187,16 @@ func (el *ExplosiveList) Delete(account string) {
 	if !exist {
 		return
 	}
-	node.Next.Pre = node.Pre
-	node.Pre.Next = node.Next
+	if node.Next != nil {
+		node.Next.Pre = node.Pre
+	}
+	if node.Pre != nil {
+		node.Pre.Next = node.Next
+	}
+	if node.Next == nil && node.Pre == nil {
+		el.LHead = nil
+		el.SHead = nil
+	}
 	delete(el.Index, account)
 }
 
@@ -204,8 +215,9 @@ type ExplosiveReCheck struct {
 }
 
 func (erc *ExplosiveReCheck) check(contract string) {
+	erc.mu.Lock()
+	defer erc.mu.Unlock()
 	for erc.head != nil {
-		erc.mu.Lock()
 		node := erc.head
 		if trader, err := gl.Contracts[contract].Traders(nil, common.HexToAddress(node.Account)); err != nil {
 			gl.OutLogger.Error("Get account's position data from blockchain error. %s", err.Error())
@@ -222,7 +234,6 @@ func (erc *ExplosiveReCheck) check(contract string) {
 			erc.head = node.Next
 			expUserList[contract].Insert(&user)
 		}
-		erc.mu.Unlock()
 	}
 }
 

@@ -61,7 +61,7 @@ func (skd *SafeKlineData) Append(klineType string, currentData [5]int64) {
 	}
 }
 
-func init() {
+func InitKlineData() {
 	KlineTypes = []string{"m1", "m5", "m10", "m15", "m30", "h1", "h2", "h4", "h6", "h12", "d1"}
 	CurrentKlineDatas = make(map[string]*SafeKlineData)
 	for _, contract := range config.Contract {

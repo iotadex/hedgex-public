@@ -33,6 +33,7 @@ var (
 	TradeEvent        string
 	ExplosiveEvent    string
 	TakeInterestEvent string
+	TransferEvent     string
 	EventNames        map[string]string
 
 	//contract's instance
@@ -78,6 +79,7 @@ func InitContract() {
 	TradeEvent = crypto.Keccak256Hash([]byte(ContractAbi.Events["Trade"].Sig)).Hex()
 	ExplosiveEvent = crypto.Keccak256Hash([]byte(ContractAbi.Events["Explosive"].Sig)).Hex()
 	TakeInterestEvent = crypto.Keccak256Hash([]byte(ContractAbi.Events["TakeInterest"].Sig)).Hex()
+	TransferEvent = crypto.Keccak256Hash([]byte(ContractAbi.Events["Transfer"].Sig)).Hex()
 
 	EventNames = make(map[string]string)
 	EventNames[MintEvent] = "Mint"
@@ -87,6 +89,7 @@ func InitContract() {
 	EventNames[TradeEvent] = "Trade"
 	EventNames[ExplosiveEvent] = "Explosive"
 	EventNames[TakeInterestEvent] = "TakeInterest"
+	EventNames[TransferEvent] = "Transfer"
 
 	erc20TransferID = []byte{0xa9, 0x05, 0x9c, 0xbb} //transfer(address,uint256)
 
@@ -97,7 +100,8 @@ func InitContract() {
 }
 
 func SetPrivateKey(pk string) {
-	privateKey, err := crypto.HexToECDSA(pk)
+	var err error
+	privateKey, err = crypto.HexToECDSA(pk)
 	if err != nil {
 		log.Panic("Get privatekey error.", err)
 	}
@@ -204,4 +208,8 @@ func GetPoolPosition(add string) (uint64, uint64, error) {
 		return 0, 0, err
 	}
 	return _lp.Uint64(), _sp.Uint64(), nil
+}
+
+func GetCurrentBlockNumber() (uint64, error) {
+	return EthHttpsClient.BlockNumber(context.Background())
 }

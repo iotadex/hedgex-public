@@ -11,10 +11,7 @@ import (
 )
 
 func main() {
-	daemon.Background("./out.log", true)
-
-	//load the config file "./config/config.json"
-	config.Load()
+	//daemon.Background("./out.log", true)
 
 	//create out and err logs in logs dir
 	gl.CreateLogFiles()
