@@ -187,6 +187,16 @@ func sendTransaction(to common.Address, value *big.Int, data []byte) error {
 	return nil
 }
 
+func Explosive(auth *bind.TransactOpts, contract string, account string) error {
+	nonce, err := EthHttpsClient.PendingNonceAt(context.Background(), PublicAddress)
+	if err != nil {
+		return err
+	}
+	auth.Nonce = big.NewInt(int64(nonce))
+	_, err = Contracts[contract].Explosive(auth, common.HexToAddress(account), common.HexToAddress(config.Explosive.ToAddress))
+	return err
+}
+
 func DetectSlide(auth *bind.TransactOpts, add string, account string) error {
 	nonce, err := EthHttpsClient.PendingNonceAt(context.Background(), PublicAddress)
 	if err != nil {
@@ -199,6 +209,11 @@ func DetectSlide(auth *bind.TransactOpts, add string, account string) error {
 		return err
 	}
 	return nil
+}
+
+func GetIndexPrice(add string) (int64, error) {
+	price, err := Contracts[add].GetLatestPrice(nil)
+	return price.Int64(), err
 }
 
 func GetPoolPosition(add string) (uint64, uint64, error) {
