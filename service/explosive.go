@@ -6,19 +6,14 @@ import (
 	"hedgex-server/model"
 	"sync"
 	"time"
-
-	"github.com/ethereum/go-ethereum/common"
 )
 
-var expUserList map[string]*ExplosiveList           //current accounts waiting for be detected to explosive
-var explosivedAccounts map[string]*ExplosiveReCheck //have been explosived accounts, used this to verify
+var expUserList map[string]*ExplosiveList //current accounts waiting for be detected to explosive
 
 func init() {
 	expUserList = make(map[string]*ExplosiveList)
-	explosivedAccounts = make(map[string]*ExplosiveReCheck)
 	for i := range config.Contract {
 		expUserList[config.Contract[i].Address] = NewExplosiveList()
-		explosivedAccounts[config.Contract[i].Address] = &ExplosiveReCheck{}
 	}
 }
 
@@ -181,63 +176,4 @@ func (el *ExplosiveList) Update(u *model.User) {
 	el.mu.Unlock()
 	el.Delete(u.Account)
 	el.Insert(u)
-}
-
-func StartExplosiveReCheck() {
-	ServiceWaitGroup.Add(1)
-	defer ServiceWaitGroup.Done()
-	timer := time.NewTicker(config.Explosive.Tick * time.Second * 5)
-	for {
-		select {
-		case <-timer.C:
-			go func() {
-				for _, contract := range config.Contract {
-					explosivedAccounts[contract.Address].check(contract.Address)
-				}
-			}()
-		case <-QuitExplosiveReCheck:
-			return
-		}
-	}
-}
-
-type ExplosiveReCheck struct {
-	head *UserNode
-	tail *UserNode
-	mu   sync.Mutex
-}
-
-func (erc *ExplosiveReCheck) check(contract string) {
-	erc.mu.Lock()
-	defer erc.mu.Unlock()
-	for erc.head != nil {
-		node := erc.head
-		if trader, err := gl.Contracts[contract].Traders(nil, common.HexToAddress(node.Account)); err != nil {
-			gl.OutLogger.Error("Get account's position data from blockchain error. %s", err.Error())
-		} else {
-			user := model.User{
-				Account:   node.Account,
-				Margin:    trader.Margin.Int64(),
-				Lposition: trader.LongAmount.Uint64(),
-				Lprice:    trader.LongPrice.Uint64(),
-				Sposition: trader.ShortAmount.Uint64(),
-				Sprice:    trader.ShortPrice.Uint64(),
-				Block:     0,
-			}
-			erc.head = node.Next
-			expUserList[contract].Insert(&user)
-		}
-	}
-}
-
-func (erc *ExplosiveReCheck) insert(node *UserNode) {
-	erc.mu.Lock()
-	if erc.head == nil {
-		erc.head = node
-		erc.tail = node
-	} else {
-		erc.tail.Next = node
-		erc.tail = node
-	}
-	erc.mu.Unlock()
 }
