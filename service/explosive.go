@@ -1,15 +1,12 @@
 package service
 
 import (
-	"context"
 	"hedgex-server/config"
 	"hedgex-server/gl"
 	"hedgex-server/model"
-	"math/big"
 	"sync"
 	"time"
 
-	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
 )
 
@@ -27,20 +24,6 @@ func init() {
 
 //StartExplosiveDetectServer, no blocking function
 func StartExplosiveDetectServer() {
-
-	//load user's data from database
-	for _, contract := range config.Contract {
-		users, _, err := model.GetUsers(contract.Address)
-		if err != nil {
-			gl.OutLogger.Error("Get users from db error. %v", err)
-			return
-		}
-		l := len(users)
-		for i := 0; i < l; i++ {
-			expUserList[contract.Address].Insert(&users[i])
-		}
-	}
-
 	ServiceWaitGroup.Add(1)
 	defer ServiceWaitGroup.Done()
 	timer := time.NewTicker(config.Explosive.Tick * time.Second)
@@ -54,61 +37,45 @@ func StartExplosiveDetectServer() {
 			}
 			for _, contract := range config.Contract {
 				//get the current price of contract
-				price, err := gl.Contracts[contract.Address].GetLatestPrice(nil)
+				price, err := gl.GetIndexPrice(contract.Address)
 				if err != nil {
 					gl.OutLogger.Error("Get price from contract error. ", err)
 					continue
 				}
 
-				node := expUserList[contract.Address].LHead.Next
-				for node != nil {
-					node = explosive(auth, contract.Address, node, price.Int64(), 1)
+				//check long position users
+				for {
+					expUserList[contract.Address].mu.Lock()
+					node := expUserList[contract.Address].LHead.Next
+					expUserList[contract.Address].mu.Unlock()
+					if (node == nil) || (node.ExPrice < price) {
+						break
+					}
+					if err := gl.Explosive(auth, contract.Address, node.Account); err != nil {
+						gl.OutLogger.Error("Explosive error. %s : %s : %v", contract.Address, node.Account, err)
+						break
+					} else {
+						expUserList[contract.Address].Delete(node.Account)
+					}
 				}
-				node = expUserList[contract.Address].SHead.Next
-				for node != nil {
-					node = explosive(auth, contract.Address, node, price.Int64(), -1)
+
+				//check short position users
+				for {
+					expUserList[contract.Address].mu.Lock()
+					node := expUserList[contract.Address].SHead.Next
+					expUserList[contract.Address].mu.Unlock()
+					if (node == nil) || (node.ExPrice > price) {
+						break
+					}
+					if err := gl.Explosive(auth, contract.Address, node.Account); err != nil {
+						gl.OutLogger.Error("Explosive error. %s : %s : %v", contract.Address, node.Account, err)
+						break
+					} else {
+						expUserList[contract.Address].Delete(node.Account)
+					}
 				}
-				//time.Sleep(time.Second)
 			}
 		case <-QuitExplosiveDetect:
-			return
-		}
-	}
-}
-
-func explosive(auth *bind.TransactOpts, contract string, node *UserNode, price int64, d int64) *UserNode {
-	if (node.ExPrice-price)*d > 0 {
-		return nil
-	}
-	nonce, err := gl.EthHttpsClient.PendingNonceAt(context.Background(), gl.PublicAddress)
-	if err != nil {
-		gl.OutLogger.Error("get nonce error address(%s). %v", gl.PublicAddress, err)
-		return nil
-	}
-	auth.Nonce = big.NewInt(int64(nonce))
-	if _, err := gl.Contracts[contract].Explosive(auth, common.HexToAddress(node.Account), common.HexToAddress(config.Explosive.ToAddress)); err != nil {
-		gl.OutLogger.Error("Transaction with explosive error. %s : %s : %d : %d.  %v", contract, node.Account, node.ExPrice, price, err)
-		return nil
-	}
-	gl.OutLogger.Info("send explosive over. %s : %s : %d : %d", contract, node.Account, node.ExPrice, price)
-	expUserList[contract].Delete(node.Account)
-	explosivedAccounts[contract].insert(node)
-	return node.Next
-}
-
-func StartExplosiveReCheck() {
-	ServiceWaitGroup.Add(1)
-	defer ServiceWaitGroup.Done()
-	timer := time.NewTicker(config.Explosive.Tick * time.Second * 5)
-	for {
-		select {
-		case <-timer.C:
-			go func() {
-				for _, contract := range config.Contract {
-					explosivedAccounts[contract.Address].check(contract.Address)
-				}
-			}()
-		case <-QuitExplosiveReCheck:
 			return
 		}
 	}
@@ -204,8 +171,34 @@ func (el *ExplosiveList) Update(u *model.User) {
 	if u == nil {
 		return
 	}
+	el.mu.Lock()
+	if user, exist := el.Index[u.Account]; exist {
+		if user.Block > u.Block {
+			el.mu.Unlock()
+			return
+		}
+	}
+	el.mu.Unlock()
 	el.Delete(u.Account)
 	el.Insert(u)
+}
+
+func StartExplosiveReCheck() {
+	ServiceWaitGroup.Add(1)
+	defer ServiceWaitGroup.Done()
+	timer := time.NewTicker(config.Explosive.Tick * time.Second * 5)
+	for {
+		select {
+		case <-timer.C:
+			go func() {
+				for _, contract := range config.Contract {
+					explosivedAccounts[contract.Address].check(contract.Address)
+				}
+			}()
+		case <-QuitExplosiveReCheck:
+			return
+		}
+	}
 }
 
 type ExplosiveReCheck struct {

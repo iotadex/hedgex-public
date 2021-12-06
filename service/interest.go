@@ -22,19 +22,6 @@ func init() {
 
 //StartExplosiveDetectServer, no blocking function
 func StartTakeInterestServer() {
-	//load user's data from database
-	for _, contract := range config.Contract {
-		users, _, err := model.GetUsers(contract.Address)
-		if err != nil {
-			gl.OutLogger.Error("Get users from db error. %v", err)
-			return
-		}
-		l := len(users)
-		for i := 0; i < l; i++ {
-			interestUserList[contract.Address].update(&users[i])
-		}
-	}
-
 	for {
 		ts := time.Now().Unix()
 		dayCount := ts / 86400

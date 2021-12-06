@@ -3,7 +3,9 @@ package service
 import (
 	"hedgex-server/config"
 	"hedgex-server/gl"
+	"hedgex-server/model"
 	"hedgex-server/tools"
+	"log"
 	"sync"
 )
 
@@ -22,20 +24,23 @@ func init() {
 }
 
 func Start() {
+	//start listening the event of contracts
+	for _, contract := range config.Contract {
+		go StartFilterEvents(contract.Address)
+	}
+
 	if config.Service&0x1 > 0 {
 		StartPublicService()
 	}
 
 	if config.Service&0x2 > 0 {
+		//get users from database
+		getHistoryUsersDataFromDb()
+
 		key := tools.InputKey()
 		pk := tools.AesCBCDecrypt(config.PrivateKey, key)
 		gl.SetPrivateKey(pk)
 		StartPrivateService()
-	}
-
-	//start listening the event of contracts
-	for _, contact := range config.Contract {
-		go StartFilterEvents(contact.Address)
 	}
 }
 
@@ -46,7 +51,7 @@ func StartPublicService() {
 func StartPrivateService() {
 	go StartExplosiveDetectServer()
 
-	go StartExplosiveReCheck()
+	//go StartExplosiveReCheck()
 
 	go StartTakeInterestServer()
 }
@@ -66,4 +71,20 @@ func Stop() {
 		QuitExplosiveReCheck <- 1
 	}
 	ServiceWaitGroup.Wait()
+}
+
+func getHistoryUsersDataFromDb() {
+	//load user's data from database
+	for _, contract := range config.Contract {
+		users, _, err := model.GetUsers(contract.Address)
+		if err != nil {
+			log.Panic("Get users from db error. ", err)
+			return
+		}
+		l := len(users)
+		for i := 0; i < l; i++ {
+			expUserList[contract.Address].Insert(&users[i])
+			interestUserList[contract.Address].update(&users[i])
+		}
+	}
 }
