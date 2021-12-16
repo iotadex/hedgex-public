@@ -63,6 +63,7 @@ var (
 	Interest            interest
 	MaxKlineCount       int
 	MaxTradeRecordCount int
+	IndexTick           time.Duration
 	ChainNode           chainNode
 	Contract            []hedgex
 	PrivateKey          string
@@ -86,6 +87,7 @@ func init() {
 		ExplosiveTo         string        `json:"explosive_to_address"`
 		KlineMaxCount       int           `json:"kline_max_count"`
 		MaxTradeRecordCount int           `json:"max_trade_count"`
+		IndexTick           time.Duration `json:"index_tick"`
 		Db                  db            `json:"db"`
 		ChainNode           chainNode     `json:"chain_node"`
 		Contract            []hedgex      `json:"contract"`
@@ -102,6 +104,7 @@ func init() {
 	WsPort = all.WsPort
 	WsTick = all.WsTick
 	MaxKlineCount = all.KlineMaxCount
+	IndexTick = all.IndexTick
 	Explosive = all.Explosive
 	Interest = all.Interest
 	ChainNode = all.ChainNode
@@ -110,5 +113,8 @@ func init() {
 	TestCoin = all.TestCoin
 	if MaxKlineCount < 1 {
 		log.Panic("max kline count must > 0")
+	}
+	if Interest.Begin >= Interest.End {
+		log.Panic("interest.begin must < interest.end")
 	}
 }

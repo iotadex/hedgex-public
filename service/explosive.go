@@ -5,6 +5,7 @@ import (
 	"hedgex-server/gl"
 	"hedgex-server/model"
 	"sync"
+	"sync/atomic"
 	"time"
 )
 
@@ -25,16 +26,11 @@ func StartExplosiveDetectServer() {
 	for {
 		select {
 		case <-timer.C:
-			auth, err := gl.GetAccountAuth()
-			if err != nil {
-				gl.OutLogger.Error("Get auth error. %v", err)
-				continue
-			}
 			for _, contract := range config.Contract {
 				//get the current price of contract
-				price, err := gl.GetIndexPrice(contract.Address)
-				if err != nil {
-					gl.OutLogger.Error("Get price from contract error. ", err)
+				price := atomic.LoadInt64(IndexPrices[contract.Address])
+				if price == 0 {
+					gl.OutLogger.Warn("Get index price error. %s", contract.Address)
 					continue
 				}
 
@@ -44,6 +40,11 @@ func StartExplosiveDetectServer() {
 					node := expUserList[contract.Address].LHead.Next
 					expUserList[contract.Address].mu.Unlock()
 					if (node == nil) || (node.ExPrice < price) {
+						break
+					}
+					auth, err := gl.GetAccountAuth()
+					if err != nil {
+						gl.OutLogger.Error("Get auth error  when explosive user. %v", err)
 						break
 					}
 					if err := gl.Explosive(auth, contract.Address, node.Account); err != nil {
@@ -62,6 +63,11 @@ func StartExplosiveDetectServer() {
 					if (node == nil) || (node.ExPrice > price) {
 						break
 					}
+					auth, err := gl.GetAccountAuth()
+					if err != nil {
+						gl.OutLogger.Error("Get auth error  when explosive user. %v", err)
+						break
+					}
 					if err := gl.Explosive(auth, contract.Address, node.Account); err != nil {
 						gl.OutLogger.Error("Explosive error. %s : %s : %v", contract.Address, node.Account, err)
 						break
@@ -71,6 +77,7 @@ func StartExplosiveDetectServer() {
 				}
 			}
 		case <-QuitExplosiveDetect:
+			timer.Stop()
 			return
 		}
 	}

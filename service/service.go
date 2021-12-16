@@ -10,20 +10,27 @@ import (
 )
 
 var ServiceWaitGroup sync.WaitGroup
+var QuitIndexPrice chan int
 var QuitKline chan int
 var QuitEvent map[string]chan int
 var QuitExplosiveDetect chan int
-var QuitExplosiveReCheck chan int
 var QuitInterestDetect chan int
+var QuitExplosivePool chan int
+var IsRunForceClose int32
 
 func init() {
+	QuitIndexPrice = make(chan int)
 	QuitKline = make(chan int)
 	QuitEvent = make(map[string]chan int)
 	QuitExplosiveDetect = make(chan int)
-	QuitExplosiveReCheck = make(chan int)
+	QuitExplosivePool = make(chan int)
+	IsRunForceClose = 0
 }
 
 func Start() {
+	//start index price service
+	go StartIndexPriceService()
+
 	//start listening the event of contracts
 	for _, contract := range config.Contract {
 		go StartFilterEvents(contract.Address)
@@ -40,6 +47,7 @@ func Start() {
 		key := tools.InputKey()
 		pk := tools.AesCBCDecrypt(config.PrivateKey, key)
 		gl.SetPrivateKey(pk)
+
 		StartPrivateService()
 	}
 }
@@ -51,25 +59,27 @@ func StartPublicService() {
 func StartPrivateService() {
 	go StartExplosiveDetectServer()
 
-	//go StartExplosiveReCheck()
-
 	go StartTakeInterestServer()
 }
 
 func Stop() {
-	//stop the event listening service
-	for _, contract := range config.Contract {
-		QuitEvent[contract.Address] <- 1
-	}
-
 	if config.Service&0x1 > 0 {
 		QuitKline <- 1
 	}
 
 	if config.Service&0x2 > 0 {
 		QuitExplosiveDetect <- 1
-		QuitExplosiveReCheck <- 1
+		QuitInterestDetect <- 1
 	}
+
+	//stop the event listening service
+	for _, contract := range config.Contract {
+		QuitEvent[contract.Address] <- 1
+	}
+
+	//stop the indexprice service
+	QuitIndexPrice <- 1
+
 	ServiceWaitGroup.Wait()
 }
 

@@ -27,9 +27,10 @@ func StartTakeInterestServer() {
 		dayCount := ts / 86400
 		offset := ts - dayCount*86400
 		if offset <= config.Interest.Begin || offset > config.Interest.End {
-			left := 86400 - offset
-			sleepTime := left / 2
-			if sleepTime < int64(config.Interest.Tick) {
+			sleepTime := (86400 - offset) / 2
+			if offset <= config.Interest.Begin {
+				sleepTime = config.Interest.Begin - offset + 1
+			} else if sleepTime < int64(config.Interest.Tick) {
 				sleepTime = int64(config.Interest.Tick)
 			}
 			time.Sleep(time.Duration(sleepTime) * time.Second)
@@ -44,21 +45,24 @@ func StartTakeInterestServer() {
 		ServiceWaitGroup.Add(1)
 		for _, contract := range config.Contract {
 			//get the pool's position
-			lp, sp, err := gl.GetPoolPosition(contract.Address)
+			_, lp, _, sp, _, _, err := gl.GetPoolPosition(contract.Address)
 			if err != nil {
+				gl.OutLogger.Error("Get account's position data from blockchain error. %s : %v", contract.Address, err)
 				continue
 			}
 			til := interestUserList[contract.Address]
-			var d int8 = 1
-			if lp < sp {
-				d = -1
+			var l map[string]*interestUser
+			if lp > sp {
+				l = til.getShortUsers()
+			} else if lp < sp {
+				l = til.getLongUsers()
 			}
-			l := til.getList(d)
+
 			for k, v := range l {
 				if v.day < uint(dayCount) {
 					if gl.DetectSlide(auth, contract.Address, k) == nil {
 						gl.OutLogger.Info("send interest over. %s", k)
-						til.flag(d, k, uint(dayCount))
+						til.flag(k, uint(dayCount))
 					}
 				}
 			}
@@ -78,15 +82,13 @@ type TakeInterestList struct {
 	mu    sync.Mutex               //user's locker
 }
 
-func (til *TakeInterestList) flag(d int8, account string, day uint) {
+func (til *TakeInterestList) flag(account string, day uint) {
 	til.mu.Lock()
 	defer til.mu.Unlock()
-	m := til.luser
-	if d < 0 {
-		m = til.suser
-	}
-	if _, exist := m[account]; exist {
-		m[account].day = day
+	if _, exist := til.luser[account]; exist {
+		til.luser[account].day = day
+	} else if _, exist := til.suser[account]; exist {
+		til.suser[account].day = day
 	}
 }
 
@@ -97,10 +99,8 @@ func (til *TakeInterestList) update(u *model.User) {
 	if !exist {
 		v, exist = til.suser[u.Account]
 	}
-	if exist {
-		if v.block > u.Block {
-			return
-		}
+	if exist && (v.block > u.Block) {
+		return
 	}
 	if u.Lposition > u.Sposition {
 		til.luser[u.Account] = &interestUser{u.Block, u.InterestDay}
@@ -114,16 +114,24 @@ func (til *TakeInterestList) update(u *model.User) {
 	}
 }
 
-func (til *TakeInterestList) getList(d int8) map[string]*interestUser {
-	l := make(map[string]*interestUser)
+func (til *TakeInterestList) getShortUsers() map[string]*interestUser {
+	su := make(map[string]*interestUser)
+	til.mu.Lock()
+	defer til.mu.Unlock()
+	m := til.suser
+	for k, v := range m {
+		su[k] = v
+	}
+	return su
+}
+
+func (til *TakeInterestList) getLongUsers() map[string]*interestUser {
+	lu := make(map[string]*interestUser)
 	til.mu.Lock()
 	defer til.mu.Unlock()
 	m := til.luser
-	if d < 0 {
-		m = til.suser
-	}
 	for k, v := range m {
-		l[k] = v
+		lu[k] = v
 	}
-	return l
+	return lu
 }

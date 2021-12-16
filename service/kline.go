@@ -5,6 +5,7 @@ import (
 	"hedgex-server/gl"
 	"hedgex-server/model"
 	"log"
+	"sync/atomic"
 	"time"
 )
 
@@ -23,10 +24,10 @@ func StartRealIndexPrice() {
 		select {
 		case <-ticker.C:
 			for i := range config.Contract {
-				if price, err := gl.Contracts[config.Contract[i].Address].GetLatestPrice(nil); err != nil {
-					gl.OutLogger.Error("Get price from contract error. ", err)
+				if price := atomic.LoadInt64(IndexPrices[config.Contract[i].Address]); price > 0 {
+					updateKline(config.Contract[i].Address, price)
 				} else {
-					updateKline(config.Contract[i].Address, price.Int64())
+					gl.OutLogger.Warn("Get index price error. %s", config.Contract[i].Address)
 				}
 			}
 		case <-QuitKline:

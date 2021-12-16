@@ -21,7 +21,7 @@ func StartFilterEvents(contractAddress string) {
 	defer ServiceWaitGroup.Done()
 	QuitEvent[contractAddress] = make(chan int)
 
-	GetHistoryEventLogs(contractAddress)
+	getHistoryEventLogs(contractAddress)
 
 	query := ethereum.FilterQuery{
 		Addresses: []common.Address{common.HexToAddress(contractAddress)},
@@ -54,7 +54,7 @@ StartFilter:
 	}
 }
 
-func GetHistoryEventLogs(contractAddress string) {
+func getHistoryEventLogs(contractAddress string) {
 	//Get the last block number from database
 	lastBlock, err := model.GetLastBlock(contractAddress)
 	if err != nil {

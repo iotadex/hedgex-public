@@ -120,7 +120,7 @@ func GetAccountAuth() (*bind.TransactOpts, error) {
 	}
 	chainID, err := EthHttpsClient.NetworkID(context.Background())
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 	auth, err := bind.NewKeyedTransactorWithChainID(privateKey, chainID) // bind.NewKeyedTransactor(privateKey)
 	if err != nil {
@@ -211,18 +211,44 @@ func DetectSlide(auth *bind.TransactOpts, add string, account string) error {
 	return nil
 }
 
+func ExplosivePool(auth *bind.TransactOpts, contract string) error {
+	nonce, err := EthHttpsClient.PendingNonceAt(context.Background(), PublicAddress)
+	if err != nil {
+		return err
+	}
+	auth.Nonce = big.NewInt(int64(nonce))
+	_, err = Contracts[contract].ExplosivePool(auth)
+	return err
+}
+
+func ForceClose(auth *bind.TransactOpts, contract string, account string) error {
+	nonce, err := EthHttpsClient.PendingNonceAt(context.Background(), PublicAddress)
+	if err != nil {
+		return err
+	}
+	auth.Nonce = big.NewInt(int64(nonce))
+	_, err = Contracts[contract].ForceCloseAccount(auth, common.HexToAddress(account), common.HexToAddress(config.Explosive.ToAddress))
+	return err
+}
+
 func GetIndexPrice(add string) (int64, error) {
 	price, err := Contracts[add].GetLatestPrice(nil)
+	if err != nil {
+		return 0, err
+	}
 	return price.Int64(), err
 }
 
-func GetPoolPosition(add string) (uint64, uint64, error) {
-	_lp, _, _sp, _, err := Contracts[add].GetPoolPosition(nil)
+func GetPoolPosition(add string) (int64, int64, int64, int64, int64, uint8, error) {
+	_total, _lp, _lprice, _sp, _sprice, _state, err := Contracts[add].GetPoolPosition(nil)
 	if err != nil {
-		OutLogger.Error("Get account's position data from blockchain error. %s", err.Error())
-		return 0, 0, err
+		return 0, 0, 0, 0, 0, 0, err
 	}
-	return _lp.Uint64(), _sp.Uint64(), nil
+	return _total.Int64(), _lp.Int64(), _lprice.Int64(), _sp.Int64(), _sprice.Int64(), _state, nil
+}
+
+func GetPoolState(add string) (uint8, error) {
+	return Contracts[add].PoolState(nil)
 }
 
 func GetCurrentBlockNumber() (uint64, error) {

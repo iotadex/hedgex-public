@@ -11,7 +11,7 @@ import (
 )
 
 func main() {
-	//daemon.Background("./out.log", true)
+	daemon.Background("./out.log", true)
 
 	//create out and err logs in logs dir
 	gl.CreateLogFiles()
