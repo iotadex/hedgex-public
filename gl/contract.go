@@ -3,6 +3,7 @@ package gl
 import (
 	"context"
 	"crypto/ecdsa"
+	"errors"
 	"hedgex-server/config"
 	"hedgex-server/contract/hedgex"
 	"log"
@@ -133,6 +134,9 @@ func GetAccountAuth() (*bind.TransactOpts, error) {
 }
 
 func SendTestCoins(account string) error {
+	if privateKey == nil {
+		return errors.New("privateKey is nil")
+	}
 	if err := sendEth(account); err != nil {
 		return err
 	}

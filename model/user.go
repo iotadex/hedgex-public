@@ -20,6 +20,68 @@ CREATE TABLE user (
 )
 */
 
+type PositionStat struct {
+	Long  int `json:"long"`
+	Short int `json:"short"`
+	Total int `json:"total"`
+}
+
+func GetStatPositions() (map[string]*PositionStat, error) {
+	rows, err := db.Query("select contract,count(account) as lc from user where lposition>0 group by contract")
+	if err != nil {
+		return nil, err
+	}
+	data := make(map[string]*PositionStat)
+	for rows.Next() {
+		var contract string
+		var lc int
+		err := rows.Scan(&contract, &lc)
+		if err != nil {
+			return nil, err
+		}
+		if _, exist := data[contract]; !exist {
+			data[contract] = &PositionStat{}
+		}
+		data[contract].Long = lc
+	}
+
+	rows, err = db.Query("select contract,count(account) as lc from user where sposition>0 group by contract")
+	if err != nil {
+		return nil, err
+	}
+	for rows.Next() {
+		var contract string
+		var lc int
+		err := rows.Scan(&contract, &lc)
+		if err != nil {
+			return nil, err
+		}
+		if _, exist := data[contract]; !exist {
+			data[contract] = &PositionStat{}
+		}
+		data[contract].Short = lc
+	}
+
+	rows, err = db.Query("select contract,count(account) as lc from user where lposition>0 or sposition>0 group by contract")
+	if err != nil {
+		return nil, err
+	}
+	for rows.Next() {
+		var contract string
+		var lc int
+		err := rows.Scan(&contract, &lc)
+		if err != nil {
+			return nil, err
+		}
+		if _, exist := data[contract]; !exist {
+			data[contract] = &PositionStat{}
+		}
+		data[contract].Total = lc
+	}
+
+	return data, nil
+}
+
 //GetLastBlock get the last block from use table
 func GetLastBlock(contract string) (int64, error) {
 	row := db.QueryRow("select block from user order by block desc limit 1")
@@ -128,6 +190,7 @@ func InsertInterest(tx string, contract string, account string, direction int8, 
 	return err
 }
 
+// UpdateTestCoin update testcoin send count
 func UpdateTestCoin(account string) error {
 	row, err := db.Query("select count from testcoin where account=?", account)
 	if err != nil {

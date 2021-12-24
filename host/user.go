@@ -33,6 +33,28 @@ func GetTradeRecords(w http.ResponseWriter, r *http.Request) {
 	w.Write(str)
 }
 
+func GetTraders(w http.ResponseWriter, r *http.Request) {
+	w.Header().Add("content-type", "application/json")
+	contract := r.URL.Query().Get("contract")
+	traders, _, err := model.GetUsers(contract)
+	if err != nil {
+		str, _ := json.Marshal(map[string]interface{}{
+			"result":   false,
+			"err_code": gl.DATABASE_ERROR,
+			"err_msg":  "database error",
+		})
+		w.Write(str)
+		gl.OutLogger.Error("Get trader from database error : %v", err)
+		return
+	}
+
+	str, _ := json.Marshal(map[string]interface{}{
+		"result": true,
+		"data":   traders,
+	})
+	w.Write(str)
+}
+
 func SendTestCoins(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("content-type", "application/json")
 	account := r.URL.Query().Get("user")

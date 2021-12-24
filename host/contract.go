@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"hedgex-server/config"
 	"hedgex-server/gl"
+	"hedgex-server/model"
 	"net/http"
 	"strconv"
 )
@@ -47,7 +48,7 @@ func GetKlineData(w http.ResponseWriter, r *http.Request) {
 	count, _ := strconv.Atoi(r.URL.Query().Get("count"))
 	if _, exist := gl.CurrentKlineDatas[contract]; !exist {
 		str, _ := json.Marshal(map[string]interface{}{
-			"result": true,
+			"result": false,
 			"data":   "Contract not exist. " + contract,
 		})
 		gl.OutLogger.Warn("Contract not exist. " + contract)
@@ -55,6 +56,26 @@ func GetKlineData(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	data := gl.CurrentKlineDatas[contract].Get(t, count)
+	str, _ := json.Marshal(map[string]interface{}{
+		"result": true,
+		"data":   data,
+	})
+	w.Write(str)
+}
+
+func GetStatPositions(w http.ResponseWriter, r *http.Request) {
+	w.Header().Add("content-type", "application/json")
+	data, err := model.GetStatPositions()
+	if err != nil {
+		str, _ := json.Marshal(map[string]interface{}{
+			"result": false,
+			"data":   "Get Position Stat From DB Error. " + err.Error(),
+		})
+		w.Write(str)
+		gl.OutLogger.Warn("Get Position Stat From DB Error. %v", err)
+		return
+	}
+
 	str, _ := json.Marshal(map[string]interface{}{
 		"result": true,
 		"data":   data,

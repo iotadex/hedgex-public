@@ -14,7 +14,9 @@ func StartHttpServer() {
 	mux.HandleFunc("/api", Index)
 	mux.HandleFunc("/api/contract/kline", GetKlineData)
 	mux.HandleFunc("/api/contract/trade_pairs", GetPairs)
+	mux.HandleFunc("/api/contract/position", GetStatPositions)
 
+	mux.HandleFunc("/api/account", GetTraders)
 	mux.HandleFunc("/api/account/trade", GetTradeRecords)
 	mux.HandleFunc("/api/account/gettestcoin", SendTestCoins)
 

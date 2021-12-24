@@ -1,7 +1,6 @@
 # Hedgex Single User Interface
 ## H5 rest api， URL : https://triple.fi/api
 ### 1. GET /contract/trade_pairs get the trade pair list
-
 #### parameter
 ```
 none
@@ -52,7 +51,48 @@ none
 |ts|int|the timestamp as second, the earliest time is the first one|
 
 
-### 3. GET /account/trade get user's trade list
+### 3. GET /contract/position get the traders' count for every contract
+#### result
+```json
+{
+    "result": true,
+    "data":{
+        "contract_address":{
+            "long":2,
+            "short":3,
+            "total":4,
+        }
+    }
+}
+```
+
+### 4. GET /account get all the trader's detail data by contract
+#### parameter
+```
+|Name|Type|Description|
+|---|:--:|---|
+|contract|string|contract address, as "0x0x1660854c03b461E6BC07f94567D1D6E6bF99a1A9"|
+```
+#### result
+```json
+{
+    "result": true,
+    "data":[
+		{
+            "account":"trader address",
+            "margin":1,
+            "lposition":0,
+            "lprice":0,
+            "sposition":0,
+            "sprice":0,
+            "interestDay":1234,
+            "block":123445
+        }
+	]
+}
+```
+
+### 5. GET /account/trade get user's trade list
 #### parameter
 |Name|Type|Description|
 |---|:--:|---|
@@ -81,7 +121,7 @@ none
 |amount|int|piece|
 |price|int|the price of one piece|
 
-### 4. GET /account/explosive get the user's explosive list
+### 6. GET /account/explosive get the user's explosive list
 #### parameter
 |Name|Type|Description|
 |---|:--:|---|
@@ -108,7 +148,7 @@ none
 |amount|int|piece|
 |price|int|the price of one piece|
 
-### 5. /account/interest get user's interest records
+### 7. GET /account/interest get user's interest records
 #### parameter
 |Name|Type|Description|
 |---|:--:|---|
@@ -135,7 +175,7 @@ none
 |amount|int|the margin's amount|
 |price|int|the price of one piece|
 
-### 6. /account/gettestcoin?user={address} Send testcoin to the account, each account can be get 0.3eth and 30000usdt.
+### 8. GET /account/gettestcoin?user={address} Send testcoin to the account, each account can be get 0.3eth and 30000usdt.
 #### result
 ```json
 {
