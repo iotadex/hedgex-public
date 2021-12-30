@@ -30,18 +30,6 @@ type chainNode struct {
 	Wss   string `json:"ws"`
 }
 
-type explosive struct {
-	Tick      time.Duration `json:"tick"`
-	ToAddress string        `json:"to_address"`
-}
-
-type interest struct {
-	Tick      time.Duration `json:"tick"`
-	Begin     int64         `json:"begin"`
-	End       int64         `json:"end"`
-	ToAddress string        `json:"to_address"`
-}
-
 type testcoin struct {
 	Count       int    `json:"count"`
 	CoinAmount  string `json:"coin_amount"`
