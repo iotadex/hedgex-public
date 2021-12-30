@@ -19,6 +19,12 @@ type pair struct {
 
 //GetPairs get the contract's trade pairs
 func GetPairs(w http.ResponseWriter, r *http.Request) {
+	defer func() {
+		err := recover()
+		if err != nil {
+			gl.OutLogger.Error("Panic: %v", err)
+		}
+	}()
 	w.Header().Add("content-type", "application/json")
 	//get current indexPrice and current day's open price
 	pairs := make([]pair, len(config.Contract))
@@ -42,6 +48,12 @@ func GetPairs(w http.ResponseWriter, r *http.Request) {
 
 //GetKlineData get the contract's history kline data
 func GetKlineData(w http.ResponseWriter, r *http.Request) {
+	defer func() {
+		err := recover()
+		if err != nil {
+			gl.OutLogger.Error("Panic: %v", err)
+		}
+	}()
 	w.Header().Add("content-type", "application/json")
 	contract := r.URL.Query().Get("contract")
 	t := r.URL.Query().Get("type")
@@ -64,6 +76,12 @@ func GetKlineData(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetStatPositions(w http.ResponseWriter, r *http.Request) {
+	defer func() {
+		err := recover()
+		if err != nil {
+			gl.OutLogger.Error("Panic: %v", err)
+		}
+	}()
 	w.Header().Add("content-type", "application/json")
 	data, err := model.GetStatPositions()
 	if err != nil {
