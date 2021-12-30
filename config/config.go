@@ -50,25 +50,17 @@ type testcoin struct {
 }
 
 var (
-	//Service, its'value indicate running different service.
-	//1 is only run the public service that not need privatekey of wallet;
-	//2 only run explosive and interest service that need privatekey of wallet;
-	//3 run both 1 and 2;
-	Env                 string
-	Service             int
-	Db                  db
-	HttpPort            int
-	WsPort              int
-	WsTick              time.Duration
-	Explosive           explosive
-	Interest            interest
-	MaxKlineCount       int
-	MaxTradeRecordCount int
-	IndexTick           time.Duration
-	ChainNode           chainNode
-	Contract            []hedgex
-	PrivateKey          string
-	TestCoin            testcoin
+	Env           string
+	Db            db
+	HttpPort      int
+	WsPort        int
+	WsTick        time.Duration
+	MaxKlineCount int
+	IndexTick     time.Duration
+	ChainNode     chainNode
+	Contract      []hedgex
+	PrivateKey    string
+	TestCoin      testcoin
 )
 
 //Load load config file
@@ -79,45 +71,36 @@ func init() {
 	}
 	defer file.Close()
 	type Config struct {
-		Env                 string        `json:"env"`
-		Service             int           `json:"service"`
-		HttpPort            int           `json:"http_port"`
-		WsPort              int           `json:"ws_port"`
-		WsTick              time.Duration `json:"ws_tick"`
-		Explosive           explosive     `json:"explosive"`
-		Interest            interest      `json:"interest"`
-		ExplosiveTo         string        `json:"explosive_to_address"`
-		KlineMaxCount       int           `json:"kline_max_count"`
-		MaxTradeRecordCount int           `json:"max_trade_count"`
-		IndexTick           time.Duration `json:"index_tick"`
-		Db                  db            `json:"db"`
-		ChainNode           chainNode     `json:"chain_node"`
-		Contract            []hedgex      `json:"contract"`
-		PrivateKey          string        `json:"wallet"`
-		TestCoin            testcoin      `json:"testcoin"`
+		Env           string        `json:"env"`
+		Service       int           `json:"service"`
+		HttpPort      int           `json:"http_port"`
+		WsPort        int           `json:"ws_port"`
+		WsTick        time.Duration `json:"ws_tick"`
+		ExplosiveTo   string        `json:"explosive_to_address"`
+		KlineMaxCount int           `json:"kline_max_count"`
+		IndexTick     time.Duration `json:"index_tick"`
+		Db            db            `json:"db"`
+		ChainNode     chainNode     `json:"chain_node"`
+		Contract      []hedgex      `json:"contract"`
+		PrivateKey    string        `json:"wallet"`
+		TestCoin      testcoin      `json:"testcoin"`
 	}
 	all := &Config{}
 	if err = json.NewDecoder(file).Decode(all); err != nil {
 		log.Panic(err)
 	}
 	Env = all.Env
-	Service = all.Service
 	Db = all.Db
 	HttpPort = all.HttpPort
 	WsPort = all.WsPort
 	WsTick = all.WsTick
 	MaxKlineCount = all.KlineMaxCount
 	IndexTick = all.IndexTick
-	Explosive = all.Explosive
-	Interest = all.Interest
 	ChainNode = all.ChainNode
 	Contract = all.Contract
 	PrivateKey = all.PrivateKey
 	TestCoin = all.TestCoin
 	if MaxKlineCount < 1 {
 		log.Panic("max kline count must > 0")
-	}
-	if Interest.Begin >= Interest.End {
-		log.Panic("interest.begin must < interest.end")
 	}
 }
