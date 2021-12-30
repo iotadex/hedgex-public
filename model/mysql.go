@@ -2,7 +2,7 @@ package model
 
 import (
 	"database/sql"
-	"hedgex-server/config"
+	"hedgex-public/config"
 	"log"
 	"time"
 

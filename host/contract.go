@@ -2,9 +2,9 @@ package host
 
 import (
 	"encoding/json"
-	"hedgex-server/config"
-	"hedgex-server/gl"
-	"hedgex-server/model"
+	"hedgex-public/config"
+	"hedgex-public/gl"
+	"hedgex-public/model"
 	"net/http"
 	"strconv"
 )

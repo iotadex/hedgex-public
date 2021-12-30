@@ -2,8 +2,8 @@ package host
 
 import (
 	"encoding/json"
-	"hedgex-server/gl"
-	"hedgex-server/model"
+	"hedgex-public/gl"
+	"hedgex-public/model"
 	"net/http"
 	"strconv"
 )

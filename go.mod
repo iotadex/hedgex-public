@@ -1,4 +1,4 @@
-module hedgex-server
+module hedgex-public
 
 go 1.13
 

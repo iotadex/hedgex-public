@@ -1,8 +1,8 @@
 package host
 
 import (
-	"hedgex-server/config"
-	"hedgex-server/gl"
+	"hedgex-public/config"
+	"hedgex-public/gl"
 	"net/http"
 	"strings"
 	"time"

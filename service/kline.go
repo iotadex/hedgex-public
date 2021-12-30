@@ -1,9 +1,9 @@
 package service
 
 import (
-	"hedgex-server/config"
-	"hedgex-server/gl"
-	"hedgex-server/model"
+	"hedgex-public/config"
+	"hedgex-public/gl"
+	"hedgex-public/model"
 	"log"
 	"sync/atomic"
 	"time"

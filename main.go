@@ -2,12 +2,12 @@ package main
 
 import (
 	"context"
-	"hedgex-server/config"
-	"hedgex-server/daemon"
-	"hedgex-server/gl"
-	"hedgex-server/host"
-	"hedgex-server/model"
-	"hedgex-server/service"
+	"hedgex-public/config"
+	"hedgex-public/daemon"
+	"hedgex-public/gl"
+	"hedgex-public/host"
+	"hedgex-public/model"
+	"hedgex-public/service"
 )
 
 func main() {

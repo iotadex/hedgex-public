@@ -1,7 +1,7 @@
 package gl
 
 import (
-	"hedgex-server/logger"
+	"hedgex-public/logger"
 	"log"
 	"net/http"
 	"os"

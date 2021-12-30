@@ -1,7 +1,7 @@
 package gl
 
 import (
-	"hedgex-server/config"
+	"hedgex-public/config"
 	"sync"
 )
 
