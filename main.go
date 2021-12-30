@@ -11,7 +11,9 @@ import (
 )
 
 func main() {
-	daemon.Background("./out.log", true)
+	if config.Env == "product" {
+		daemon.Background("./out.log", true)
+	}
 
 	//create out and err logs in logs dir
 	gl.CreateLogFiles()
@@ -26,9 +28,7 @@ func main() {
 	service.Start()
 
 	//start http service
-	if config.Service&0x1 > 0 {
-		go host.StartHttpServer()
-	}
+	go host.StartHttpServer()
 
 	//wait to exit single
 	daemon.WaitForKill()

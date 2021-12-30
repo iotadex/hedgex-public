@@ -9,7 +9,7 @@ import (
 	"time"
 )
 
-func StartRealIndexPrice() {
+func StartRealKline() {
 	ServiceWaitGroup.Add(1)
 	defer ServiceWaitGroup.Done()
 

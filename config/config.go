@@ -44,7 +44,7 @@ type interest struct {
 
 type testcoin struct {
 	Count       int    `json:"count"`
-	CoinAnount  string `json:"coin_amount"`
+	CoinAmount  string `json:"coin_amount"`
 	Token       string `json:"token"`
 	TokenAmount string `json:"token_amount"`
 }
@@ -54,6 +54,7 @@ var (
 	//1 is only run the public service that not need privatekey of wallet;
 	//2 only run explosive and interest service that need privatekey of wallet;
 	//3 run both 1 and 2;
+	Env                 string
 	Service             int
 	Db                  db
 	HttpPort            int
@@ -78,6 +79,7 @@ func init() {
 	}
 	defer file.Close()
 	type Config struct {
+		Env                 string        `json:"env"`
 		Service             int           `json:"service"`
 		HttpPort            int           `json:"http_port"`
 		WsPort              int           `json:"ws_port"`
@@ -98,6 +100,7 @@ func init() {
 	if err = json.NewDecoder(file).Decode(all); err != nil {
 		log.Panic(err)
 	}
+	Env = all.Env
 	Service = all.Service
 	Db = all.Db
 	HttpPort = all.HttpPort

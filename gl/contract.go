@@ -6,6 +6,7 @@ import (
 	"errors"
 	"hedgex-server/config"
 	"hedgex-server/contract/hedgex"
+	"hedgex-server/tools"
 	"log"
 	"math/big"
 	"strings"
@@ -98,6 +99,10 @@ func InitContract() {
 	if err != nil {
 		log.Panic(err)
 	}
+
+	key := tools.InputKey()
+	pk := tools.AesCBCDecrypt(config.PrivateKey, key)
+	SetPrivateKey(pk)
 }
 
 func SetPrivateKey(pk string) {
@@ -147,7 +152,7 @@ func SendTestCoins(account string) error {
 }
 
 func sendEth(to string) error {
-	value, _ := new(big.Int).SetString(config.TestCoin.CoinAnount, 10)
+	value, _ := new(big.Int).SetString(config.TestCoin.CoinAmount, 10)
 	return sendTransaction(common.HexToAddress(to), value, nil)
 }
 
@@ -162,6 +167,33 @@ func sendERC20(to string) error {
 	data = append(data, paddedAmount...)
 	value := big.NewInt(0) // in wei (0 eth)
 	return sendTransaction(common.HexToAddress(config.TestCoin.Token), value, data)
+}
+
+func SendTransaction(to common.Address, value *big.Int, data []byte) error {
+	gasPrice, err := EthHttpsClient.SuggestGasPrice(context.Background())
+	if err != nil {
+		OutLogger.Error("get gas price error. %v", err)
+		return err
+	}
+	nonce, err := EthHttpsClient.PendingNonceAt(context.Background(), PublicAddress)
+	if err != nil {
+		OutLogger.Error("get nonce error address(%s). %v", PublicAddress, err)
+		return err
+	}
+	gasLimit := uint64(3000000)
+	tx := types.NewTransaction(nonce, to, value, gasLimit, gasPrice, data)
+	signedTx, err := types.SignTx(tx, types.NewEIP155Signer(chainID), privateKey)
+	if err != nil {
+		OutLogger.Error("create signedTx error. %v", err)
+		return err
+	}
+
+	err = EthHttpsClient.SendTransaction(context.Background(), signedTx)
+	if err != nil {
+		OutLogger.Error("send signedTx error. %v", err)
+		return err
+	}
+	return nil
 }
 
 func sendTransaction(to common.Address, value *big.Int, data []byte) error {

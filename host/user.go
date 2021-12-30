@@ -10,6 +10,12 @@ import (
 
 //GetKlineData get the contract's history kline data
 func GetTradeRecords(w http.ResponseWriter, r *http.Request) {
+	defer func() {
+		err := recover()
+		if err != nil {
+			gl.OutLogger.Error("Panic: %v", err)
+		}
+	}()
 	w.Header().Add("content-type", "application/json")
 	contract := r.URL.Query().Get("contract")
 	account := r.URL.Query().Get("account")
@@ -34,6 +40,12 @@ func GetTradeRecords(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetTraders(w http.ResponseWriter, r *http.Request) {
+	defer func() {
+		err := recover()
+		if err != nil {
+			gl.OutLogger.Error("Panic: %v", err)
+		}
+	}()
 	w.Header().Add("content-type", "application/json")
 	contract := r.URL.Query().Get("contract")
 	traders, _, err := model.GetUsers(contract)
@@ -56,6 +68,12 @@ func GetTraders(w http.ResponseWriter, r *http.Request) {
 }
 
 func SendTestCoins(w http.ResponseWriter, r *http.Request) {
+	defer func() {
+		err := recover()
+		if err != nil {
+			gl.OutLogger.Error("Panic: %v", err)
+		}
+	}()
 	w.Header().Add("content-type", "application/json")
 	account := r.URL.Query().Get("user")
 	if err := model.UpdateTestCoin(account); err != nil {
