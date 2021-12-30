@@ -1,4 +1,0 @@
-2021/12/24 21:30:45 Get event logs from eth client error.  Blockheight too far in the past: eth_getLogs. Range of blocks allowed for your plan: 1000
-2021/12/24 21:30:45 Get event logs from eth client error.  Blockheight too far in the past: eth_getLogs. Range of blocks allowed for your plan: 1000
-process stop. 15 : 31703 
-2021/12/24 21:32:41 http: Server closed
