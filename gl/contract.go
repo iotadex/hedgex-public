@@ -223,24 +223,24 @@ func sendTransaction(to common.Address, value *big.Int, data []byte) error {
 	return nil
 }
 
-func Explosive(auth *bind.TransactOpts, contract string, account string) error {
+func Explosive(auth *bind.TransactOpts, contract string, account string, to string) error {
 	nonce, err := EthHttpsClient.PendingNonceAt(context.Background(), PublicAddress)
 	if err != nil {
 		return err
 	}
 	auth.Nonce = big.NewInt(int64(nonce))
-	_, err = Contracts[contract].Explosive(auth, common.HexToAddress(account), common.HexToAddress(config.Explosive.ToAddress))
+	_, err = Contracts[contract].Explosive(auth, common.HexToAddress(account), common.HexToAddress(to))
 	return err
 }
 
-func DetectSlide(auth *bind.TransactOpts, add string, account string) error {
+func DetectSlide(auth *bind.TransactOpts, add string, account string, to string) error {
 	nonce, err := EthHttpsClient.PendingNonceAt(context.Background(), PublicAddress)
 	if err != nil {
 		OutLogger.Error("Take interest : Get nonce error address(%s). %v", PublicAddress, err)
 		return err
 	}
 	auth.Nonce = big.NewInt(int64(nonce))
-	if _, err := Contracts[add].DetectSlide(auth, common.HexToAddress(account), common.HexToAddress(config.Interest.ToAddress)); err != nil {
+	if _, err := Contracts[add].DetectSlide(auth, common.HexToAddress(account), common.HexToAddress(to)); err != nil {
 		OutLogger.Error("Transaction with detect slide error. %v", err)
 		return err
 	}
@@ -257,13 +257,13 @@ func ExplosivePool(auth *bind.TransactOpts, contract string) error {
 	return err
 }
 
-func ForceClose(auth *bind.TransactOpts, contract string, account string) error {
+func ForceClose(auth *bind.TransactOpts, contract string, account string, to string) error {
 	nonce, err := EthHttpsClient.PendingNonceAt(context.Background(), PublicAddress)
 	if err != nil {
 		return err
 	}
 	auth.Nonce = big.NewInt(int64(nonce))
-	_, err = Contracts[contract].ForceCloseAccount(auth, common.HexToAddress(account), common.HexToAddress(config.Explosive.ToAddress))
+	_, err = Contracts[contract].ForceCloseAccount(auth, common.HexToAddress(account), common.HexToAddress(to))
 	return err
 }
 

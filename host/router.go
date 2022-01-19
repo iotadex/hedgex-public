@@ -11,16 +11,22 @@ import (
 
 func StartHttpServer() {
 	mux := http.NewServeMux()
-	mux.HandleFunc("/api", Index)
-	mux.HandleFunc("/api/contract/kline", GetKlineData)
-	mux.HandleFunc("/api/contract/trade_pairs", GetPairs)
-	mux.HandleFunc("/api/contract/position", GetStatPositions)
+	chainNet := ""
+	if len(config.ChainNode.Name) > 0 {
+		chainNet = "/" + config.ChainNode.Name
+	}
+	mux.HandleFunc(chainNet+"/api", Index)
+	mux.HandleFunc(chainNet+"/api/contract/kline", GetKlineData)
+	mux.HandleFunc(chainNet+"/api/contract/trade_pairs", GetPairs)
+	mux.HandleFunc(chainNet+"/api/contract/position", GetStatPositions)
 
-	mux.HandleFunc("/api/account", GetTraders)
-	mux.HandleFunc("/api/account/trade", GetTradeRecords)
-	mux.HandleFunc("/api/account/gettestcoin", SendTestCoins)
+	mux.HandleFunc(chainNet+"/api/account", GetTraders)
+	mux.HandleFunc(chainNet+"/api/account/trade", GetTradeRecords)
+	mux.HandleFunc(chainNet+"/api/account/interest", GetInterest)
+	mux.HandleFunc(chainNet+"/api/account/explosive", GetExplosive)
+	mux.HandleFunc(chainNet+"/api/account/gettestcoin", SendTestCoins)
 
-	mux.HandleFunc("/wss/kline", klineSender) // this is for websocket
+	mux.HandleFunc(chainNet+"/wss/kline", klineSender) // this is for websocket
 
 	gl.HttpServer = &http.Server{
 		Addr:    "localhost:" + strconv.Itoa(config.HttpPort),

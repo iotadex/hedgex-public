@@ -165,14 +165,14 @@ type Trade struct {
 
 // GetTradeRecords account's trade records
 func GetTradeRecords(contract string, account string, count int) ([]Trade, error) {
-	rows, err := db.Query("select tx,direction,amount,price from trade where contract=? and account=? order by block desc limit ?", contract, account, count)
+	rows, err := db.Query("select tx,direction,amount,price,block from trade where contract=? and account=? order by block desc limit ?", contract, account, count)
 	if err != nil {
 		return nil, err
 	}
 	data := make([]Trade, 0, 1)
 	for rows.Next() {
 		t := Trade{}
-		rows.Scan(&t.Tx, &t.Direction, &t.Amount, &t.Price)
+		rows.Scan(&t.Tx, &t.Direction, &t.Amount, &t.Price, &t.Block)
 		data = append(data, t)
 	}
 	return data, nil
@@ -184,10 +184,46 @@ func InsertExplosive(tx string, contract string, account string, direction int8,
 	return err
 }
 
+func GetExplosive(contract string, account string, count int) ([]Interest, error) {
+	rows, err := db.Query("select tx,direction,amount,price,block from explosive where contract=? and account=? order by block desc limit ?", contract, account, count)
+	if err != nil {
+		return nil, err
+	}
+	data := make([]Interest, 0, 1)
+	for rows.Next() {
+		t := Interest{}
+		rows.Scan(&t.Tx, &t.Direction, &t.Amount, &t.Price, &t.Block)
+		data = append(data, t)
+	}
+	return data, nil
+}
+
 // InsertTrade insert a trade record
 func InsertInterest(tx string, contract string, account string, direction int8, amount uint64, price uint64, block uint64) error {
 	_, err := db.Exec("insert into interest(tx,contract,account,direction,amount,price,block) values(?,?,?,?,?,?,?)", tx, contract, account, direction, amount, price, block)
 	return err
+}
+
+type Interest struct {
+	Tx        string `json:"tx"`
+	Direction int8   `json:"direction"`
+	Amount    uint64 `json:"amount"`
+	Price     uint64 `json:"price"`
+	Block     uint64 `json:"block"`
+}
+
+func GetInterests(contract string, account string, count int) ([]Interest, error) {
+	rows, err := db.Query("select tx,direction,amount,price,block from interest where contract=? and account=? order by block desc limit ?", contract, account, count)
+	if err != nil {
+		return nil, err
+	}
+	data := make([]Interest, 0, 1)
+	for rows.Next() {
+		t := Interest{}
+		rows.Scan(&t.Tx, &t.Direction, &t.Amount, &t.Price, &t.Block)
+		data = append(data, t)
+	}
+	return data, nil
 }
 
 // UpdateTestCoin update testcoin send count
