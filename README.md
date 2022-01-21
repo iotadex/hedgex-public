@@ -128,6 +128,7 @@ none
 |contract|string|contract address, as "0x0x1660854c03b461E6BC07f94567D1D6E6bF99a1A9"|
 |account|string|user's wallet address|
 |count|int|the count of list, max is 100 latest|
+|direction|int| as same with trade
 #### result
 ```json
 {

@@ -108,7 +108,7 @@ func GetExplosive(w http.ResponseWriter, r *http.Request) {
 	contract := r.URL.Query().Get("contract")
 	account := r.URL.Query().Get("account")
 	count, _ := strconv.Atoi(r.URL.Query().Get("count"))
-	interests, err := model.GetInterests(contract, account, count)
+	interests, err := model.GetExplosive(contract, account, count)
 	if err != nil {
 		str, _ := json.Marshal(map[string]interface{}{
 			"result":   false,
