@@ -138,7 +138,8 @@ none
             "tx":"transaction hash",
             "block":12234,
             "amount":10,
-            "price":52346
+            "price":52346,
+            "direction":1
         }
 	]
 }
