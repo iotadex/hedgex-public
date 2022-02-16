@@ -186,6 +186,24 @@ none
 }
 ```
 
+### 9. GET /odds/add_email?email={address} send user's email to us
+#### result
+```json
+{
+    "result": true,
+    "data":""
+}
+```
+
+### 10. GET /odds/emails?from={timestamp}&to={timestamp} get email addresses with timestamp
+#### result
+```json
+{
+    "result": true,
+    "data":["email1","email2"]
+}
+```
+
 ## kline websockt， URL : wss://triple.fi/wss/kline
 ```
 When the websocket connection is established. Send the kline's type string with contract address(address:m1,address:m5,...), then the kline data will be send from the server.

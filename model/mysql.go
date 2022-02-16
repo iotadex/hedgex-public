@@ -2,6 +2,7 @@ package model
 
 import (
 	"database/sql"
+	"fmt"
 	"hedgex-public/config"
 	"log"
 	"time"
@@ -28,4 +29,14 @@ func ConnectToMysql() {
 	if err = db.Ping(); nil != err {
 		log.Panic("Connect to Mysql error : " + err.Error())
 	}
+}
+
+func Ping() error {
+	if db == nil {
+		return fmt.Errorf("mysql connection is nil")
+	}
+	if err := db.Ping(); nil != err {
+		return fmt.Errorf("connect to Mysql error : %v", err)
+	}
+	return nil
 }

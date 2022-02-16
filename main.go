@@ -28,7 +28,7 @@ func main() {
 	service.Start()
 
 	//start http service
-	go host.StartHttpServer()
+	host.StartHttpServer()
 
 	//wait to exit single
 	daemon.WaitForKill()

@@ -7,10 +7,11 @@ import (
 	"strings"
 	"time"
 
+	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
 )
 
-func klineSender(w http.ResponseWriter, r *http.Request) {
+func klineSender(c *gin.Context) {
 	var upgrader = websocket.Upgrader{
 		ReadBufferSize:  1024,
 		WriteBufferSize: 1024,
@@ -18,17 +19,20 @@ func klineSender(w http.ResponseWriter, r *http.Request) {
 			return true
 		},
 	}
-	c, err := upgrader.Upgrade(w, r, nil)
+	ws, err := upgrader.Upgrade(c.Writer, c.Request, nil)
 	if err != nil {
-		w.Write([]byte("http upgrade to ws error :" + err.Error()))
+		c.JSON(http.StatusOK, gin.H{
+			"result":  false,
+			"err_msg": "http upgrade to ws error : " + err.Error(),
+		})
 		gl.OutLogger.Error("http upgrade to ws error :" + err.Error())
 		return
 	}
-	defer c.Close()
 
-	mt, message, err := c.ReadMessage()
+	defer ws.Close()
+	mt, message, err := ws.ReadMessage()
 	if err != nil || mt != websocket.TextMessage {
-		c.WriteMessage(mt, message)
+		ws.WriteMessage(mt, message)
 		gl.OutLogger.Error("Read msg error : %d, %s", mt, err.Error())
 		return
 	}
@@ -39,11 +43,11 @@ func klineSender(w http.ResponseWriter, r *http.Request) {
 	defer ticker.Stop()
 	for range ticker.C {
 		if ckd, exist := gl.CurrentKlineDatas[strs[0]]; !exist {
-			c.WriteJSON("contract no exist")
+			ws.WriteJSON("contract no exist")
 			break
 		} else {
 			data := ckd.GetCurrent(strs[1])
-			if err := c.WriteJSON(data); err != nil {
+			if err := ws.WriteJSON(data); err != nil {
 				gl.OutLogger.Info("Write to ws error. %v", err)
 				break
 			}

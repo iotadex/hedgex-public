@@ -20,7 +20,6 @@ var HttpServer *http.Server
 
 func CreateLogFiles() {
 	var err error
-	// 初始化全局日志文件
 	if err = os.MkdirAll("./logs", os.ModePerm); err != nil {
 		log.Panic("Create dir './logs' error. " + err.Error())
 	}

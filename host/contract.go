@@ -1,12 +1,13 @@
 package host
 
 import (
-	"encoding/json"
 	"hedgex-public/config"
 	"hedgex-public/gl"
 	"hedgex-public/model"
 	"net/http"
 	"strconv"
+
+	"github.com/gin-gonic/gin"
 )
 
 type pair struct {
@@ -17,15 +18,8 @@ type pair struct {
 	IndexPrice   int64  `json:"index_price"`
 }
 
-//GetPairs get the contract's trade pairs
-func GetPairs(w http.ResponseWriter, r *http.Request) {
-	defer func() {
-		err := recover()
-		if err != nil {
-			gl.OutLogger.Error("Panic: %v", err)
-		}
-	}()
-	w.Header().Add("content-type", "application/json")
+//GetTradePairs get the contract's trade pairs
+func GetTradePairs(c *gin.Context) {
 	//get current indexPrice and current day's open price
 	pairs := make([]pair, len(config.Contract))
 	for i := range config.Contract {
@@ -39,64 +33,44 @@ func GetPairs(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	str, _ := json.Marshal(map[string]interface{}{
+	c.JSON(http.StatusOK, gin.H{
 		"result": true,
 		"data":   pairs,
 	})
-	w.Write(str)
 }
 
 //GetKlineData get the contract's history kline data
-func GetKlineData(w http.ResponseWriter, r *http.Request) {
-	defer func() {
-		err := recover()
-		if err != nil {
-			gl.OutLogger.Error("Panic: %v", err)
-		}
-	}()
-	w.Header().Add("content-type", "application/json")
-	contract := r.URL.Query().Get("contract")
-	t := r.URL.Query().Get("type")
-	count, _ := strconv.Atoi(r.URL.Query().Get("count"))
+func GetKlineData(c *gin.Context) {
+	contract := c.Query("contract")
+	t := c.Query("type")
+	count, _ := strconv.Atoi(c.DefaultQuery("count", "1"))
 	if _, exist := gl.CurrentKlineDatas[contract]; !exist {
-		str, _ := json.Marshal(map[string]interface{}{
-			"result": false,
-			"data":   "Contract not exist. " + contract,
+		c.JSON(http.StatusOK, gin.H{
+			"result":  false,
+			"err_msg": "Contract not exist. " + contract,
 		})
 		gl.OutLogger.Warn("Contract not exist. " + contract)
-		w.Write(str)
 		return
 	}
 	data := gl.CurrentKlineDatas[contract].Get(t, count)
-	str, _ := json.Marshal(map[string]interface{}{
+	c.JSON(http.StatusOK, gin.H{
 		"result": true,
 		"data":   data,
 	})
-	w.Write(str)
 }
 
-func GetStatPositions(w http.ResponseWriter, r *http.Request) {
-	defer func() {
-		err := recover()
-		if err != nil {
-			gl.OutLogger.Error("Panic: %v", err)
-		}
-	}()
-	w.Header().Add("content-type", "application/json")
+func GetStatPositions(c *gin.Context) {
 	data, err := model.GetStatPositions()
 	if err != nil {
-		str, _ := json.Marshal(map[string]interface{}{
-			"result": false,
-			"data":   "Get Position Stat From DB Error. " + err.Error(),
+		c.JSON(http.StatusOK, gin.H{
+			"result":  false,
+			"err_msg": "Get Position Stat From DB Error. " + err.Error(),
 		})
-		w.Write(str)
 		gl.OutLogger.Warn("Get Position Stat From DB Error. %v", err)
 		return
 	}
-
-	str, _ := json.Marshal(map[string]interface{}{
+	c.JSON(http.StatusOK, gin.H{
 		"result": true,
 		"data":   data,
 	})
-	w.Write(str)
 }

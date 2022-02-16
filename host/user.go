@@ -6,125 +6,87 @@ import (
 	"hedgex-public/model"
 	"net/http"
 	"strconv"
+
+	"github.com/gin-gonic/gin"
 )
 
-//GetKlineData get the contract's history kline data
-func GetTradeRecords(w http.ResponseWriter, r *http.Request) {
-	defer func() {
-		err := recover()
-		if err != nil {
-			gl.OutLogger.Error("Panic: %v", err)
-		}
-	}()
-	w.Header().Add("content-type", "application/json")
-	contract := r.URL.Query().Get("contract")
-	account := r.URL.Query().Get("account")
-	count, _ := strconv.Atoi(r.URL.Query().Get("count"))
-	data, err := model.GetTradeRecords(contract, account, count)
-	if err != nil {
-		str, _ := json.Marshal(map[string]interface{}{
-			"result":   false,
-			"err_code": gl.DATABASE_ERROR,
-			"err_msg":  "database error",
-		})
-		w.Write(str)
-		gl.OutLogger.Error("Get trade records from database error : %v", err)
-		return
-	}
-
-	str, _ := json.Marshal(map[string]interface{}{
-		"result": true,
-		"data":   data,
-	})
-	w.Write(str)
-}
-
-func GetTraders(w http.ResponseWriter, r *http.Request) {
-	defer func() {
-		err := recover()
-		if err != nil {
-			gl.OutLogger.Error("Panic: %v", err)
-		}
-	}()
-	w.Header().Add("content-type", "application/json")
-	contract := r.URL.Query().Get("contract")
+func GetTraders(c *gin.Context) {
+	contract := c.Query("contract")
 	traders, _, err := model.GetUsers(contract)
 	if err != nil {
-		str, _ := json.Marshal(map[string]interface{}{
-			"result":   false,
-			"err_code": gl.DATABASE_ERROR,
-			"err_msg":  "database error",
+		c.JSON(http.StatusOK, gin.H{
+			"result":  false,
+			"err_msg": "database error " + contract,
 		})
-		w.Write(str)
 		gl.OutLogger.Error("Get trader from database error : %v", err)
 		return
 	}
 
-	str, _ := json.Marshal(map[string]interface{}{
+	c.JSON(http.StatusOK, gin.H{
 		"result": true,
 		"data":   traders,
 	})
-	w.Write(str)
 }
 
-func GetInterest(w http.ResponseWriter, r *http.Request) {
-	defer func() {
-		err := recover()
-		if err != nil {
-			gl.OutLogger.Error("Panic: %v", err)
-		}
-	}()
-	w.Header().Add("content-type", "application/json")
-	contract := r.URL.Query().Get("contract")
-	account := r.URL.Query().Get("account")
-	count, _ := strconv.Atoi(r.URL.Query().Get("count"))
+//GetKlineData get the contract's history kline data
+func GetTradeRecords(c *gin.Context) {
+	contract := c.Query("contract")
+	account := c.Query("account")
+	count, _ := strconv.Atoi(c.DefaultQuery("count", "1"))
+	data, err := model.GetTradeRecords(contract, account, count)
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"result":  false,
+			"err_msg": "database error " + contract,
+		})
+		gl.OutLogger.Error("Get trade records from database error : %v", err)
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"result": true,
+		"data":   data,
+	})
+}
+
+func GetInterest(c *gin.Context) {
+	contract := c.Query("contract")
+	account := c.Query("account")
+	count, _ := strconv.Atoi(c.DefaultQuery("count", "1"))
 	interests, err := model.GetInterests(contract, account, count)
 	if err != nil {
-		str, _ := json.Marshal(map[string]interface{}{
-			"result":   false,
-			"err_code": gl.DATABASE_ERROR,
-			"err_msg":  "database error",
+		c.JSON(http.StatusOK, gin.H{
+			"result":  false,
+			"err_msg": "database error " + contract,
 		})
-		w.Write(str)
 		gl.OutLogger.Error("Get interests from database error : %v", err)
 		return
 	}
 
-	str, _ := json.Marshal(map[string]interface{}{
+	c.JSON(http.StatusOK, gin.H{
 		"result": true,
 		"data":   interests,
 	})
-	w.Write(str)
 }
 
-func GetExplosive(w http.ResponseWriter, r *http.Request) {
-	defer func() {
-		err := recover()
-		if err != nil {
-			gl.OutLogger.Error("Panic: %v", err)
-		}
-	}()
-	w.Header().Add("content-type", "application/json")
-	contract := r.URL.Query().Get("contract")
-	account := r.URL.Query().Get("account")
-	count, _ := strconv.Atoi(r.URL.Query().Get("count"))
-	interests, err := model.GetExplosive(contract, account, count)
+func GetExplosive(c *gin.Context) {
+	contract := c.Query("contract")
+	account := c.Query("account")
+	count, _ := strconv.Atoi(c.DefaultQuery("count", "1"))
+	explosives, err := model.GetExplosive(contract, account, count)
 	if err != nil {
-		str, _ := json.Marshal(map[string]interface{}{
-			"result":   false,
-			"err_code": gl.DATABASE_ERROR,
-			"err_msg":  "database error",
+		c.JSON(http.StatusOK, gin.H{
+			"result":  false,
+			"err_msg": "database error " + contract,
 		})
-		w.Write(str)
 		gl.OutLogger.Error("Get explosive from database error : %v", err)
 		return
 	}
 
-	str, _ := json.Marshal(map[string]interface{}{
+	c.JSON(http.StatusOK, gin.H{
 		"result": true,
-		"data":   interests,
+		"data":   explosives,
 	})
-	w.Write(str)
 }
 
 func SendTestCoins(w http.ResponseWriter, r *http.Request) {
@@ -147,7 +109,7 @@ func SendTestCoins(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	go gl.SendTestCoins(account)
+	//go gl.SendTestCoins(account)
 
 	str, _ := json.Marshal(map[string]interface{}{
 		"result": true,

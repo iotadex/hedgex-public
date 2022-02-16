@@ -31,13 +31,6 @@ type chainNode struct {
 	Wss   string `json:"ws"`
 }
 
-type testcoin struct {
-	Count       int    `json:"count"`
-	CoinAmount  string `json:"coin_amount"`
-	Token       string `json:"token"`
-	TokenAmount string `json:"token_amount"`
-}
-
 var (
 	Env           string
 	Db            db
@@ -48,8 +41,7 @@ var (
 	IndexTick     time.Duration
 	ChainNode     chainNode
 	Contract      []hedgex
-	PrivateKey    string
-	TestCoin      testcoin
+	IpLimit       int
 )
 
 //Load load config file
@@ -61,18 +53,15 @@ func init() {
 	defer file.Close()
 	type Config struct {
 		Env           string        `json:"env"`
-		Service       int           `json:"service"`
 		HttpPort      int           `json:"http_port"`
 		WsPort        int           `json:"ws_port"`
 		WsTick        time.Duration `json:"ws_tick"`
-		ExplosiveTo   string        `json:"explosive_to_address"`
 		KlineMaxCount int           `json:"kline_max_count"`
 		IndexTick     time.Duration `json:"index_tick"`
 		Db            db            `json:"db"`
 		ChainNode     chainNode     `json:"chain_node"`
 		Contract      []hedgex      `json:"contract"`
-		PrivateKey    string        `json:"wallet"`
-		TestCoin      testcoin      `json:"testcoin"`
+		IpLimit       int           `json:"ip_limit"`
 	}
 	all := &Config{}
 	if err = json.NewDecoder(file).Decode(all); err != nil {
@@ -87,8 +76,6 @@ func init() {
 	IndexTick = all.IndexTick
 	ChainNode = all.ChainNode
 	Contract = all.Contract
-	PrivateKey = all.PrivateKey
-	TestCoin = all.TestCoin
 	if MaxKlineCount < 1 {
 		log.Panic("max kline count must > 0")
 	}

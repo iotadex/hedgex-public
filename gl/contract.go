@@ -3,10 +3,8 @@ package gl
 import (
 	"context"
 	"crypto/ecdsa"
-	"errors"
 	"hedgex-public/config"
 	"hedgex-public/contract/hedgex"
-	"hedgex-public/tools"
 	"log"
 	"math/big"
 	"strings"
@@ -22,7 +20,6 @@ import (
 var (
 	//define the client to connect to the ethereum network
 	EthHttpsClient *ethclient.Client
-	EthWssClient   *ethclient.Client
 
 	//define the contract's abi
 	ContractAbi abi.ABI
@@ -64,11 +61,6 @@ func InitContract() {
 		}
 	}
 
-	EthWssClient, err = ethclient.Dial(config.ChainNode.Wss)
-	if err != nil {
-		log.Panic(err)
-	}
-
 	ContractAbi, err = abi.JSON(strings.NewReader(string(hedgex.HedgexABI)))
 	if err != nil {
 		log.Panic(err)
@@ -99,10 +91,6 @@ func InitContract() {
 	if err != nil {
 		log.Panic(err)
 	}
-
-	key := tools.InputKey()
-	pk := tools.AesCBCDecrypt(config.PrivateKey, key)
-	SetPrivateKey(pk)
 }
 
 func SetPrivateKey(pk string) {
@@ -138,27 +126,12 @@ func GetAccountAuth() (*bind.TransactOpts, error) {
 	return auth, nil
 }
 
-func SendTestCoins(account string) error {
-	if privateKey == nil {
-		return errors.New("privateKey is nil")
-	}
-	if err := sendEth(account); err != nil {
-		return err
-	}
-	if err := sendERC20(account); err != nil {
-		return err
-	}
-	return nil
+func SendEth(amount *big.Int, to string) error {
+	return sendTransaction(common.HexToAddress(to), amount, nil)
 }
 
-func sendEth(to string) error {
-	value, _ := new(big.Int).SetString(config.TestCoin.CoinAmount, 10)
-	return sendTransaction(common.HexToAddress(to), value, nil)
-}
-
-func sendERC20(to string) error {
+func SendERC20(token string, amount *big.Int, to string) error {
 	paddedAddress := common.LeftPadBytes(common.HexToAddress(to).Bytes(), 32) // 0x0000000000000000000000004592d8f8d7b001e72cb26a73e4fa1806a51ac79d
-	amount, _ := new(big.Int).SetString(config.TestCoin.TokenAmount, 10)      // amount
 	paddedAmount := common.LeftPadBytes(amount.Bytes(), 32)                   // 0x00000000000000000000000000000000000000000000003635c9adc5dea00000
 
 	var data []byte
@@ -166,7 +139,7 @@ func sendERC20(to string) error {
 	data = append(data, paddedAddress...)
 	data = append(data, paddedAmount...)
 	value := big.NewInt(0) // in wei (0 eth)
-	return sendTransaction(common.HexToAddress(config.TestCoin.Token), value, data)
+	return sendTransaction(common.HexToAddress(token), value, data)
 }
 
 func SendTransaction(to common.Address, value *big.Int, data []byte) error {
