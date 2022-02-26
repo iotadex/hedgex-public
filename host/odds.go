@@ -12,7 +12,6 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/thinkeridea/go-extend/exnet"
 )
 
 var emailRegex = regexp.MustCompile("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
@@ -29,10 +28,7 @@ func AddEmail(c *gin.Context) {
 		return
 	}
 
-	ip := exnet.ClientPublicIP(c.Request)
-	if ip == "" {
-		ip = exnet.ClientIP(c.Request)
-	}
+	ip := c.ClientIP()
 
 	if count, err := model.GetIpCount(ip); err != nil || count > config.IpLimit {
 		c.JSON(http.StatusOK, gin.H{

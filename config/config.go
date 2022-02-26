@@ -26,9 +26,7 @@ type hedgex struct {
 }
 
 type chainNode struct {
-	Name  string `json:"name"`
 	Https string `json:"http"`
-	Wss   string `json:"ws"`
 }
 
 var (

@@ -10,7 +10,7 @@ func GetIpCount(ip string) (int, error) {
 
 // InsertEmail insert a email address to the table
 func InsertEmail(email, ip string) error {
-	_, err := db.Exec("insert into email(addr,ip) values(?,?)", email, ip)
+	_, err := db.Exec("replace into email(addr,ip) values(?,?)", email, ip)
 	return err
 }
 

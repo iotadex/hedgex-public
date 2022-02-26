@@ -25,7 +25,7 @@ func StartIndexPriceService() {
 		case <-ticker.C:
 			for i := range config.Contract {
 				if price, err := gl.GetIndexPrice(config.Contract[i].Address); err != nil {
-					gl.OutLogger.Error("Get price from contract error. ", err)
+					gl.OutLogger.Error("Get price from contract error. %v", err)
 				} else {
 					atomic.StoreInt64(IndexPrices[config.Contract[i].Address], price)
 				}

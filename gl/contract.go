@@ -241,7 +241,7 @@ func ForceClose(auth *bind.TransactOpts, contract string, account string, to str
 }
 
 func GetIndexPrice(add string) (int64, error) {
-	price, err := Contracts[add].GetLatestPrice(nil)
+	price, _, err := Contracts[add].GetLatestPrice(nil)
 	if err != nil {
 		return 0, err
 	}

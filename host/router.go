@@ -30,7 +30,7 @@ func InitRouter() *gin.Engine {
 	router := gin.New()
 	router.Use(gin.LoggerWithConfig(gin.LoggerConfig{Output: gl.OutLogger}), gin.Recovery())
 
-	router.GET("/ping", PingPong)
+	router.GET("/api/ping", PingPong)
 
 	//con
 	con := router.Group("/api/contract")
@@ -55,7 +55,7 @@ func InitRouter() *gin.Engine {
 		wss.GET("/kline", klineSender)
 	}
 
-	other := router.Group("/odds")
+	other := router.Group("/api/odds")
 	{
 		other.GET("/add_email", AddEmail)
 		other.GET("/emails", GetEmails)
