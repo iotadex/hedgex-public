@@ -67,7 +67,7 @@ func init() {
 		ChainNode     string        `json:"chain_node"`
 		Contract      []hedgex      `json:"contract"`
 		IpLimit       int           `json:"ip_limit"`
-		test          test          `json:"test"`
+		Test          test          `json:"test"`
 	}
 	all := &Config{}
 	if err = json.NewDecoder(file).Decode(all); err != nil {
@@ -85,5 +85,5 @@ func init() {
 		log.Panic("max kline count must > 0")
 	}
 
-	Test = all.test
+	Test = all.Test
 }

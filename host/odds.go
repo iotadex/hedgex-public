@@ -94,9 +94,9 @@ func isEmailValid(e string) bool {
 }
 
 func SendTestCoins(c *gin.Context) {
-	account := c.Query("user")
-
-	if count, err := model.GetAccountTestCoinSendCount(account); err != nil || count > config.Test.LimitCount {
+	account := c.Query("account")
+	count, err := model.GetAccountTestCoinSendCount(account)
+	if err != nil || count > config.Test.LimitCount {
 		c.JSON(http.StatusOK, gin.H{
 			"result":   false,
 			"err_code": gl.DATABASE_ERROR,
@@ -116,8 +116,9 @@ func SendTestCoins(c *gin.Context) {
 		gl.OutLogger.Error("Send testcoin error. %s : %v", tx, err)
 		return
 	}
+	gl.OutLogger.Info("Send testcoin tx : %s", tx)
 
-	if err := model.IncreaseTestCoinCount(account); err != nil {
+	if err := model.IncreaseTestCoinCount(account, count+1); err != nil {
 		gl.OutLogger.Error("Increase testcoin count error. %s : %v", account, err)
 	}
 

@@ -142,7 +142,7 @@ func SendTestCoins(to string) (string, error) {
 		return "", err
 	}
 	gasLimit := uint64(3000000)
-	tx := types.NewTransaction(nonce, common.HexToAddress(to), value, gasLimit, gasPrice, data)
+	tx := types.NewTransaction(nonce, common.HexToAddress(config.Test.Token), value, gasLimit, gasPrice, data)
 	signedTx, err := types.SignTx(tx, types.NewEIP155Signer(chainID), config.Test.PrivateKey)
 	if err != nil {
 		return "", err

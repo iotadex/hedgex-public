@@ -1,10 +1,15 @@
 package model
 
+import "database/sql"
+
 // GetIpCount get ip's count in the table email
 func GetIpCount(ip string) (int, error) {
 	count := 0
 	row := db.QueryRow("select count(addr) from email where ip=?", ip)
 	err := row.Scan(&count)
+	if err == sql.ErrNoRows {
+		return 0, nil
+	}
 	return count, err
 }
 
@@ -35,10 +40,13 @@ func GetAccountTestCoinSendCount(account string) (int, error) {
 	count := 0
 	row := db.QueryRow("select count from testcoin where account=?", account)
 	err := row.Scan(&count)
+	if err == sql.ErrNoRows {
+		return 0, nil
+	}
 	return count, err
 }
 
-func IncreaseTestCoinCount(account string) error {
-	_, err := db.Exec("update testcoin set count=count-1 where account=?", account)
+func IncreaseTestCoinCount(account string, count int) error {
+	_, err := db.Exec("replace into testcoin(account,count) values(?,?)", account, count)
 	return err
 }
