@@ -30,3 +30,15 @@ func GetEmails(from, to string) ([]string, error) {
 	}
 	return emails, nil
 }
+
+func GetAccountTestCoinSendCount(account string) (int, error) {
+	count := 0
+	row := db.QueryRow("select count from testcoin where account=?", account)
+	err := row.Scan(&count)
+	return count, err
+}
+
+func IncreaseTestCoinCount(account string) error {
+	_, err := db.Exec("update testcoin set count=count-1 where account=?", account)
+	return err
+}

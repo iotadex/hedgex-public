@@ -1,10 +1,13 @@
 package config
 
 import (
+	"crypto/ecdsa"
 	"encoding/json"
 	"log"
 	"os"
 	"time"
+
+	"github.com/ethereum/go-ethereum/common"
 )
 
 //db database config
@@ -25,8 +28,13 @@ type hedgex struct {
 	TradeCoin  string `json:"trade_coin"`
 }
 
-type chainNode struct {
-	Https string `json:"http"`
+type test struct {
+	LimitCount    int    `json:"limit_count"`
+	SendAmount    int64  `json:"send_amount"`
+	Token         string `json:"token"`
+	Wallet        string `json:"wallet"`
+	PrivateKey    *ecdsa.PrivateKey
+	PublicAddress common.Address
 }
 
 var (
@@ -36,10 +44,10 @@ var (
 	WsPort        int
 	WsTick        time.Duration
 	MaxKlineCount int
-	IndexTick     time.Duration
-	ChainNode     chainNode
+	ChainNode     string
 	Contract      []hedgex
 	IpLimit       int
+	Test          test
 )
 
 //Load load config file
@@ -55,11 +63,11 @@ func init() {
 		WsPort        int           `json:"ws_port"`
 		WsTick        time.Duration `json:"ws_tick"`
 		KlineMaxCount int           `json:"kline_max_count"`
-		IndexTick     time.Duration `json:"index_tick"`
 		Db            db            `json:"db"`
-		ChainNode     chainNode     `json:"chain_node"`
+		ChainNode     string        `json:"chain_node"`
 		Contract      []hedgex      `json:"contract"`
 		IpLimit       int           `json:"ip_limit"`
+		test          test          `json:"test"`
 	}
 	all := &Config{}
 	if err = json.NewDecoder(file).Decode(all); err != nil {
@@ -71,10 +79,11 @@ func init() {
 	WsPort = all.WsPort
 	WsTick = all.WsTick
 	MaxKlineCount = all.KlineMaxCount
-	IndexTick = all.IndexTick
 	ChainNode = all.ChainNode
 	Contract = all.Contract
 	if MaxKlineCount < 1 {
 		log.Panic("max kline count must > 0")
 	}
+
+	Test = all.test
 }

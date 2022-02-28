@@ -2,7 +2,6 @@ package model
 
 import (
 	"database/sql"
-	"errors"
 )
 
 /*
@@ -224,24 +223,4 @@ func GetInterests(contract string, account string, count int) ([]Interest, error
 		data = append(data, t)
 	}
 	return data, nil
-}
-
-// UpdateTestCoin update testcoin send count
-func UpdateTestCoin(account string) error {
-	row, err := db.Query("select count from testcoin where account=?", account)
-	if err != nil {
-		return err
-	}
-	var count int
-	if row.Next() {
-		if err = row.Scan(&count); err != nil {
-			return err
-		}
-	}
-	if count >= 3 {
-		return errors.New("over the number for getting test coins")
-	}
-	count++
-	_, err = db.Exec("replace into testcoin(account,count) values(?,?)", account, count)
-	return err
 }

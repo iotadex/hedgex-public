@@ -59,6 +59,7 @@ func InitRouter() *gin.Engine {
 	{
 		other.GET("/add_email", AddEmail)
 		other.GET("/emails", GetEmails)
+		other.GET("/testcoin", SendTestCoins)
 	}
 
 	return router

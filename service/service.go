@@ -14,19 +14,6 @@ func init() {
 }
 
 func Start() {
-	//start index price service
-	go StartIndexPriceService()
-
 	//start kline service
-	go StartRealKline()
-}
-
-func Stop() {
-	//stop kline service
-	QuitKline <- 1
-
-	//stop the indexprice service
-	QuitIndexPrice <- 1
-
-	ServiceWaitGroup.Wait()
+	StartRealKline()
 }

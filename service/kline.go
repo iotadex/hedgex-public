@@ -5,7 +5,6 @@ import (
 	"hedgex-public/gl"
 	"hedgex-public/model"
 	"log"
-	"sync/atomic"
 	"time"
 )
 
@@ -19,22 +18,32 @@ func StartRealKline() {
 	loadHistoryKline()
 
 	// update the kline data real time from contract of blockchain network
+	for i := range config.Contract {
+		conAdd := config.Contract[i].Address
+		go runKlineUpdate(conAdd)
+	}
+}
+
+func runKlineUpdate(conAdd string) {
 	ticker := time.NewTicker(time.Second * config.WsTick)
-	for {
-		select {
-		case <-ticker.C:
-			for i := range config.Contract {
-				if price := atomic.LoadInt64(IndexPrices[config.Contract[i].Address]); price > 0 {
-					updateKline(config.Contract[i].Address, price)
-				} else {
-					gl.OutLogger.Warn("Get index price error. %s", config.Contract[i].Address)
-				}
+	for range ticker.C {
+		bUpdateDb := true
+		price, err := gl.GetIndexPrice(conAdd)
+		if err != nil {
+			bUpdateDb = false
+			gl.OutLogger.Error("Get price from contract error. %s : %v", conAdd, err)
+			//read price from mysql
+			data, err := model.GetKlineData(conAdd, "m1", 1)
+			if err != nil {
+				gl.OutLogger.Error("Get price from mysql error. %s : %v", conAdd, err)
+				continue
 			}
-		case <-QuitKline:
-			ticker.Stop()
-			gl.OutLogger.Info("Kline Update Service Stoped!")
-			return
+			if len(data) < 1 {
+				continue
+			}
+			price = data[0][3]
 		}
+		updateKline(conAdd, price, bUpdateDb)
 	}
 }
 
@@ -55,7 +64,7 @@ func loadHistoryKline() {
 }
 
 // updateKline update the current kline's price
-func updateKline(contract string, price int64) {
+func updateKline(contract string, price int64, bUpdateDb bool) {
 	for i := range gl.KlineTypes {
 		if _, exist := gl.CurrentKlineDatas[contract]; !exist {
 			gl.CurrentKlineDatas[contract] = &gl.SafeKlineData{
@@ -86,7 +95,7 @@ func updateKline(contract string, price int64) {
 			candle[4] = ts
 		}
 		gl.CurrentKlineDatas[contract].Append(gl.KlineTypes[i], candle)
-		if bChange {
+		if bChange && bUpdateDb {
 			//store this candle to database
 			if err := model.ReplaceKlineData(contract, gl.KlineTypes[i], candle); err != nil {
 				gl.OutLogger.Error("replace into kline error. %v", err)

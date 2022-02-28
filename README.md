@@ -177,7 +177,7 @@ none
 |amount|int|the margin's amount|
 |price|int|the price of one piece|
 
-### 8. GET /account/gettestcoin?user={address} Send testcoin to the account, each account can be get 0.3eth and 30000usdt.
+### 8. GET /odds//testcoin?account={address} Send testcoin to the account, each account can get 10000usdp.
 #### result
 ```json
 {

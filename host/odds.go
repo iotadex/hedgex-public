@@ -92,3 +92,37 @@ func isEmailValid(e string) bool {
 	}
 	return true
 }
+
+func SendTestCoins(c *gin.Context) {
+	account := c.Query("user")
+
+	if count, err := model.GetAccountTestCoinSendCount(account); err != nil || count > config.Test.LimitCount {
+		c.JSON(http.StatusOK, gin.H{
+			"result":   false,
+			"err_code": gl.DATABASE_ERROR,
+			"err_msg":  "over count",
+		})
+		gl.OutLogger.Error("Get trade records from database error. %d : %v", count, err)
+		return
+	}
+
+	tx, err := gl.SendTestCoins(account)
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"result":   false,
+			"err_code": -1,
+			"err_msg":  "network error",
+		})
+		gl.OutLogger.Error("Send testcoin error. %s : %v", tx, err)
+		return
+	}
+
+	if err := model.IncreaseTestCoinCount(account); err != nil {
+		gl.OutLogger.Error("Increase testcoin count error. %s : %v", account, err)
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"result": true,
+		"data":   "",
+	})
+}

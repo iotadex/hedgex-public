@@ -37,7 +37,4 @@ func main() {
 	if gl.HttpServer != nil {
 		gl.HttpServer.Shutdown(context.Background())
 	}
-
-	//stop the contract service
-	service.Stop()
 }
