@@ -46,14 +46,15 @@
 |---|:--:|---|
 |leverage|int|leverage|
 |min_amount|float64|min_amount = 10^amountDecimal|
-|fee_rate|float64|feeRate|
-|single_close_limit_rate|float64|singleCloseLimitRate|
-|single_open_limit_rate|float64|singleOpenLimitRate|
-|r_open|float64|poolNetAmountRateLimitOpen|
-|r_price|float64|poolNetAmountRateLimitPrice|
+|keep_margin_scale|int|keepMarginScale/divConst|
+|fee_rate|float64|feeRate/divConst|
+|single_close_limit_rate|float64|singleCloseLimitRate/divConst|
+|single_open_limit_rate|float64|singleOpenLimitRate/divConst|
+|r_open|float64|poolNetAmountRateLimitOpen/divConst|
+|r_price|float64|poolNetAmountRateLimitPrice/divConst|
 |token0|string|token0|
 |token0_decimal|int|token0_decimal = token0Decimal = 10^decimals|
-|keep_margin_scale|float64|keepMarginScale|
+|daily_interest_rate_base|float64|dailyInterestRateBase/divConst|
 
 ### GET /contract/kline get the kline data from current time(now)
 #### parameter
