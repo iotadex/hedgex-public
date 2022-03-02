@@ -49,8 +49,8 @@ func InitContract() {
 	}
 
 	Contracts = make(map[string]*hedgex.Hedgex)
-	for i := range config.Contract {
-		Contracts[config.Contract[i].Address], err = hedgex.NewHedgex(common.HexToAddress(config.Contract[i].Address), EthHttpsClient)
+	for addr := range config.Contract {
+		Contracts[addr], err = hedgex.NewHedgex(common.HexToAddress(addr), EthHttpsClient)
 		if err != nil {
 			log.Panic(err)
 		}

@@ -1,10 +1,6 @@
 # Hedgex Single User Interface
 ## H5 rest api， URL : https://triple.fi/api
-### 1. GET /contract/trade_pairs get the trade pair list
-#### parameter
-```
-none
-```
+### GET /contract/trade_pairs get the trade pair list
 #### result
 ```json
 {
@@ -26,7 +22,40 @@ none
 |open_price|int64|the open price of current day|
 |index_price|int64|the index price of current time|
 
-### 2. GET /contract/kline get the kline data from current time(now)
+### Get /contract/pair_params?contract={address} get the trade pair's params
+#### return
+```json
+{
+    "result": true,
+    "data":{
+        "leverage":25,
+		"min_amount":0.01,
+	    "keep_margin_scale":60,
+		"fee_rate":0.0006,
+		"single_close_limit_rate":0.03,
+		"single_open_limit_rate":0.1,
+		"r_open":0.4,
+		"r_price":0.3,
+		"token0":"0x2E5591820Dcd82Bf75B369665Ca81eA2Fe54BfB5",
+		"token0_decimal":1000000,
+		"daily_interest_rate_base":0.001
+    }
+}
+```
+|Name|Type|Description|
+|---|:--:|---|
+|leverage|int|leverage|
+|min_amount|float64|min_amount = 10^amountDecimal|
+|fee_rate|float64|feeRate|
+|single_close_limit_rate|float64|singleCloseLimitRate|
+|single_open_limit_rate|float64|singleOpenLimitRate|
+|r_open|float64|poolNetAmountRateLimitOpen|
+|r_price|float64|poolNetAmountRateLimitPrice|
+|token0|string|token0|
+|token0_decimal|int|token0_decimal = token0Decimal = 10^decimals|
+|keep_margin_scale|float64|keepMarginScale|
+
+### GET /contract/kline get the kline data from current time(now)
 #### parameter
 |Name|Type|Description|
 |---|:--:|---|
@@ -51,7 +80,7 @@ none
 |ts|int|the timestamp as second, the earliest time is the first one|
 
 
-### 3. GET /contract/position get the traders' count for every contract
+### GET /contract/position get the traders' count for every contract
 #### result
 ```json
 {
@@ -66,7 +95,7 @@ none
 }
 ```
 
-### 4. GET /account get all the trader's detail data by contract
+### GET /account get all the trader's detail data by contract
 #### parameter
 ```
 |Name|Type|Description|
@@ -92,7 +121,7 @@ none
 }
 ```
 
-### 5. GET /account/trade get user's trade list
+### GET /account/trade get user's trade list
 #### parameter
 |Name|Type|Description|
 |---|:--:|---|
@@ -121,7 +150,7 @@ none
 |amount|int|piece|
 |price|int|the price of one piece|
 
-### 6. GET /account/explosive get the user's explosive list
+### GET /account/explosive get the user's explosive list
 #### parameter
 |Name|Type|Description|
 |---|:--:|---|
@@ -150,7 +179,7 @@ none
 |price|int|the price of one piece|
 |direction|int| as same with trade|
 
-### 7. GET /account/interest get user's interest records
+### GET /account/interest get user's interest records
 #### parameter
 |Name|Type|Description|
 |---|:--:|---|
@@ -177,7 +206,7 @@ none
 |amount|int|the margin's amount|
 |price|int|the price of one piece|
 
-### 8. GET /odds//testcoin?account={address} Send testcoin to the account, each account can get 10000usdp.
+### GET /odds//testcoin?account={address} Send testcoin to the account, each account can get 10000usdp.
 #### result
 ```json
 {
@@ -186,7 +215,7 @@ none
 }
 ```
 
-### 9. GET /odds/add_email?email={address} send user's email to us
+### GET /odds/add_email?email={address} send user's email to us
 #### result
 ```json
 {
@@ -195,7 +224,7 @@ none
 }
 ```
 
-### 10. GET /odds/emails?from={timestamp}&to={timestamp} get email addresses with timestamp
+### GET /odds/emails?from={timestamp}&to={timestamp} get email addresses with timestamp
 #### result
 ```json
 {

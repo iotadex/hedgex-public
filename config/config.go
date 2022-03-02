@@ -22,10 +22,24 @@ type db struct {
 	Pwd       string        `json:"pwd"`
 }
 
-type hedgex struct {
-	Address    string `json:"address"`
+type TradePair struct {
 	MarginCoin string `json:"margin_coin"`
 	TradeCoin  string `json:"trade_coin"`
+	Params     Param  `json:"param"`
+}
+
+type Param struct {
+	Leverage                    int     `json:"leverage"`
+	MinAmount                   float64 `json:"min_amount"`
+	KeepMarginScale             int     `json:"keep_margin_scale"`
+	FeeRate                     float64 `json:"fee_rate"`
+	SingleCloseLimitRate        float64 `json:"single_close_limit_rate"`
+	SingleOpenLimitRate         float64 `json:"single_open_limit_rate"`
+	PoolNetAmountRateLimitOpen  float64 `json:"r_open"`
+	PoolNetAmountRateLimitPrice float64 `json:"r_price"`
+	Token0                      string  `json:"token0"`
+	Token0Decimal               int     `json:"token0_decimal"`
+	DailyInterestRateBase       float64 `json:"daily_interest_rate_base"`
 }
 
 type test struct {
@@ -45,7 +59,7 @@ var (
 	WsTick        time.Duration
 	MaxKlineCount int
 	ChainNode     string
-	Contract      []hedgex
+	Contract      map[string]TradePair
 	IpLimit       int
 	Test          test
 )
@@ -58,16 +72,16 @@ func init() {
 	}
 	defer file.Close()
 	type Config struct {
-		Env           string        `json:"env"`
-		HttpPort      int           `json:"http_port"`
-		WsPort        int           `json:"ws_port"`
-		WsTick        time.Duration `json:"ws_tick"`
-		KlineMaxCount int           `json:"kline_max_count"`
-		Db            db            `json:"db"`
-		ChainNode     string        `json:"chain_node"`
-		Contract      []hedgex      `json:"contract"`
-		IpLimit       int           `json:"ip_limit"`
-		Test          test          `json:"test"`
+		Env           string               `json:"env"`
+		HttpPort      int                  `json:"http_port"`
+		WsPort        int                  `json:"ws_port"`
+		WsTick        time.Duration        `json:"ws_tick"`
+		KlineMaxCount int                  `json:"kline_max_count"`
+		Db            db                   `json:"db"`
+		ChainNode     string               `json:"chain_node"`
+		Contract      map[string]TradePair `json:"contract"`
+		IpLimit       int                  `json:"ip_limit"`
+		Test          test                 `json:"test"`
 	}
 	all := &Config{}
 	if err = json.NewDecoder(file).Decode(all); err != nil {

@@ -18,9 +18,8 @@ func StartRealKline() {
 	loadHistoryKline()
 
 	// update the kline data real time from contract of blockchain network
-	for i := range config.Contract {
-		conAdd := config.Contract[i].Address
-		go runKlineUpdate(conAdd)
+	for addr := range config.Contract {
+		go runKlineUpdate(addr)
 	}
 }
 
@@ -48,16 +47,16 @@ func runKlineUpdate(conAdd string) {
 }
 
 func loadHistoryKline() {
-	for i := range config.Contract {
+	for addr := range config.Contract {
 		klineTypes := []string{"m1", "m5", "m10", "m15", "m30", "h1", "h2", "h4", "h6", "h12", "d1"}
 		for _, t := range klineTypes {
-			candles, err := model.GetKlineData(config.Contract[i].Address, t, config.MaxKlineCount)
+			candles, err := model.GetKlineData(addr, t, config.MaxKlineCount)
 			if err != nil {
 				log.Panic(err)
 			}
 			l := len(candles) - 1
 			for j := range candles {
-				gl.CurrentKlineDatas[config.Contract[i].Address].Append(t, candles[l-j])
+				gl.CurrentKlineDatas[addr].Append(t, candles[l-j])
 			}
 		}
 	}

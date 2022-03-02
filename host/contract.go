@@ -22,20 +22,32 @@ type pair struct {
 func GetTradePairs(c *gin.Context) {
 	//get current indexPrice and current day's open price
 	pairs := make([]pair, len(config.Contract))
-	for i := range config.Contract {
-		pairs[i].Contract = config.Contract[i].Address
-		pairs[i].MarginCoin = config.Contract[i].MarginCoin
-		pairs[i].TradeCoin = config.Contract[i].TradeCoin
-		if skd := gl.CurrentKlineDatas[config.Contract[i].Address]; skd != nil {
+	i := 0
+	for addr := range config.Contract {
+		pairs[i].Contract = addr
+		pairs[i].MarginCoin = config.Contract[addr].MarginCoin
+		pairs[i].TradeCoin = config.Contract[addr].TradeCoin
+		if skd := gl.CurrentKlineDatas[addr]; skd != nil {
 			candle := skd.GetCurrent("d1")
 			pairs[i].DayOpenPrice = candle[0]
 			pairs[i].IndexPrice = candle[3]
 		}
+		i++
 	}
 
 	c.JSON(http.StatusOK, gin.H{
 		"result": true,
 		"data":   pairs,
+	})
+}
+
+//GetTradePairs get the contract's trade pairs
+func GetPairParams(c *gin.Context) {
+	contract := c.Query("contract")
+	//get current indexPrice and current day's open price
+	c.JSON(http.StatusOK, gin.H{
+		"result": true,
+		"data":   config.Contract[contract].Params,
 	})
 }
 
@@ -74,3 +86,19 @@ func GetStatPositions(c *gin.Context) {
 		"data":   data,
 	})
 }
+
+/*
+1. amountDecimal，
+2. decimals，
+3. keepMarginScale，
+4. leverage，
+5. feeRate，
+6. divConst，
+7. singleCloseLimitRate，
+8. singleOpenLimitRate，
+9. poolNetAmountRateLimitOpen，
+10. poolNetAmountRateLimitPrice，
+11. token0，
+12. token0的decimals，
+13. dailyInterestRateBase
+*/

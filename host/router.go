@@ -36,6 +36,7 @@ func InitRouter() *gin.Engine {
 	con := router.Group("/api/contract")
 	{
 		con.GET("/trade_pairs", GetTradePairs)
+		con.GET("/pair_params", GetPairParams)
 		con.GET("/kline", GetKlineData)
 		con.GET("/position", GetStatPositions)
 	}
