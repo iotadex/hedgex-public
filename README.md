@@ -96,13 +96,30 @@
 }
 ```
 
-### GET /account get all the trader's detail data by contract
-#### parameter
+### GET /contract/trades get the contract's trade
+```json
+{
+    "result": true,
+    "data":[
+		{
+            "tx":"transaction hash",
+            "direction":1,
+            "amount":10,
+            "price":52346,
+            "block":12234,
+            "ts":"2022-03-02 23:29:37"
+        }
+	]
+}
 ```
 |Name|Type|Description|
 |---|:--:|---|
-|contract|string|contract address, as "0x0x1660854c03b461E6BC07f94567D1D6E6bF99a1A9"|
-```
+|block|int|the blocknumber when explosive happen|
+|direction|int|1:open long,-1:open short,-2:close long,2:close short|
+|amount|int|piece|
+|price|int|the price of one piece|
+
+### GET /account?contract={address} get all the trader's detail data by contract
 #### result
 ```json
 {
@@ -207,7 +224,7 @@
 |amount|int|the margin's amount|
 |price|int|the price of one piece|
 
-### GET /odds//testcoin?account={address} Send testcoin to the account, each account can get 10000usdp.
+### GET /odds/testcoin?account={address} Send testcoin to the account, each account can get 10000usdp.
 #### result
 ```json
 {

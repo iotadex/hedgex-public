@@ -87,18 +87,24 @@ func GetStatPositions(c *gin.Context) {
 	})
 }
 
-/*
-1. amountDecimal，
-2. decimals，
-3. keepMarginScale，
-4. leverage，
-5. feeRate，
-6. divConst，
-7. singleCloseLimitRate，
-8. singleOpenLimitRate，
-9. poolNetAmountRateLimitOpen，
-10. poolNetAmountRateLimitPrice，
-11. token0，
-12. token0的decimals，
-13. dailyInterestRateBase
-*/
+func GetTradeRecordsByContract(c *gin.Context) {
+	contract := c.Query("contract")
+	count, _ := strconv.Atoi(c.DefaultQuery("count", "1"))
+	if count > 200 {
+		count = 200
+	}
+	data, err := model.GetTradeRecordsByContract(contract, count)
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"result":  false,
+			"err_msg": "database error " + contract,
+		})
+		gl.OutLogger.Error("Get trade records from database error : %v", err)
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"result": true,
+		"data":   data,
+	})
+}

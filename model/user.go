@@ -160,18 +160,19 @@ type Trade struct {
 	Amount    uint64 `json:"amount"`
 	Price     uint64 `json:"price"`
 	Block     uint64 `json:"block"`
+	Ts        string `json:"ts"`
 }
 
 // GetTradeRecords account's trade records
 func GetTradeRecords(contract string, account string, count int) ([]Trade, error) {
-	rows, err := db.Query("select tx,direction,amount,price,block from trade where contract=? and account=? order by block desc limit ?", contract, account, count)
+	rows, err := db.Query("select tx,direction,amount,price,block,ts from trade where contract=? and account=? order by ts desc limit ?", contract, account, count)
 	if err != nil {
 		return nil, err
 	}
 	data := make([]Trade, 0, 1)
 	for rows.Next() {
 		t := Trade{}
-		rows.Scan(&t.Tx, &t.Direction, &t.Amount, &t.Price, &t.Block)
+		rows.Scan(&t.Tx, &t.Direction, &t.Amount, &t.Price, &t.Block, &t.Ts)
 		data = append(data, t)
 	}
 	return data, nil
