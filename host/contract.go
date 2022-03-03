@@ -89,7 +89,7 @@ func GetStatPositions(c *gin.Context) {
 
 func GetTradeRecordsByContract(c *gin.Context) {
 	contract := c.Query("contract")
-	count, _ := strconv.Atoi(c.DefaultQuery("count", "1"))
+	count, _ := strconv.Atoi(c.DefaultQuery("count", "30"))
 	if count > 200 {
 		count = 200
 	}
@@ -100,6 +100,28 @@ func GetTradeRecordsByContract(c *gin.Context) {
 			"err_msg": "database error " + contract,
 		})
 		gl.OutLogger.Error("Get trade records from database error : %v", err)
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"result": true,
+		"data":   data,
+	})
+}
+
+func GetExplosiveRecordsByContract(c *gin.Context) {
+	contract := c.Query("contract")
+	count, _ := strconv.Atoi(c.DefaultQuery("count", "30"))
+	if count > 200 {
+		count = 200
+	}
+	data, err := model.GetExplosiveRecordsByContract(contract, count)
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"result":  false,
+			"err_msg": "database error " + contract,
+		})
+		gl.OutLogger.Error("Get explosive records from database error : %v", err)
 		return
 	}
 

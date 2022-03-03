@@ -96,13 +96,34 @@
 }
 ```
 
-### GET /contract/trades?contract={address} get the contract's trade
+### GET /contract/trade?contract={address}&count=30 get the contract's trade
 ```json
 {
     "result": true,
     "data":[
 		{
-            "tx":"transaction hash",
+            "direction":1,
+            "amount":10,
+            "price":52346,
+            "block":12234,
+            "ts":"2022-03-02 23:29:37"
+        }
+	]
+}
+```
+|Name|Type|Description|
+|---|:--:|---|
+|block|int|the blocknumber when explosive happen|
+|direction|int|1:open long,-1:open short,-2:close long,2:close short|
+|amount|int|piece|
+|price|int|the price of one piece|
+
+### GET /contract/explosive?contract={address}&count=30 get the contract's trade
+```json
+{
+    "result": true,
+    "data":[
+		{
             "direction":1,
             "amount":10,
             "price":52346,

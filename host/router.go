@@ -37,7 +37,8 @@ func InitRouter() *gin.Engine {
 	{
 		con.GET("/trade_pairs", GetTradePairs)
 		con.GET("/pair_params", GetPairParams)
-		con.GET("/trades", GetTradeRecordsByContract)
+		con.GET("/trade", GetTradeRecordsByContract)
+		con.GET("/explosive", GetExplosiveRecordsByContract)
 		con.GET("/kline", GetKlineData)
 		con.GET("/position", GetStatPositions)
 	}
