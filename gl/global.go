@@ -3,22 +3,13 @@ package gl
 import (
 	//"hedgex-public/logger"
 	"log"
-	"net/http"
 	"os"
 
 	"github.com/triplefi/go-logger/logger"
 )
 
-type ErrorCode int
-
-const (
-	DATABASE_ERROR ErrorCode = 10001
-)
-
 // OutLogger global logger
 var OutLogger *logger.Logger
-
-var HttpServer *http.Server
 
 func CreateLogFiles() {
 	var err error

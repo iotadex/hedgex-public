@@ -98,9 +98,8 @@ func SendTestCoins(c *gin.Context) {
 	count, err := model.GetAccountTestCoinSendCount(account)
 	if err != nil || count > config.Test.LimitCount {
 		c.JSON(http.StatusOK, gin.H{
-			"result":   false,
-			"err_code": gl.DATABASE_ERROR,
-			"err_msg":  "over count",
+			"result":  false,
+			"err_msg": "over count",
 		})
 		gl.OutLogger.Error("Get trade records from database error. %d : %v", count, err)
 		return
@@ -109,9 +108,8 @@ func SendTestCoins(c *gin.Context) {
 	tx, err := gl.SendTestCoins(account)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
-			"result":   false,
-			"err_code": -1,
-			"err_msg":  "network error",
+			"result":  false,
+			"err_msg": "network error",
 		})
 		gl.OutLogger.Error("Send testcoin error. %s : %v", tx, err)
 		return

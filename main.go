@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"hedgex-public/config"
 	"hedgex-public/daemon"
 	"hedgex-public/gl"
@@ -32,9 +31,4 @@ func main() {
 
 	//wait to exit single
 	daemon.WaitForKill()
-
-	//shutdown the http service
-	if gl.HttpServer != nil {
-		gl.HttpServer.Shutdown(context.Background())
-	}
 }

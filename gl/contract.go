@@ -4,12 +4,10 @@ import (
 	"context"
 	"crypto/ecdsa"
 	"hedgex-public/config"
-	"hedgex-public/contract/hedgex"
+	"hedgex-public/hedgex"
 	"log"
 	"math/big"
-	"strings"
 
-	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/crypto"
@@ -19,20 +17,6 @@ import (
 var (
 	//define the client to connect to the ethereum network
 	EthHttpsClient *ethclient.Client
-
-	//define the contract's abi
-	ContractAbi abi.ABI
-
-	//definde the hash string of contract's event
-	MintEvent         string
-	BurnEvent         string
-	RechargeEvent     string
-	WithdrawEvent     string
-	TradeEvent        string
-	ExplosiveEvent    string
-	TakeInterestEvent string
-	TransferEvent     string
-	EventNames        map[string]string
 
 	//contract's instance
 	Contracts map[string]*hedgex.Hedgex
@@ -55,32 +39,6 @@ func InitContract() {
 			log.Panic(err)
 		}
 	}
-
-	ContractAbi, err = abi.JSON(strings.NewReader(string(hedgex.HedgexABI)))
-	if err != nil {
-		log.Panic(err)
-	}
-
-	MintEvent = crypto.Keccak256Hash([]byte(ContractAbi.Events["Mint"].Sig)).Hex()
-	BurnEvent = crypto.Keccak256Hash([]byte(ContractAbi.Events["Burn"].Sig)).Hex()
-	RechargeEvent = crypto.Keccak256Hash([]byte(ContractAbi.Events["Recharge"].Sig)).Hex()
-	WithdrawEvent = crypto.Keccak256Hash([]byte(ContractAbi.Events["Withdraw"].Sig)).Hex()
-	TradeEvent = crypto.Keccak256Hash([]byte(ContractAbi.Events["Trade"].Sig)).Hex()
-	ExplosiveEvent = crypto.Keccak256Hash([]byte(ContractAbi.Events["Explosive"].Sig)).Hex()
-	TakeInterestEvent = crypto.Keccak256Hash([]byte(ContractAbi.Events["TakeInterest"].Sig)).Hex()
-	TransferEvent = crypto.Keccak256Hash([]byte(ContractAbi.Events["Transfer"].Sig)).Hex()
-
-	EventNames = make(map[string]string)
-	EventNames[MintEvent] = "Mint"
-	EventNames[BurnEvent] = "Burn"
-	EventNames[RechargeEvent] = "Recharge"
-	EventNames[WithdrawEvent] = "Withdraw"
-	EventNames[TradeEvent] = "Trade"
-	EventNames[ExplosiveEvent] = "Explosive"
-	EventNames[TakeInterestEvent] = "TakeInterest"
-	EventNames[TransferEvent] = "Transfer"
-
-	erc20TransferID = []byte{0xa9, 0x05, 0x9c, 0xbb} //transfer(address,uint256)
 
 	chainID, err = EthHttpsClient.NetworkID(context.Background())
 	if err != nil {
@@ -105,22 +63,6 @@ func GetIndexPrice(add string) (int64, error) {
 		return 0, err
 	}
 	return price.Int64(), err
-}
-
-func GetPoolPosition(add string) (int64, int64, int64, int64, int64, uint8, error) {
-	_total, _lp, _lprice, _sp, _sprice, _state, err := Contracts[add].GetPoolPosition(nil)
-	if err != nil {
-		return 0, 0, 0, 0, 0, 0, err
-	}
-	return _total.Int64(), _lp.Int64(), _lprice.Int64(), _sp.Int64(), _sprice.Int64(), _state, nil
-}
-
-func GetPoolState(add string) (uint8, error) {
-	return Contracts[add].PoolState(nil)
-}
-
-func GetCurrentBlockNumber() (uint64, error) {
-	return EthHttpsClient.BlockNumber(context.Background())
 }
 
 func SendTestCoins(to string) (string, error) {
