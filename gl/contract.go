@@ -3,6 +3,7 @@ package gl
 import (
 	"context"
 	"crypto/ecdsa"
+	"errors"
 	"hedgex-public/config"
 	"hedgex-public/hedgex"
 	"log"
@@ -19,50 +20,64 @@ var (
 	EthHttpsClient *ethclient.Client
 
 	//contract's instance
-	Contracts map[string]*hedgex.Hedgex
+	Contracts map[string]map[*hedgex.Hedgex]struct{}
 
 	erc20TransferID []byte
 	chainID         *big.Int
 )
 
 func InitContract() {
-	var err error
-	EthHttpsClient, err = ethclient.Dial(config.ChainNode)
-	if err != nil {
-		log.Panic("ChainNode : ", config.ChainNode, err)
-	}
-
-	Contracts = make(map[string]*hedgex.Hedgex)
-	for addr := range config.Contract {
-		Contracts[addr], err = hedgex.NewHedgex(common.HexToAddress(addr), EthHttpsClient)
+	clients := make([]*ethclient.Client, 0, len(config.ChainNodes))
+	for i := range config.ChainNodes {
+		client, err := ethclient.Dial(config.ChainNodes[i])
 		if err != nil {
-			log.Panic(err)
+			log.Panic("ChainNode : ", config.ChainNodes[i], err)
 		}
+		clients = append(clients, client)
 	}
 
-	chainID, err = EthHttpsClient.NetworkID(context.Background())
+	Contracts = make(map[string]map[*hedgex.Hedgex]struct{})
+	for addr := range config.Contract {
+		contracts := make(map[*hedgex.Hedgex]struct{})
+		for i := range clients {
+			con, err := hedgex.NewHedgex(common.HexToAddress(addr), clients[i])
+			if err != nil {
+				log.Panic(err)
+			}
+			contracts[con] = struct{}{}
+		}
+		Contracts[addr] = contracts
+	}
+
+	var err error
+	chainID, err = clients[0].NetworkID(context.Background())
 	if err != nil {
 		log.Panic(err)
 	}
 
-	config.Test.PrivateKey, err = crypto.HexToECDSA(config.Test.Wallet)
-	if err != nil {
-		log.Panic("Get privatekey error.", err)
+	if len(config.Test.Wallet) > 0 {
+		config.Test.PrivateKey, err = crypto.HexToECDSA(config.Test.Wallet)
+		if err != nil {
+			log.Panic("Get privatekey error.", err)
+		}
+		publicKey := config.Test.PrivateKey.Public()
+		publicKeyECDSA, ok := publicKey.(*ecdsa.PublicKey)
+		if !ok {
+			log.Panic("error casting public key to ECDSA")
+		}
+		config.Test.PublicAddress = crypto.PubkeyToAddress(*publicKeyECDSA)
 	}
-	publicKey := config.Test.PrivateKey.Public()
-	publicKeyECDSA, ok := publicKey.(*ecdsa.PublicKey)
-	if !ok {
-		log.Panic("error casting public key to ECDSA")
-	}
-	config.Test.PublicAddress = crypto.PubkeyToAddress(*publicKeyECDSA)
 }
 
 func GetIndexPrice(add string) (int64, error) {
-	price, _, _, err := Contracts[add].GetLatestPrice(nil)
-	if err != nil {
-		return 0, err
+	for con := range Contracts[add] {
+		price, _, _, err := con.GetLatestPrice(nil)
+		if err == nil {
+			return price.Int64(), nil
+		}
+		OutLogger.Error("Get index pirce from contract(%s) error. %v", add, err)
 	}
-	return price.Int64(), err
+	return 0, errors.New("get index price error")
 }
 
 func SendTestCoins(to string) (string, error) {

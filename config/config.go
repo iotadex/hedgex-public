@@ -58,7 +58,7 @@ var (
 	WsPort        int
 	WsTick        time.Duration
 	MaxKlineCount int
-	ChainNode     string
+	ChainNodes    []string
 	Contract      map[string]TradePair
 	IpLimit       int
 	Test          test
@@ -78,7 +78,7 @@ func init() {
 		WsTick        time.Duration        `json:"ws_tick"`
 		KlineMaxCount int                  `json:"kline_max_count"`
 		Db            db                   `json:"db"`
-		ChainNode     string               `json:"chain_node"`
+		ChainNodes    []string             `json:"chain_node"`
 		Contract      map[string]TradePair `json:"contract"`
 		IpLimit       int                  `json:"ip_limit"`
 		Test          test                 `json:"test"`
@@ -93,7 +93,7 @@ func init() {
 	WsPort = all.WsPort
 	WsTick = all.WsTick
 	MaxKlineCount = all.KlineMaxCount
-	ChainNode = all.ChainNode
+	ChainNodes = all.ChainNodes
 	Contract = all.Contract
 	if MaxKlineCount < 1 {
 		log.Panic("max kline count must > 0")
