@@ -96,7 +96,7 @@
 }
 ```
 
-### GET /contract/trades get the contract's trade
+### GET /contract/trades?contract={address} get the contract's trade
 ```json
 {
     "result": true,
