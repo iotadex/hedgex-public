@@ -24,7 +24,7 @@ func main() {
 	gl.InitContract()
 
 	//start contract service
-	service.Start()
+	service.StartRealKline()
 
 	//start http service
 	if config.HttpPort != 0 {
