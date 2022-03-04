@@ -26,23 +26,13 @@ func StartRealKline() {
 func runKlineUpdate(conAdd string) {
 	ticker := time.NewTicker(time.Second * config.WsTick)
 	for range ticker.C {
-		bUpdateDb := true
 		price, err := gl.GetIndexPrice(conAdd)
 		if err != nil {
-			bUpdateDb = false
 			gl.OutLogger.Error("Get price from contract error. %s : %v", conAdd, err)
-			//read price from mysql
-			data, err := model.GetKlineData(conAdd, "m1", 1)
-			if err != nil {
-				gl.OutLogger.Error("Get price from mysql error. %s : %v", conAdd, err)
-				continue
-			}
-			if len(data) < 1 {
-				continue
-			}
-			price = data[0][3]
+			continue
 		}
-		updateKline(conAdd, price, bUpdateDb)
+		gl.OutLogger.Info("IndexPrice : %s : %d", conAdd[2:6], price)
+		updateKline(conAdd, price)
 	}
 }
 
@@ -63,7 +53,7 @@ func loadHistoryKline() {
 }
 
 // updateKline update the current kline's price
-func updateKline(contract string, price int64, bUpdateDb bool) {
+func updateKline(contract string, price int64) {
 	for i := range gl.KlineTypes {
 		if _, exist := gl.CurrentKlineDatas[contract]; !exist {
 			gl.CurrentKlineDatas[contract] = &gl.SafeKlineData{
@@ -94,7 +84,7 @@ func updateKline(contract string, price int64, bUpdateDb bool) {
 			candle[4] = ts
 		}
 		gl.CurrentKlineDatas[contract].Append(gl.KlineTypes[i], candle)
-		if bChange && bUpdateDb {
+		if bChange {
 			//store this candle to database
 			if err := model.ReplaceKlineData(contract, gl.KlineTypes[i], candle); err != nil {
 				gl.OutLogger.Error("replace into kline error. %v", err)

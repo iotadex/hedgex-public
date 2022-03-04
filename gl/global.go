@@ -10,7 +10,6 @@ import (
 
 // OutLogger global logger
 var OutLogger *logger.Logger
-var GinLogger *logger.Logger
 
 func CreateLogFiles() {
 	var err error
@@ -18,9 +17,6 @@ func CreateLogFiles() {
 		log.Panic("Create dir './logs' error. " + err.Error())
 	}
 	if OutLogger, err = logger.New("logs/out.log", 1, 3, 0); err != nil {
-		log.Panic("Create Outlogger file error. " + err.Error())
-	}
-	if GinLogger, err = logger.New("logs/gin.log", 1, 3, 0); err != nil {
 		log.Panic("Create Outlogger file error. " + err.Error())
 	}
 }

@@ -4,10 +4,13 @@ import (
 	"hedgex-public/config"
 	"hedgex-public/gl"
 	"hedgex-public/model"
+	"log"
 	"net/http"
+	"os"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"github.com/triplefi/go-logger/logger"
 )
 
 func StartHttpServer() {
@@ -27,8 +30,16 @@ func PingPong(c *gin.Context) {
 
 // InitRouter init the router
 func InitRouter() *gin.Engine {
+	if err := os.MkdirAll("./logs/http", os.ModePerm); err != nil {
+		log.Panic("Create dir './logs/http' error. " + err.Error())
+	}
+	GinLogger, err := logger.New("logs/http/gin.log", 2, 100*1024*1024, 10)
+	if err != nil {
+		log.Panic("Create GinLogger file error. " + err.Error())
+	}
+
 	router := gin.New()
-	router.Use(gin.LoggerWithConfig(gin.LoggerConfig{Output: gl.OutLogger}), gin.Recovery())
+	router.Use(gin.LoggerWithConfig(gin.LoggerConfig{Output: GinLogger}), gin.Recovery())
 
 	router.GET("/api/ping", PingPong)
 

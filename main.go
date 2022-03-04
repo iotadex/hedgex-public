@@ -27,7 +27,9 @@ func main() {
 	service.Start()
 
 	//start http service
-	host.StartHttpServer()
+	if config.HttpPort != 0 {
+		host.StartHttpServer()
+	}
 
 	//wait to exit single
 	daemon.WaitForKill()
