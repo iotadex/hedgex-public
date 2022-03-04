@@ -81,7 +81,7 @@ func GetStatPositions() (map[string]*PositionStat, error) {
 	return data, nil
 }
 
-//GetLastBlock get the last block from use table
+// GetLastBlock get the last block from use table
 func GetLastBlock(contract string) (int64, error) {
 	row := db.QueryRow("select block from user order by block desc limit 1")
 	var maxBlock int64
@@ -105,7 +105,7 @@ type User struct {
 	Block       uint64
 }
 
-//GetUsers get users
+// GetUsers get users
 func GetUsers(contract string) ([]User, uint64, error) {
 	rows, err := db.Query("SELECT account,margin,lposition,lprice,sposition,sprice,interest_day,block FROM user where contract=" + "'" + contract + "'")
 	if err != nil {
@@ -127,20 +127,20 @@ func GetUsers(contract string) ([]User, uint64, error) {
 	return data, maxBlock, nil
 }
 
-//UpdateUser update user's data
+// UpdateUser update user's data
 func UpdateUser(contract string, u *User) error {
 	_, err := db.Exec("replace into user(account,contract,margin,lposition,lprice,sposition,sprice,interest_day,block) values(?,?,?,?,?,?,?,?,?) ",
 		u.Account, contract, u.Margin, u.Lposition, u.Lprice, u.Sposition, u.Sprice, u.InterestDay, u.Block)
 	return err
 }
 
-//InsertRecharge insert a recharge record
+// InsertRecharge insert a recharge record
 func InsertRecharge(tx string, contract string, account string, amount uint64, block uint64) error {
 	_, err := db.Exec("insert into recharge(tx,contract,account,amount,block) values(?,?,?,?,?)", tx, contract, account, amount, block)
 	return err
 }
 
-//InsertWithdraw insert a withdraw record
+// InsertWithdraw insert a withdraw record
 func InsertWithdraw(tx string, contract string, account string, amount uint64, block uint64) error {
 	_, err := db.Exec("insert into withdraw(tx,contract,account,amount,block) values(?,?,?,?,?)", tx, contract, account, amount, block)
 	return err

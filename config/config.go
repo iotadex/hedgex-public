@@ -55,7 +55,6 @@ var (
 	Env           string
 	Db            db
 	HttpPort      int
-	WsPort        int
 	WsTick        time.Duration
 	MaxKlineCount int
 	ChainNodes    []string
@@ -74,7 +73,6 @@ func init() {
 	type Config struct {
 		Env           string               `json:"env"`
 		HttpPort      int                  `json:"http_port"`
-		WsPort        int                  `json:"ws_port"`
 		WsTick        time.Duration        `json:"ws_tick"`
 		KlineMaxCount int                  `json:"kline_max_count"`
 		Db            db                   `json:"db"`
@@ -90,7 +88,6 @@ func init() {
 	Env = all.Env
 	Db = all.Db
 	HttpPort = all.HttpPort
-	WsPort = all.WsPort
 	WsTick = all.WsTick
 	MaxKlineCount = all.KlineMaxCount
 	ChainNodes = all.ChainNodes

@@ -37,19 +37,19 @@ func loadHistoryKline() {
 	for addr := range config.Contract {
 		klineTypes := []string{"m1", "m5", "m10", "m15", "m30", "h1", "h2", "h4", "h6", "h12", "d1"}
 		for _, t := range klineTypes {
-			candles, err := model.GetKlineData(addr, t, config.MaxKlineCount)
-			if err != nil {
+			if candles, err := model.GetKlineData(addr, t, config.MaxKlineCount); err != nil {
 				log.Panic(err)
-			}
-			l := len(candles) - 1
-			for j := range candles {
-				gl.CurrentKlineDatas[addr].Append(t, candles[l-j])
+			} else {
+				l := len(candles) - 1
+				for j := range candles {
+					gl.CurrentKlineDatas[addr].Append(t, candles[l-j])
+				}
 			}
 		}
 	}
 }
 
-// updateKline update the current kline's price
+//updateKline update the current kline's price
 func updateKline(contract string, price int64) {
 	for i := range gl.KlineTypes {
 		if _, exist := gl.CurrentKlineDatas[contract]; !exist {
