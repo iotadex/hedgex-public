@@ -40,6 +40,9 @@ func StartRealKline() {
 
 func runKlineUpdate(conAdd string) {
 	addr, _ := strconv.ParseInt(conAdd[0:6], 0, 64)
+	if addr < 1 {
+		log.Panic("Get contract address error.")
+	}
 	b := ChainNodeErr[conAdd]
 	c := ContractPriceErr[conAdd]
 	watchTime := config.Contract[conAdd].WatchTime
