@@ -5,8 +5,26 @@ import (
 	"hedgex-public/gl"
 	"hedgex-public/model"
 	"log"
+	"strconv"
+	"sync/atomic"
 	"time"
 )
+
+var (
+	ChainNodeErr     map[string]*int64
+	ContractPriceErr map[string]*int64
+)
+
+func init() {
+	ChainNodeErr = make(map[string]*int64)
+	ContractPriceErr = make(map[string]*int64)
+	for addr := range config.Contract {
+		b := int64(0)
+		ChainNodeErr[addr] = &b
+		c := int64(0)
+		ContractPriceErr[addr] = &c
+	}
+}
 
 func StartRealKline() {
 	gl.InitKlineData()
@@ -21,12 +39,29 @@ func StartRealKline() {
 }
 
 func runKlineUpdate(conAdd string) {
+	addr, _ := strconv.ParseInt(conAdd[0:6], 0, 64)
+	b := ChainNodeErr[conAdd]
+	c := ContractPriceErr[conAdd]
+	watchTime := config.Contract[conAdd].WatchTime
+	preTime := time.Now().Unix() - watchTime - 1
+	var prePrice int64
 	ticker := time.NewTicker(time.Second * config.WsTick)
 	for range ticker.C {
 		price, err := gl.GetIndexPrice(conAdd)
 		if err != nil {
+			atomic.StoreInt64(b, addr)
 			gl.OutLogger.Error("Get price from contract error. %s : %v", conAdd, err)
 			continue
+		}
+		atomic.StoreInt64(b, 0)
+		if prePrice != price {
+			prePrice = price
+			preTime = time.Now().Unix()
+		}
+		if (time.Now().Unix() - preTime) > watchTime {
+			atomic.StoreInt64(c, addr)
+		} else {
+			atomic.StoreInt64(c, 0)
 		}
 		gl.OutLogger.Info("IndexPrice : %s : %d", conAdd[2:6], price)
 		updateKline(conAdd, price)

@@ -4,10 +4,12 @@ import (
 	"hedgex-public/config"
 	"hedgex-public/gl"
 	"hedgex-public/model"
+	"hedgex-public/service"
 	"log"
 	"net/http"
 	"os"
 	"strconv"
+	"sync/atomic"
 
 	"github.com/gin-gonic/gin"
 	"github.com/triplefi/go-logger/logger"
@@ -21,11 +23,21 @@ func StartHttpServer() {
 // Index homepage
 func PingPong(c *gin.Context) {
 	if err := model.Ping(); err != nil {
-		c.String(http.StatusOK, "error")
+		c.String(http.StatusOK, "mysql error")
 		gl.OutLogger.Error("connect to mysql error. %v", err)
 		return
 	}
-	c.String(http.StatusOK, "pong")
+	res := "pong"
+	for conAddr := range config.Contract {
+		if atomic.LoadInt64(service.ChainNodeErr[conAddr]) != 0 {
+			res = conAddr + " chain node error."
+			break
+		} else if atomic.LoadInt64(service.ContractPriceErr[conAddr]) != 0 {
+			res = conAddr + " price was not update."
+			break
+		}
+	}
+	c.String(http.StatusOK, res)
 }
 
 // InitRouter init the router

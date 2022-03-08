@@ -25,6 +25,7 @@ type db struct {
 type TradePair struct {
 	MarginCoin string `json:"margin_coin"`
 	TradeCoin  string `json:"trade_coin"`
+	WatchTime  int64  `json:"watch_time"`
 	Params     Param  `json:"param"`
 }
 
@@ -94,6 +95,11 @@ func init() {
 	Contract = all.Contract
 	if MaxKlineCount < 1 {
 		log.Panic("max kline count must > 0")
+	}
+	for _, tp := range Contract {
+		if tp.WatchTime < 1 {
+			log.Panic("Watch time must > 0")
+		}
 	}
 
 	Test = all.Test
