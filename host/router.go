@@ -10,6 +10,7 @@ import (
 	"os"
 	"strconv"
 	"sync/atomic"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/triplefi/go-logger/logger"
@@ -22,9 +23,15 @@ func StartHttpServer() {
 
 // Index homepage
 func PingPong(c *gin.Context) {
-	if err := model.Ping(); err != nil {
+	ts, err := model.GetLatestContractUpdateTime()
+	if err != nil {
 		c.String(http.StatusOK, "mysql error")
 		gl.OutLogger.Info("connect to mysql error. %v", err)
+		return
+	}
+	if ts.Add(time.Hour).Before(time.Now()) {
+		c.String(http.StatusOK, "event server error")
+		gl.OutLogger.Info("event server error. %v", ts)
 		return
 	}
 	res := "pong"
