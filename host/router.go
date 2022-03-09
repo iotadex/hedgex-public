@@ -24,7 +24,7 @@ func StartHttpServer() {
 func PingPong(c *gin.Context) {
 	if err := model.Ping(); err != nil {
 		c.String(http.StatusOK, "mysql error")
-		gl.OutLogger.Error("connect to mysql error. %v", err)
+		gl.OutLogger.Info("connect to mysql error. %v", err)
 		return
 	}
 	res := "pong"
