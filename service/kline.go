@@ -53,7 +53,7 @@ func runKlineUpdate(conAdd string) {
 		price, err := gl.GetIndexPrice(conAdd)
 		if err != nil {
 			atomic.StoreInt64(b, addr)
-			gl.OutLogger.Error("Get price from contract error. %s : %v", conAdd, err)
+			gl.OutLogger.Error("%s : %v", conAdd, err)
 			continue
 		}
 		atomic.StoreInt64(b, 0)
