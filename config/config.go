@@ -56,6 +56,7 @@ var (
 	Env           string
 	Db            db
 	HttpPort      int
+	BeginSec      int64
 	WsTick        time.Duration
 	MaxKlineCount int
 	ChainNodes    []string
@@ -74,6 +75,7 @@ func init() {
 	type Config struct {
 		Env           string               `json:"env"`
 		HttpPort      int                  `json:"http_port"`
+		BeginSec      int64                `json:"begin_sec"`
 		WsTick        time.Duration        `json:"ws_tick"`
 		KlineMaxCount int                  `json:"kline_max_count"`
 		Db            db                   `json:"db"`
