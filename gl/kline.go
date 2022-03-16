@@ -1,12 +1,18 @@
 package gl
 
 import (
+	"context"
 	"hedgex-public/config"
+	"strconv"
+	"strings"
 	"sync"
+
+	"github.com/go-redis/redis/v8"
 )
 
 var KlineTypes []string
 var KlineTimeCount map[string]int64
+var c *redis.Client
 
 type SafeKlineData struct {
 	RwMx sync.RWMutex
@@ -81,4 +87,72 @@ func InitKlineData() {
 	KlineTimeCount["h6"] = 21600
 	KlineTimeCount["h12"] = 43200
 	KlineTimeCount["d1"] = 86400
+}
+
+func Get(klineType string, count int64) [][]int64 {
+	c := redis.NewClient(&redis.Options{
+		Addr:     "",
+		Password: "",
+		DB:       0,
+	})
+
+	vs, err := c.LRange(context.Background(), klineType, 0, count).Result()
+	if err != nil {
+		return nil
+	}
+
+	candles := make([][]int64, count)
+	for _, v := range vs {
+		datas := strings.Split(v, ".")
+		candle := make([]int64, 5)
+		for i := range datas {
+			candle[i], _ = strconv.ParseInt(datas[i], 10, 64)
+		}
+		candles = append(candles, candle)
+	}
+
+	return candles
+}
+
+func GetCurrent(klineType string) []int64 {
+	c := redis.NewClient(&redis.Options{
+		Addr:     "",
+		Password: "",
+		DB:       0,
+	})
+
+	v, err := c.LIndex(context.Background(), klineType, 0).Result()
+	if err != nil {
+		return nil
+	}
+
+	datas := strings.Split(v, ".")
+	candle := make([]int64, 5)
+	for i := range datas {
+		candle[i], _ = strconv.ParseInt(datas[i], 10, 64)
+	}
+	return candle
+}
+
+func Append(klineType string, currentData []int64) {
+	str := ""
+	for i := range currentData {
+		str += strconv.FormatInt(currentData[i], 10) + "."
+	}
+	str = str[0 : len(str)-1]
+	candle := GetCurrent(klineType)
+	if candle == nil {
+		c.LPush(context.Background(), klineType, str)
+		return
+	}
+	if candle[4] == currentData[4] {
+		c.LSet(context.Background(), klineType, 0, currentData)
+	} else {
+		c.LPush(context.Background(), klineType, str)
+	}
+
+	count, _ := c.LLen(context.Background(), klineType).Result()
+	if count > int64(config.MaxKlineCount) {
+		c.RPop(context.Background(), klineType).Err()
+	}
 }

@@ -8,6 +8,8 @@ import (
 	"hedgex-public/hedgex"
 	"log"
 	"math/big"
+	"sync"
+	"time"
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/types"
@@ -16,11 +18,8 @@ import (
 )
 
 var (
-	//define the client to connect to the ethereum network
-	EthHttpsClient *ethclient.Client
-
 	//contract's instance
-	Contracts map[string]map[*hedgex.Hedgex]struct{}
+	Contracts map[string]map[*hedgex.Hedgex]string
 
 	erc20TransferID []byte
 	chainID         *big.Int
@@ -36,17 +35,17 @@ func InitContract() {
 		clients = append(clients, client)
 	}
 
-	Contracts = make(map[string]map[*hedgex.Hedgex]struct{})
-	for addr := range config.Contract {
-		contracts := make(map[*hedgex.Hedgex]struct{})
+	Contracts = make(map[string]map[*hedgex.Hedgex]string)
+	for conAddr := range config.Contract {
+		contracts := make(map[*hedgex.Hedgex]string)
 		for i := range clients {
-			con, err := hedgex.NewHedgex(common.HexToAddress(addr), clients[i])
+			con, err := hedgex.NewHedgex(common.HexToAddress(conAddr), clients[i])
 			if err != nil {
 				log.Panic(err)
 			}
-			contracts[con] = struct{}{}
+			contracts[con] = config.ChainNodes[i]
 		}
-		Contracts[addr] = contracts
+		Contracts[conAddr] = contracts
 	}
 
 	var err error
@@ -69,13 +68,45 @@ func InitContract() {
 	}
 }
 
-func GetIndexPrice(add string) (int64, error) {
-	for con := range Contracts[add] {
-		price, _, _, err := con.GetLatestPrice(nil)
-		if err == nil {
-			return price.Int64(), nil
+func GetIndexPrice(conAddr string) (int64, error) {
+	prices := make(map[int64]int)
+	var mu sync.Mutex
+	var wg sync.WaitGroup
+	for con := range Contracts[conAddr] {
+		wg.Add(1)
+		go func(con *hedgex.Hedgex) {
+			ch := make(chan int64)
+			go func() {
+				if price, _, _, err := con.GetLatestPrice(nil); err != nil {
+					ch <- 0
+					OutLogger.Error("Get index pirce error. %s : %v", Contracts[conAddr][con], err)
+				} else {
+					ch <- price.Int64()
+				}
+			}()
+			select {
+			case price := <-ch:
+				mu.Lock()
+				prices[price]++
+				mu.Unlock()
+			case <-time.After(3 * time.Second):
+				OutLogger.Error("Get index price over time. %s", Contracts[conAddr][con])
+			}
+			wg.Done()
+		}(con)
+	}
+	wg.Wait()
+	price := int64(0)
+	maxCount := 0
+	for p, c := range prices {
+		if (c > maxCount) && (p > 0) {
+			price = p
+			maxCount = c
 		}
-		OutLogger.Error("Get index pirce from contract(%s) error. %v", add, err)
+	}
+	if maxCount > 0 {
+		OutLogger.Info("Index Price : %s : %d : %d", conAddr[2:6], maxCount, price)
+		return price, nil
 	}
 	return 0, errors.New("get index price error")
 }
@@ -90,11 +121,16 @@ func SendTestCoins(to string) (string, error) {
 	data = append(data, paddedAmount...)
 	value := big.NewInt(0)
 
-	gasPrice, err := EthHttpsClient.SuggestGasPrice(context.Background())
+	client, err := ethclient.Dial(config.ChainNodes[0])
 	if err != nil {
 		return "", err
 	}
-	nonce, err := EthHttpsClient.PendingNonceAt(context.Background(), config.Test.PublicAddress)
+
+	gasPrice, err := client.SuggestGasPrice(context.Background())
+	if err != nil {
+		return "", err
+	}
+	nonce, err := client.PendingNonceAt(context.Background(), config.Test.PublicAddress)
 	if err != nil {
 		return "", err
 	}
@@ -105,6 +141,6 @@ func SendTestCoins(to string) (string, error) {
 		return "", err
 	}
 
-	err = EthHttpsClient.SendTransaction(context.Background(), signedTx)
+	err = client.SendTransaction(context.Background(), signedTx)
 	return tx.Hash().Hex(), err
 }

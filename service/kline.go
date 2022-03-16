@@ -3,6 +3,7 @@ package service
 import (
 	"hedgex-public/config"
 	"hedgex-public/gl"
+	"hedgex-public/kline"
 	"hedgex-public/model"
 	"log"
 	"strconv"
@@ -66,21 +67,19 @@ func runKlineUpdate(conAdd string) {
 		} else {
 			atomic.StoreInt64(c, 0)
 		}
-		gl.OutLogger.Info("IndexPrice : %s : %d", conAdd[2:6], price)
 		updateKline(conAdd, price)
 	}
 }
 
 func loadHistoryKline() {
-	for addr := range config.Contract {
-		klineTypes := []string{"m1", "m5", "m10", "m15", "m30", "h1", "h2", "h4", "h6", "h12", "d1"}
-		for _, t := range klineTypes {
-			if candles, err := model.GetKlineData(addr, t, config.MaxKlineCount); err != nil {
+	for conAddr := range config.Contract {
+		for _, t := range kline.KlineTypes {
+			if candles, err := model.GetKlineData(conAddr, t, config.MaxKlineCount); err != nil {
 				log.Panic(err)
 			} else {
 				l := len(candles) - 1
 				for j := range candles {
-					gl.CurrentKlineDatas[addr].Append(t, candles[l-j])
+					kline.DefaultDrivers[conAddr].Append(t, candles[l-j])
 				}
 			}
 		}
@@ -89,13 +88,13 @@ func loadHistoryKline() {
 
 //updateKline update the current kline's price
 func updateKline(contract string, price int64) {
+	kd := kline.DefaultDrivers[contract]
 	for i := range gl.KlineTypes {
-		if _, exist := gl.CurrentKlineDatas[contract]; !exist {
-			gl.CurrentKlineDatas[contract] = &gl.SafeKlineData{
-				Data: make(map[string][][5]int64),
-			}
+		candle, err := kd.GetCurrent(gl.KlineTypes[i])
+		if err != nil {
+			gl.OutLogger.Error("Get current kline error. %s : %s :%v", contract, gl.KlineTypes[i], err)
+			continue
 		}
-		candle := gl.CurrentKlineDatas[contract].GetCurrent(gl.KlineTypes[i])
 		ts := time.Now().Unix() / gl.KlineTimeCount[gl.KlineTypes[i]] * gl.KlineTimeCount[gl.KlineTypes[i]]
 		bChange := false
 		if ts == candle[4] {
@@ -118,7 +117,9 @@ func updateKline(contract string, price int64) {
 			candle[3] = price
 			candle[4] = ts
 		}
-		gl.CurrentKlineDatas[contract].Append(gl.KlineTypes[i], candle)
+		if err := kd.Append(gl.KlineTypes[i], candle); err != nil {
+			gl.OutLogger.Error("Append kline error. %s : %s : %v", contract, gl.KlineTypes[i], err)
+		}
 		if bChange {
 			//store this candle to database
 			if err := model.ReplaceKlineData(contract, gl.KlineTypes[i], candle); err != nil {

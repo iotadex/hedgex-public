@@ -27,7 +27,9 @@ func main() {
 	gl.InitContract()
 
 	//start contract service
-	service.StartRealKline()
+	if len(config.ChainNodes) > 0 {
+		service.StartRealKline()
+	}
 
 	//start http service
 	if config.HttpPort != 0 {

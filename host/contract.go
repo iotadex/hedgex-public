@@ -3,6 +3,7 @@ package host
 import (
 	"hedgex-public/config"
 	"hedgex-public/gl"
+	"hedgex-public/kline"
 	"hedgex-public/model"
 	"net/http"
 	"strconv"
@@ -53,22 +54,29 @@ func GetPairParams(c *gin.Context) {
 
 //GetKlineData get the contract's history kline data
 func GetKlineData(c *gin.Context) {
-	contract := c.Query("contract")
+	conAddr := c.Query("contract")
 	t := c.Query("type")
 	count, _ := strconv.Atoi(c.DefaultQuery("count", "1"))
-	if _, exist := gl.CurrentKlineDatas[contract]; !exist {
+	if _, exist := kline.DefaultDrivers[conAddr]; !exist {
 		c.JSON(http.StatusOK, gin.H{
 			"result":  false,
-			"err_msg": "Contract not exist. " + contract,
+			"err_msg": "Contract not exist. " + conAddr,
 		})
-		gl.OutLogger.Warn("Contract not exist. " + contract)
+		gl.OutLogger.Warn("Contract not exist. " + conAddr)
 		return
 	}
-	data := gl.CurrentKlineDatas[contract].Get(t, count)
-	c.JSON(http.StatusOK, gin.H{
-		"result": true,
-		"data":   data,
-	})
+	if data, err := kline.DefaultDrivers[conAddr].Get(t, count); err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"result":  false,
+			"err_msg": "Get kline datas from driver error.",
+		})
+		gl.OutLogger.Warn("Get kline datas from driver error. %v", err)
+	} else {
+		c.JSON(http.StatusOK, gin.H{
+			"result": true,
+			"data":   data,
+		})
+	}
 }
 
 func GetStatPositions(c *gin.Context) {

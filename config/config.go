@@ -22,6 +22,10 @@ type db struct {
 	Pwd       string        `json:"pwd"`
 }
 
+type redis struct {
+	Addr string `json:"addr"`
+}
+
 type TradePair struct {
 	MarginCoin string `json:"margin_coin"`
 	TradeCoin  string `json:"trade_coin"`
@@ -55,6 +59,7 @@ type test struct {
 var (
 	Env           string
 	Db            db
+	Redis         redis
 	HttpPort      int
 	BeginSec      int64
 	WsTick        time.Duration
@@ -79,6 +84,7 @@ func init() {
 		WsTick        time.Duration        `json:"ws_tick"`
 		KlineMaxCount int                  `json:"kline_max_count"`
 		Db            db                   `json:"db"`
+		Redis         redis                `json:"redis"`
 		ChainNodes    []string             `json:"chain_node"`
 		Contract      map[string]TradePair `json:"contract"`
 		IpLimit       int                  `json:"ip_limit"`
@@ -90,6 +96,7 @@ func init() {
 	}
 	Env = all.Env
 	Db = all.Db
+	Redis = all.Redis
 	HttpPort = all.HttpPort
 	WsTick = all.WsTick
 	MaxKlineCount = all.KlineMaxCount
