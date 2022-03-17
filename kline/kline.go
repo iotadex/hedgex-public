@@ -30,6 +30,9 @@ func init() {
 		} else {
 			DefaultDrivers[conAddr] = NewMemoryKline(conAddr[2:6])
 		}
+		if DefaultDrivers[conAddr] == nil {
+			panic("Create kline driver error")
+		}
 	}
 }
 

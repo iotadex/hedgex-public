@@ -28,8 +28,6 @@ func init() {
 }
 
 func StartRealKline() {
-	gl.InitKlineData()
-
 	// load kline data from database
 	loadHistoryKline()
 
@@ -89,13 +87,13 @@ func loadHistoryKline() {
 //updateKline update the current kline's price
 func updateKline(contract string, price int64) {
 	kd := kline.DefaultDrivers[contract]
-	for i := range gl.KlineTypes {
-		candle, err := kd.GetCurrent(gl.KlineTypes[i])
+	for i := range kline.KlineTypes {
+		candle, err := kd.GetCurrent(kline.KlineTypes[i])
 		if err != nil {
-			gl.OutLogger.Error("Get current kline error. %s : %s :%v", contract, gl.KlineTypes[i], err)
+			gl.OutLogger.Error("Get current kline error. %s : %s :%v", contract, kline.KlineTypes[i], err)
 			continue
 		}
-		ts := time.Now().Unix() / gl.KlineTimeCount[gl.KlineTypes[i]] * gl.KlineTimeCount[gl.KlineTypes[i]]
+		ts := time.Now().Unix() / kline.KlineTimeCount[kline.KlineTypes[i]] * kline.KlineTimeCount[kline.KlineTypes[i]]
 		bChange := false
 		if ts == candle[4] {
 			if candle[3] != price {
@@ -117,12 +115,12 @@ func updateKline(contract string, price int64) {
 			candle[3] = price
 			candle[4] = ts
 		}
-		if err := kd.Append(gl.KlineTypes[i], candle); err != nil {
-			gl.OutLogger.Error("Append kline error. %s : %s : %v", contract, gl.KlineTypes[i], err)
+		if err := kd.Append(kline.KlineTypes[i], candle); err != nil {
+			gl.OutLogger.Error("Append kline error. %s : %s : %v", contract, kline.KlineTypes[i], err)
 		}
 		if bChange {
 			//store this candle to database
-			if err := model.ReplaceKlineData(contract, gl.KlineTypes[i], candle); err != nil {
+			if err := model.ReplaceKlineData(contract, kline.KlineTypes[i], candle); err != nil {
 				gl.OutLogger.Error("replace into kline error. %v", err)
 			}
 		}

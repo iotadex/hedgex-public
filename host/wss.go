@@ -3,6 +3,7 @@ package host
 import (
 	"hedgex-public/config"
 	"hedgex-public/gl"
+	"hedgex-public/kline"
 	"net/http"
 	"strings"
 	"time"
@@ -42,11 +43,11 @@ func klineSender(c *gin.Context) {
 	ticker := time.NewTicker(time.Second * config.WsTick)
 	defer ticker.Stop()
 	for range ticker.C {
-		if ckd, exist := gl.CurrentKlineDatas[strs[0]]; !exist {
+		if ckd, exist := kline.DefaultDrivers[strs[0]]; !exist {
 			ws.WriteJSON("contract no exist")
 			break
 		} else {
-			data := ckd.GetCurrent(strs[1])
+			data, _ := ckd.GetCurrent(strs[1])
 			if err := ws.WriteJSON(data); err != nil {
 				gl.OutLogger.Info("Write to ws error. %v", err)
 				break

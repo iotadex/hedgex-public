@@ -23,11 +23,11 @@ func main() {
 	//connect to mysql database
 	model.ConnectToMysql()
 
-	//init the contracts
-	gl.InitContract()
-
-	//start contract service
 	if len(config.ChainNodes) > 0 {
+		//init the contracts
+		gl.InitContract()
+
+		//start contract service
 		service.StartRealKline()
 	}
 

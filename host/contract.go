@@ -28,8 +28,8 @@ func GetTradePairs(c *gin.Context) {
 		pairs[i].Contract = addr
 		pairs[i].MarginCoin = config.Contract[addr].MarginCoin
 		pairs[i].TradeCoin = config.Contract[addr].TradeCoin
-		if skd := gl.CurrentKlineDatas[addr]; skd != nil {
-			candle := skd.GetCurrent("d1")
+		if skd := kline.DefaultDrivers[addr]; skd != nil {
+			candle, _ := skd.GetCurrent("d1")
 			pairs[i].DayOpenPrice = candle[0]
 			pairs[i].IndexPrice = candle[3]
 		}
