@@ -3,9 +3,8 @@ package gl
 import (
 	"context"
 	"crypto/ecdsa"
-	"errors"
 	"hedgex-public/config"
-	"hedgex-public/hedgex"
+	"hedgex-public/indexprice"
 	"log"
 	"math/big"
 	"sync"
@@ -19,42 +18,27 @@ import (
 
 var (
 	//contract's instance
-	Contracts map[string]map[*hedgex.Hedgex]string
-
-	erc20TransferID []byte
-	chainID         *big.Int
+	indexPriceContracts map[*indexprice.Indexprice]string
 )
 
 func InitContract() {
-	clients := make([]*ethclient.Client, 0, len(config.ChainNodes))
+	indexPriceContracts = make(map[*indexprice.Indexprice]string)
 	for i := range config.ChainNodes {
 		client, err := ethclient.Dial(config.ChainNodes[i])
 		if err != nil {
 			log.Panic("ChainNode : ", config.ChainNodes[i], err)
 		}
-		clients = append(clients, client)
-	}
 
-	Contracts = make(map[string]map[*hedgex.Hedgex]string)
-	for conAddr := range config.Contract {
-		contracts := make(map[*hedgex.Hedgex]string)
-		for i := range clients {
-			con, err := hedgex.NewHedgex(common.HexToAddress(conAddr), clients[i])
-			if err != nil {
-				log.Panic(err)
-			}
-			contracts[con] = config.ChainNodes[i]
+		con, err := indexprice.NewIndexprice(common.HexToAddress(config.IndexPriceConAddr), client)
+		if err != nil {
+			log.Panic(err)
 		}
-		Contracts[conAddr] = contracts
-	}
 
-	var err error
-	chainID, err = clients[0].NetworkID(context.Background())
-	if err != nil {
-		log.Panic(err)
+		indexPriceContracts[con] = config.ChainNodes[i]
 	}
 
 	if len(config.Test.Wallet) > 0 {
+		var err error
 		config.Test.PrivateKey, err = crypto.HexToECDSA(config.Test.Wallet)
 		if err != nil {
 			log.Panic("Get privatekey error.", err)
@@ -68,60 +52,80 @@ func InitContract() {
 	}
 }
 
-func GetIndexPrice(conAddr string) (int64, error) {
-	prices := make(map[int64]int)
-	var mu sync.Mutex
+func GetIndexPrices(conAddresses []common.Address) []int64 {
+	begin := time.Now().UnixMilli()
 	var wg sync.WaitGroup
-	for con := range Contracts[conAddr] {
+	prices := make([][]*big.Int, len(indexPriceContracts))
+	i := 0
+	for con := range indexPriceContracts {
 		wg.Add(1)
-		go func(con *hedgex.Hedgex) {
-			ch := make(chan int64)
+		go func(con *indexprice.Indexprice, i int) {
+			ch := make(chan []*big.Int)
 			go func() {
-				if price, _, _, err := con.GetLatestPrice(nil); err != nil {
-					ch <- 0
-					OutLogger.Error("Get index pirce error. %s : %v", Contracts[conAddr][con], err)
+				if price, err := con.IndexPrice(nil, conAddresses); err != nil {
+					ch <- nil
+					OutLogger.Error("Get index pirce error. %s : %v", indexPriceContracts[con], err)
 				} else {
-					ch <- price.Int64()
+					ch <- price
 				}
 			}()
 			select {
-			case price := <-ch:
-				mu.Lock()
-				prices[price]++
-				mu.Unlock()
+			case p := <-ch:
+				prices[i] = p
 			case <-time.After(3 * time.Second):
-				OutLogger.Error("Get index price over time. %s", Contracts[conAddr][con])
+				OutLogger.Error("Get index price over time. %s", indexPriceContracts[con])
 			}
 			wg.Done()
-		}(con)
+		}(con, i)
+		i++
 	}
 	wg.Wait()
-	price := int64(0)
-	maxCount := 0
-	for p, c := range prices {
-		if (c > maxCount) && (p > 0) {
-			price = p
-			maxCount = c
+
+	count := len(conAddresses)
+	statPrices := make([]map[int64]int, count)
+	for i := 0; i < count; i++ {
+		statPrices[i] = make(map[int64]int)
+	}
+	for _, ps := range prices {
+		for i := 0; i < len(ps); i++ {
+			statPrices[i][ps[i].Int64()]++
 		}
 	}
-	if maxCount > 0 {
-		OutLogger.Info("Index Price : %s : %d : %d", conAddr[2:6], maxCount, price)
-		return price, nil
+
+	ips := make([]int64, count)
+	nodes := make([]int, count)
+	for i := 0; i < count; i++ {
+		price := int64(0)
+		maxCount := 0
+		for p, c := range statPrices[i] {
+			if (c > maxCount) && (p > 0) {
+				price = p
+				maxCount = c
+			}
+		}
+		ips[i] = price
+		nodes[i] = maxCount
 	}
-	return 0, errors.New("get index price error")
+	OutLogger.Info("Index prices : %v : %v : %d", ips, nodes, time.Now().UnixMilli()-begin)
+	return ips
 }
 
 func SendTestCoins(to string) (string, error) {
 	paddedAddress := common.LeftPadBytes(common.HexToAddress(to).Bytes(), 32)
 	paddedAmount := common.LeftPadBytes(big.NewInt(config.Test.SendAmount).Bytes(), 32)
-
+	methodid := []byte{0xa9, 0x05, 0x9c, 0xbb}
 	var data []byte
-	data = append(data, erc20TransferID...)
+	data = append(data, methodid...)
 	data = append(data, paddedAddress...)
 	data = append(data, paddedAmount...)
 	value := big.NewInt(0)
 
 	client, err := ethclient.Dial(config.ChainNodes[0])
+	if err != nil {
+		return "", err
+	}
+
+	chainID, err := client.NetworkID(context.Background())
 	if err != nil {
 		return "", err
 	}

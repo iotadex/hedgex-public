@@ -28,7 +28,7 @@ func main() {
 		gl.InitContract()
 
 		//start contract service
-		service.StartRealKline()
+		go service.StartRealKline()
 	}
 
 	//start http service

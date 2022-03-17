@@ -57,17 +57,18 @@ type test struct {
 }
 
 var (
-	Env           string
-	Db            db
-	Redis         redis
-	HttpPort      int
-	BeginSec      int64
-	WsTick        time.Duration
-	MaxKlineCount int
-	ChainNodes    []string
-	Contract      map[string]TradePair
-	IpLimit       int
-	Test          test
+	Env               string
+	Db                db
+	Redis             redis
+	HttpPort          int
+	BeginSec          int64
+	WsTick            time.Duration
+	MaxKlineCount     int
+	IndexPriceConAddr string
+	ChainNodes        []string
+	Contract          map[string]TradePair
+	IpLimit           int
+	Test              test
 )
 
 //Load load config file
@@ -78,17 +79,18 @@ func init() {
 	}
 	defer file.Close()
 	type Config struct {
-		Env           string               `json:"env"`
-		HttpPort      int                  `json:"http_port"`
-		BeginSec      int64                `json:"begin_sec"`
-		WsTick        time.Duration        `json:"ws_tick"`
-		KlineMaxCount int                  `json:"kline_max_count"`
-		Db            db                   `json:"db"`
-		Redis         redis                `json:"redis"`
-		ChainNodes    []string             `json:"chain_node"`
-		Contract      map[string]TradePair `json:"contract"`
-		IpLimit       int                  `json:"ip_limit"`
-		Test          test                 `json:"test"`
+		Env               string               `json:"env"`
+		HttpPort          int                  `json:"http_port"`
+		BeginSec          int64                `json:"begin_sec"`
+		WsTick            time.Duration        `json:"ws_tick"`
+		KlineMaxCount     int                  `json:"kline_max_count"`
+		Db                db                   `json:"db"`
+		Redis             redis                `json:"redis"`
+		IndexPriceConAddr string               `json:"index_price"`
+		ChainNodes        []string             `json:"chain_node"`
+		Contract          map[string]TradePair `json:"contract"`
+		IpLimit           int                  `json:"ip_limit"`
+		Test              test                 `json:"test"`
 	}
 	all := &Config{}
 	if err = json.NewDecoder(file).Decode(all); err != nil {
@@ -100,6 +102,7 @@ func init() {
 	HttpPort = all.HttpPort
 	WsTick = all.WsTick
 	MaxKlineCount = all.KlineMaxCount
+	IndexPriceConAddr = all.IndexPriceConAddr
 	ChainNodes = all.ChainNodes
 	Contract = all.Contract
 	if MaxKlineCount < 1 {

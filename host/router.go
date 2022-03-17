@@ -59,6 +59,7 @@ func InitRouter() *gin.Engine {
 
 	router := gin.New()
 	router.Use(gin.LoggerWithConfig(gin.LoggerConfig{Output: GinLogger}), gin.Recovery())
+	router.SetTrustedProxies(nil)
 
 	router.GET("/api/ping", PingPong)
 

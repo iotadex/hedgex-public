@@ -9,6 +9,8 @@ import (
 	"strconv"
 	"sync/atomic"
 	"time"
+
+	"github.com/ethereum/go-ethereum/common"
 )
 
 var (
@@ -32,40 +34,41 @@ func StartRealKline() {
 	loadHistoryKline()
 
 	// update the kline data real time from contract of blockchain network
-	for addr := range config.Contract {
-		go runKlineUpdate(addr)
+	preTimes := make([]int64, 0)
+	watchTimes := make([]int64, 0)
+	addressesHex := make([]string, 0)
+	addresses := make([]common.Address, 0)
+	addressesInt64 := make([]int64, 0)
+	for conAddr := range config.Contract {
+		addresses = append(addresses, common.HexToAddress(conAddr))
+		addressesHex = append(addressesHex, conAddr)
+		addr, _ := strconv.ParseInt(conAddr[0:10], 0, 64)
+		addressesInt64 = append(addressesInt64, addr)
+		watchTimes = append(watchTimes, config.Contract[conAddr].WatchTime)
+		preTimes = append(preTimes, time.Now().Unix()-config.Contract[conAddr].WatchTime-1)
 	}
-}
+	count := len(addresses)
 
-func runKlineUpdate(conAdd string) {
-	addr, _ := strconv.ParseInt(conAdd[0:6], 0, 64)
-	if addr == 0 {
-		log.Panic("Get contract address error.")
-	}
-	b := ChainNodeErr[conAdd]
-	c := ContractPriceErr[conAdd]
-	watchTime := config.Contract[conAdd].WatchTime
-	preTime := time.Now().Unix() - watchTime - 1
-	var prePrice int64
+	prePrices := make([]int64, count)
 	ticker := time.NewTicker(time.Second * config.WsTick)
 	for range ticker.C {
-		price, err := gl.GetIndexPrice(conAdd)
-		if err != nil {
-			atomic.StoreInt64(b, addr)
-			gl.OutLogger.Error("%s : %v", conAdd, err)
-			continue
+		prices := gl.GetIndexPrices(addresses)
+		for i := 0; i < count; i++ {
+			if prices[i] != 0 {
+				atomic.StoreInt64(ContractPriceErr[addressesHex[i]], 0)
+				updateKline(addressesHex[i], prices[i])
+			} else {
+				atomic.StoreInt64(ChainNodeErr[addressesHex[i]], addressesInt64[i])
+				continue
+			}
+			if prePrices[i] != prices[i] {
+				prePrices[i] = prices[i]
+				preTimes[i] = time.Now().Unix()
+				atomic.StoreInt64(ContractPriceErr[addressesHex[i]], 0)
+			} else if (time.Now().Unix() - preTimes[i]) > watchTimes[i] {
+				atomic.StoreInt64(ContractPriceErr[addressesHex[i]], addressesInt64[i])
+			}
 		}
-		atomic.StoreInt64(b, 0)
-		if prePrice != price {
-			prePrice = price
-			preTime = time.Now().Unix()
-		}
-		if (time.Now().Unix() - preTime) > watchTime {
-			atomic.StoreInt64(c, addr)
-		} else {
-			atomic.StoreInt64(c, 0)
-		}
-		updateKline(conAdd, price)
 	}
 }
 
