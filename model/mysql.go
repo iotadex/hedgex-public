@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"hedgex-public/config"
 	"log"
-	"time"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -18,9 +17,6 @@ func ConnectToMysql() {
 	if err != nil {
 		log.Panic(err)
 	}
-	db.SetMaxOpenConns(config.Db.OpenConns)
-	db.SetMaxIdleConns(config.Db.IdleConns)
-	db.SetConnMaxLifetime(config.Db.LifeTime * time.Second)
 
 	if err = db.Ping(); nil != err {
 		log.Panic("Connect to Mysql error : " + err.Error())

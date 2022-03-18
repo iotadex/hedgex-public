@@ -10,30 +10,26 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 )
 
-//db database config
 type db struct {
-	LifeTime  time.Duration `json:"lifetime"`
-	OpenConns int           `json:"openconns"`
-	IdleConns int           `json:"idleconns"`
-	Host      string        `json:"host"`
-	Port      string        `json:"port"`
-	DbName    string        `json:"dbname"`
-	Usr       string        `json:"usr"`
-	Pwd       string        `json:"pwd"`
+	Host   string `json:"host"`
+	Port   string `json:"port"`
+	DbName string `json:"dbname"`
+	Usr    string `json:"usr"`
+	Pwd    string `json:"pwd"`
 }
 
 type redis struct {
 	Addr string `json:"addr"`
 }
 
-type TradePair struct {
+type tradepair struct {
 	MarginCoin string `json:"margin_coin"`
 	TradeCoin  string `json:"trade_coin"`
 	WatchTime  int64  `json:"watch_time"`
-	Params     Param  `json:"param"`
+	Params     param  `json:"param"`
 }
 
-type Param struct {
+type param struct {
 	Leverage                    int     `json:"leverage"`
 	MinAmount                   float64 `json:"min_amount"`
 	KeepMarginScale             int     `json:"keep_margin_scale"`
@@ -66,7 +62,7 @@ var (
 	MaxKlineCount     int
 	IndexPriceConAddr string
 	ChainNodes        []string
-	Contract          map[string]TradePair
+	Contract          map[string]tradepair
 	IpLimit           int
 	Test              test
 )
@@ -88,7 +84,7 @@ func init() {
 		Redis             redis                `json:"redis"`
 		IndexPriceConAddr string               `json:"index_price"`
 		ChainNodes        []string             `json:"chain_node"`
-		Contract          map[string]TradePair `json:"contract"`
+		Contract          map[string]tradepair `json:"contract"`
 		IpLimit           int                  `json:"ip_limit"`
 		Test              test                 `json:"test"`
 	}
