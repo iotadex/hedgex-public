@@ -65,6 +65,7 @@ var (
 	Contract          map[string]tradepair
 	IpLimit           int
 	Test              test
+	Upload            string
 )
 
 //Load load config file
@@ -87,6 +88,7 @@ func init() {
 		Contract          map[string]tradepair `json:"contract"`
 		IpLimit           int                  `json:"ip_limit"`
 		Test              test                 `json:"test"`
+		Upload            string               `json:"upload"`
 	}
 	all := &Config{}
 	if err = json.NewDecoder(file).Decode(all); err != nil {
@@ -111,4 +113,5 @@ func init() {
 	}
 
 	Test = all.Test
+	Upload = all.Upload
 }

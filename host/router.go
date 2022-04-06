@@ -96,5 +96,11 @@ func InitRouter() *gin.Engine {
 		other.GET("/testcoin", SendTestCoins)
 	}
 
+	//upload
+	upload := router.Group("upload")
+	{
+		upload.POST("/share", UploadShareResultImg)
+	}
+
 	return router
 }

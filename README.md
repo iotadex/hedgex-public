@@ -272,6 +272,17 @@
 }
 ```
 
+### POST /upload/share upload a file and get a url
+#### parameter
+file="file name"
+#### result
+```json
+{
+    "result":true,
+    "data":"file name, the url is https://uri/share/filename"
+}
+```
+
 ## kline websockt， URL : wss://triple.fi/wss/kline
 ```
 When the websocket connection is established. Send the kline's type string with contract address(address:m1,address:m5,...), then the kline data will be send from the server.

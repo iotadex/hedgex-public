@@ -21,7 +21,9 @@ func main() {
 	gl.CreateLogFiles()
 
 	//connect to mysql database
-	model.ConnectToMysql()
+	if len(config.Db.Host) > 0 {
+		model.ConnectToMysql()
+	}
 
 	if len(config.ChainNodes) > 0 {
 		//init the contracts
